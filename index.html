@@ -350,27 +350,23 @@
 
     async function fetchHolders() {
       try {
-        const res = await fetch(`https://mainnet.helius-rpc.com/?api-key=${HELIUS_KEY}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            jsonrpc: '2.0',
-            id: 'holders',
-            method: 'getProgramAccounts',
-            params: ['TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA', {
-              encoding: 'base64',
-              dataSlice: { offset: 0, length: 0 },
-              filters: [
-                { dataSize: 165 },
-                { memcmp: { offset: 0, bytes: CA } }
-              ]
-            }]
-          })
-        });
-        const data = await res.json();
-        const count = data?.result?.length;
-        if (count !== undefined) {
-          document.getElementById('stat-holders').textContent = count.toLocaleString();
+        let total = 0;
+        let cursor = undefined;
+        do {
+          const params = { mint: CA, limit: 1000 };
+          if (cursor) params.cursor = cursor;
+          const res = await fetch(`https://mainnet.helius-rpc.com/?api-key=${HELIUS_KEY}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ jsonrpc: '2.0', id: 'holders', method: 'getTokenAccounts', params })
+          });
+          const data = await res.json();
+          const accounts = data?.result?.token_accounts || [];
+          total += accounts.length;
+          cursor = accounts.length === 1000 ? data?.result?.cursor : undefined;
+        } while (cursor);
+        if (total > 0) {
+          document.getElementById('stat-holders').textContent = total.toLocaleString();
         }
       } catch (e) {
         console.error('Holder fetch failed:', e);
