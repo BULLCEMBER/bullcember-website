@@ -145,8 +145,8 @@ a { text-decoration: none; color: inherit; }
 /* PFP */
 .hero-pfp-wrapper {
   position: relative;
-  width: 260px;
-  height: 260px;
+  width: 220px;
+  height: 220px;
   margin-bottom: 28px;
   display: flex;
   align-items: center;
@@ -154,15 +154,13 @@ a { text-decoration: none; color: inherit; }
 }
 
 .hero-pfp {
-  width: 240px;
-  height: 240px;
+  width: 210px;
+  height: 210px;
   border-radius: 50%;
-  object-fit: contain;
-  padding: 36px;
-  box-sizing: border-box;
+  object-fit: cover;
   position: relative;
   z-index: 2;
-  filter: drop-shadow(0 0 36px rgba(59, 127, 232, 0.55));
+  filter: drop-shadow(0 0 30px rgba(59, 127, 232, 0.5));
 }
 
 .pfp-ring {
@@ -950,8 +948,8 @@ section { padding: 100px 0; }
   .navbar { padding: 14px 20px; }
   .nav-links { display: none; }
   .hero { padding: 100px 16px 0; }
-  .hero-pfp-wrapper { width: 180px; height: 180px; }
-  .hero-pfp { width: 168px; height: 168px; padding: 26px; margin-top: 0; }
+  .hero-pfp-wrapper { width: 160px; height: 160px; }
+  .hero-pfp { width: 150px; height: 150px; padding: 0; margin-top: 0; }
   .live-bar {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
