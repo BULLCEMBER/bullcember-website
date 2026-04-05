@@ -153,14 +153,24 @@ a { text-decoration: none; color: inherit; }
   justify-content: center;
 }
 
-.hero-pfp {
-  width: 210px;
-  height: 210px;
-  border-radius: 50%;
-  object-fit: cover;
+.pfp-circle {
   position: relative;
   z-index: 2;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   filter: drop-shadow(0 0 30px rgba(59, 127, 232, 0.5));
+}
+
+.hero-pfp {
+  /* 70% of 200px = 140px — fits within the inscribed square of the circle */
+  width: 70%;
+  height: 70%;
+  object-fit: contain;
 }
 
 .pfp-ring {
@@ -949,7 +959,7 @@ section { padding: 100px 0; }
   .nav-links { display: none; }
   .hero { padding: 100px 16px 0; }
   .hero-pfp-wrapper { width: 160px; height: 160px; }
-  .hero-pfp { width: 150px; height: 150px; padding: 0; margin-top: 0; }
+  .pfp-circle { width: 140px; height: 140px; }
   .live-bar {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
