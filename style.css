@@ -102,7 +102,7 @@ a { text-decoration: none; color: inherit; }
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  padding: 120px 24px 0;
+  padding: 160px 24px 0;
 }
 
 /* Radial glow background */
@@ -147,9 +147,9 @@ a { text-decoration: none; color: inherit; }
   position: relative;
   width: 260px;
   height: 260px;
-  margin-bottom: 8px;
+  margin-bottom: 28px;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
 }
 
@@ -158,8 +158,8 @@ a { text-decoration: none; color: inherit; }
   height: 380px;
   border-radius: 0;
   object-fit: contain;
-  position: absolute;
-  bottom: -10px;
+  position: relative;
+  margin-top: -100px;
   z-index: 2;
   filter: drop-shadow(0 0 36px rgba(59, 127, 232, 0.55));
 }
@@ -196,7 +196,7 @@ a { text-decoration: none; color: inherit; }
   letter-spacing: 3px;
   text-transform: uppercase;
   color: var(--cyan);
-  margin-bottom: 14px;
+  margin-bottom: 20px;
   opacity: 0.8;
 }
 
@@ -221,7 +221,7 @@ a { text-decoration: none; color: inherit; }
   text-align: center;
   line-height: 1.7;
   max-width: 480px;
-  margin-bottom: 40px;
+  margin-bottom: 48px;
 }
 
 /* ===== LIVE STATS BAR ===== */
