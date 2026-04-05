@@ -51,9 +51,9 @@
         <div class="pfp-ring ring2"></div>
         <img src="pfp.gif" alt="BULLCEMBER" class="hero-pfp" />
       </div>
-      <div class="hero-tag"><span id="months-survived">—</span> Months Survived • Q4 2026 Incoming • Built on Solana</div>
+      <div class="hero-tag">Q4 2026 Incoming • Built on Solana</div>
       <h1 class="hero-title">$BULLCEMBER</h1>
-      <p class="hero-sub"><span id="months-survived-sub">—</span> months. Through the bear, the dip, the silence.<br/>We're still here. And December is coming again.</p>
+      <p class="hero-sub">The most bullish month in crypto has a coin.<br/>December comes once a year — be ready when it does.</p>
 
       <!-- LIVE STATS BAR -->
       <div class="live-bar" id="stats">
@@ -625,13 +625,11 @@
     updateCountdown();
     setInterval(updateCountdown, 1000);
 
-    // ===== MONTHS SURVIVED (dynamic from launch date) =====
+    // ===== MONTHS SURVIVED (dynamic — ticker only) =====
     (function() {
       const launch = new Date('2024-11-16T00:00:00Z');
       const now = new Date();
       const months = (now.getFullYear() - launch.getFullYear()) * 12 + (now.getMonth() - launch.getMonth());
-      document.getElementById('months-survived').textContent = months;
-      document.getElementById('months-survived-sub').textContent = months;
       const ticker = document.getElementById('ticker-inner');
       ticker.innerHTML = ticker.innerHTML.replace(/— MONTHS/g, months + ' MONTHS');
     })();
