@@ -77,6 +77,11 @@
         </div>
         <div class="live-divider"></div>
         <div class="live-item">
+          <span class="live-label">Liquidity</span>
+          <span class="live-value" id="stat-liq">—</span>
+        </div>
+        <div class="live-divider"></div>
+        <div class="live-item">
           <span class="live-label">24h Volume</span>
           <span class="live-value" id="stat-vol">—</span>
         </div>
@@ -402,11 +407,13 @@
 
         const price = fmtPrice(pair.priceUsd);
         const mcap  = fmt(pair.fdv || pair.marketCap);
+        const liq   = fmt(pair.liquidity?.usd);
         const vol   = fmt(pair.volume?.h24);
         const chg   = pair.priceChange?.h24;
 
         document.getElementById('stat-price').textContent  = price;
         document.getElementById('stat-mcap').textContent   = mcap;
+        document.getElementById('stat-liq').textContent    = liq;
         document.getElementById('stat-vol').textContent    = vol;
 
         const chgEl = document.getElementById('stat-change');
