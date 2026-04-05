@@ -85,6 +85,11 @@
           <span class="live-label">Holders</span>
           <span class="live-value" id="stat-holders">—</span>
         </div>
+        <div class="live-divider"></div>
+        <div class="live-item">
+          <span class="live-label">Total Volume</span>
+          <span class="live-value" id="stat-tvol">—</span>
+        </div>
       </div>
 
       <div class="hero-btns">
@@ -390,8 +395,28 @@
       }
     }
 
+    async function fetchTotalVolume() {
+      try {
+        let total = 0, timeFrom = 1731715200;
+        const now = Math.floor(Date.now() / 1000);
+        while (timeFrom < now) {
+          const res = await fetch(
+            `https://public-api.birdeye.so/defi/ohlcv?address=${CA}&type=1D&time_from=${timeFrom}&time_to=${now}`,
+            { headers: { 'X-API-KEY': '6925b84a60fd4ec6876b311926a87de4', 'x-chain': 'solana' } }
+          );
+          const items = (await res.json())?.data?.items || [];
+          if (!items.length) break;
+          items.forEach(({ v, c }) => { total += v * c; });
+          if (items.length < 1000) break;
+          timeFrom = Math.max(...items.map(i => i.unixTime)) + 1;
+        }
+        if (total > 0) document.getElementById('stat-tvol').textContent = fmt(total);
+      } catch(e) { console.error('Total volume fetch failed:', e); }
+    }
+
     fetchStats();
     fetchHolders();
+    setTimeout(fetchTotalVolume, 3000);
     setInterval(fetchStats, 30000);
     setInterval(fetchHolders, 60000);
 
