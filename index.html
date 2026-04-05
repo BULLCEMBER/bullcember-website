@@ -414,9 +414,17 @@
       } catch(e) { console.error('Total volume fetch failed:', e); }
     }
 
+    function scheduleDailyVolume() {
+      const now = new Date();
+      const nextMidnightUTC = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1));
+      const msUntilMidnight = nextMidnightUTC - now;
+      setTimeout(() => { fetchTotalVolume(); setInterval(fetchTotalVolume, 86400000); }, msUntilMidnight);
+    }
+
     fetchStats();
     fetchHolders();
     setTimeout(fetchTotalVolume, 3000);
+    scheduleDailyVolume();
     setInterval(fetchStats, 30000);
     setInterval(fetchHolders, 60000);
 
