@@ -403,13 +403,11 @@
         const price = fmtPrice(pair.priceUsd);
         const mcap  = fmt(pair.fdv || pair.marketCap);
         const vol   = fmt(pair.volume?.h24);
-        const liq   = fmt(pair.liquidity?.usd);
         const chg   = pair.priceChange?.h24;
 
         document.getElementById('stat-price').textContent  = price;
         document.getElementById('stat-mcap').textContent   = mcap;
         document.getElementById('stat-vol').textContent    = vol;
-        document.getElementById('stat-liq').textContent    = liq;
 
         const chgEl = document.getElementById('stat-change');
         if (chg !== undefined && chg !== null) {
