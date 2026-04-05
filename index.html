@@ -292,7 +292,7 @@
   <script>
     const CA = '8kDjxrxVACw3nRfDdLtak1rnJiNbMC9BiTKPQ9b1pump';
     const PAIR = '2aiqEdFASfHi3XhggpQNnBSYKK4PyY1xw5w1XB3CKRQp';
-    const HELIUS_KEY = 'YOUR_HELIUS_API_KEY'; // get free key at helius.dev
+    const HELIUS_KEY = 'c031e185-55ff-4b43-8e6b-63054ca1f2ee';
 
     function fmt(n, decimals = 2) {
       if (n === null || n === undefined) return '—';
@@ -349,7 +349,6 @@
     }
 
     async function fetchHolders() {
-      if (HELIUS_KEY === 'YOUR_HELIUS_API_KEY') return;
       try {
         const res = await fetch(`https://mainnet.helius-rpc.com/?api-key=${HELIUS_KEY}`, {
           method: 'POST',
@@ -357,14 +356,21 @@
           body: JSON.stringify({
             jsonrpc: '2.0',
             id: 'holders',
-            method: 'getTokenAccounts',
-            params: { mint: CA, limit: 1 }
+            method: 'getProgramAccounts',
+            params: ['TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA', {
+              encoding: 'base64',
+              dataSlice: { offset: 0, length: 0 },
+              filters: [
+                { dataSize: 165 },
+                { memcmp: { offset: 0, bytes: CA } }
+              ]
+            }]
           })
         });
         const data = await res.json();
-        const total = data?.result?.total;
-        if (total !== undefined) {
-          document.getElementById('stat-holders').textContent = total.toLocaleString();
+        const count = data?.result?.length;
+        if (count !== undefined) {
+          document.getElementById('stat-holders').textContent = count.toLocaleString();
         }
       } catch (e) {
         console.error('Holder fetch failed:', e);
