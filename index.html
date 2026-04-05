@@ -466,7 +466,7 @@
       return all
         .sort((a, b) => a.unixTime - b.unixTime)
         .filter((c, i, arr) => i === 0 || c.unixTime !== arr[i-1].unixTime)
-        .map(({ unixTime, o, h, l, c, v }) => ({ time: unixTime, open: o, high: h, low: l, close: c, volume: v }));
+        .map(({ unixTime, o, h, l, c, v }) => ({ time: unixTime, open: o, high: h, low: l, close: c, volume: v * c }));
     }
 
     async function loadTf(tf) {
