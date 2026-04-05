@@ -544,10 +544,11 @@ section { padding: 100px 0; }
 }
 
 .social-links {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 16px;
-  justify-content: center;
-  flex-wrap: wrap;
+  max-width: 560px;
+  margin: 0 auto;
 }
 
 .social-card {
