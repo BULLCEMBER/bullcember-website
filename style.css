@@ -985,6 +985,7 @@ section { padding: 100px 0; }
   .hero { padding: 90px 12px 0; }
   .hero-pfp-wrapper { width: 140px; height: 140px; }
   .pfp-circle { width: 120px; height: 120px; }
+  .hero-title { font-size: clamp(1.4rem, 8.5vw, 2.2rem); letter-spacing: 0px; }
   .hero-tag { font-size: 0.6rem; letter-spacing: 1.5px; }
   .hero-sub { font-size: 0.9rem; }
   .hero-btns { gap: 10px; }
