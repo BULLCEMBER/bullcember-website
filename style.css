@@ -618,6 +618,103 @@ section { padding: 100px 0; }
   color: #1A2A40;
 }
 
+/* ===== PARTNERS ===== */
+.partners { padding: 80px 24px; background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+.partner-list {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 40px;
+}
+
+.partner-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 44px 64px;
+  text-decoration: none;
+  color: var(--text);
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+  min-width: 220px;
+}
+
+.partner-card:hover {
+  border-color: var(--cyan);
+  transform: translateY(-6px);
+  box-shadow: 0 0 32px rgba(80, 200, 232, 0.15);
+}
+
+.partner-logo {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  image-rendering: auto;
+  border-radius: 12px;
+}
+
+.partner-name {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 1px;
+}
+
+.partner-sub {
+  font-size: 0.73rem;
+  color: var(--muted);
+  letter-spacing: 0.5px;
+}
+
+/* ===== TOKENOMICS TIMELINE ===== */
+.toko-timeline {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.toko-timeline-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.toko-timeline-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.toko-timeline-arrow {
+  font-size: 1.4rem;
+  color: var(--cyan);
+  opacity: 0.6;
+}
+
+/* ===== POWERED BY SOLANA ===== */
+.powered-by {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.sol-badge {
+  background: linear-gradient(90deg, #9945FF, #14F195);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
   .navbar { padding: 14px 20px; }
