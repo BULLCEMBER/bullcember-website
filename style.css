@@ -154,12 +154,11 @@ a { text-decoration: none; color: inherit; }
 }
 
 .hero-pfp {
-  width: 380px;
-  height: 380px;
-  border-radius: 0;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
   object-fit: contain;
   position: relative;
-  margin-top: -100px;
   z-index: 2;
   filter: drop-shadow(0 0 36px rgba(59, 127, 232, 0.55));
 }
@@ -950,7 +949,7 @@ section { padding: 100px 0; }
   .nav-links { display: none; }
   .hero { padding: 100px 16px 0; }
   .hero-pfp-wrapper { width: 180px; height: 180px; }
-  .hero-pfp { width: 260px; height: 260px; margin-top: -70px; }
+  .hero-pfp { width: 165px; height: 165px; margin-top: 0; }
   .live-bar {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
