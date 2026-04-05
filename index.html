@@ -104,12 +104,13 @@
     <div class="container">
       <div class="section-tag">LIVE CHART</div>
       <h2 class="section-title">Price <span class="highlight">Chart</span></h2>
+      <div class="chart-controls">
+        <button class="tf-btn active" data-tf="1H">1H</button>
+        <button class="tf-btn" data-tf="4H">4H</button>
+        <button class="tf-btn" data-tf="1D">1D</button>
+      </div>
       <div class="chart-wrapper">
-        <iframe
-          src="https://dexscreener.com/solana/2aiqEdFASfHi3XhggpQNnBSYKK4PyY1xw5w1XB3CKRQp?embed=1&theme=dark&info=0"
-          title="$BULLCEMBER Live Chart"
-          allowfullscreen
-        ></iframe>
+        <div id="price-chart"></div>
       </div>
     </div>
   </section>
@@ -289,6 +290,7 @@
     <p class="footer-copy">© 2026 BULLCEMBER</p>
   </footer>
 
+  <script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
   <script>
     const CA = '8kDjxrxVACw3nRfDdLtak1rnJiNbMC9BiTKPQ9b1pump';
     const PAIR = '2aiqEdFASfHi3XhggpQNnBSYKK4PyY1xw5w1XB3CKRQp';
@@ -377,6 +379,63 @@
     fetchHolders();
     setInterval(fetchStats, 30000);
     setInterval(fetchHolders, 60000);
+
+    // ===== CHART =====
+    const GECKO = `https://api.geckoterminal.com/api/v2/networks/solana/pools/${PAIR}/ohlcv`;
+    const TF = {
+      '1H': `${GECKO}/hour?limit=168`,
+      '4H': `${GECKO}/hour?aggregate=4&limit=180`,
+      '1D': `${GECKO}/day?limit=365`,
+    };
+
+    let priceChart, candleSeries;
+
+    function initChart() {
+      const container = document.getElementById('price-chart');
+      priceChart = LightweightCharts.createChart(container, {
+        width: container.clientWidth,
+        height: 460,
+        layout: { background: { color: '#04080F' }, textColor: '#667788' },
+        grid: { vertLines: { color: '#0C1A2E' }, horzLines: { color: '#0C1A2E' } },
+        crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
+        rightPriceScale: { borderColor: '#1A2A40', scaleMargins: { top: 0.1, bottom: 0.1 } },
+        timeScale: { borderColor: '#1A2A40', timeVisible: true, secondsVisible: false },
+      });
+
+      candleSeries = priceChart.addCandlestickSeries({
+        upColor: '#26a69a', downColor: '#ef5350',
+        borderVisible: false,
+        wickUpColor: '#26a69a', wickDownColor: '#ef5350',
+        priceFormat: { type: 'price', precision: 10, minMove: 0.0000000001 },
+      });
+
+      new ResizeObserver(() => {
+        priceChart.applyOptions({ width: container.clientWidth });
+      }).observe(container);
+
+      loadTf('1H');
+
+      document.querySelectorAll('.tf-btn').forEach(btn => {
+        btn.addEventListener('click', () => loadTf(btn.dataset.tf));
+      });
+    }
+
+    async function loadTf(tf) {
+      document.querySelectorAll('.tf-btn').forEach(b => b.classList.toggle('active', b.dataset.tf === tf));
+      try {
+        const res = await fetch(TF[tf], { headers: { 'Accept': 'application/json;version=20230302' } });
+        const data = await res.json();
+        const raw = data?.data?.attributes?.ohlcv_list || [];
+        const candles = raw
+          .sort((a, b) => a[0] - b[0])
+          .map(([time, open, high, low, close]) => ({ time, open, high, low, close }))
+          .filter((c, i, arr) => i === 0 || c.time !== arr[i - 1].time);
+        candleSeries.setData(candles);
+        priceChart.timeScale().fitContent();
+      } catch (e) { console.error('Chart error:', e); }
+    }
+
+    initChart();
   </script>
 
 </body>
