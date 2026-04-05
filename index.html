@@ -387,14 +387,16 @@
     setInterval(fetchHolders, 60000);
 
     // ===== CHART =====
-    const GECKO = `https://api.geckoterminal.com/api/v2/networks/solana/pools/${PAIR}/ohlcv`;
+    const BIRDEYE_KEY = '6925b84a60fd4ec6876b311926a87de4';
+    const BIRDEYE_URL = 'https://public-api.birdeye.so/defi/ohlcv';
+    const BIRDEYE_HDR = { 'X-API-KEY': BIRDEYE_KEY, 'x-chain': 'solana' };
+    const LAUNCH_TS = 1731715200; // Nov 16, 2024
     const SUPPLY = 1_000_000_000;
-    const GECKO_HDR = { 'Accept': 'application/json;version=20230302' };
 
     const TF_MAP = {
-      '1H': { path: 'hour', qs: 'limit=720' },
-      '4H': { path: 'hour', qs: 'aggregate=4&limit=1000' },
-      '1D': { path: 'day',  qs: 'limit=1000' },
+      '1H': { type: '1H', fromTs: () => Math.floor(Date.now()/1000) - 30*24*3600 },
+      '4H': { type: '4H', fromTs: () => LAUNCH_TS },
+      '1D': { type: '1D', fromTs: () => LAUNCH_TS },
     };
 
     let priceChart, candleSeries, rawCandles = [], showMCap = false;
@@ -411,22 +413,23 @@
       return rawCandles.map(c => ({ time: c.time, open: c.open*SUPPLY, high: c.high*SUPPLY, low: c.low*SUPPLY, close: c.close*SUPPLY }));
     }
 
-    async function fetchAll(path, qs) {
-      let all = [], beforeTs = null;
-      while (true) {
-        const url = `${GECKO}/${path}?${qs}${beforeTs ? '&before_timestamp='+beforeTs : ''}`;
-        const res = await fetch(url, { headers: GECKO_HDR });
-        const batch = (await res.json())?.data?.attributes?.ohlcv_list || [];
-        if (!batch.length) break;
-        all = [...all, ...batch];
-        const oldest = Math.min(...batch.map(c => c[0]));
-        if (batch.length < 1000) break;
-        beforeTs = oldest - 1;
+    async function fetchAll(type, fromTs) {
+      let all = [];
+      let timeFrom = fromTs;
+      const now = Math.floor(Date.now() / 1000);
+      while (timeFrom < now) {
+        const url = `${BIRDEYE_URL}?address=${CA}&type=${type}&time_from=${timeFrom}&time_to=${now}`;
+        const res = await fetch(url, { headers: BIRDEYE_HDR });
+        const items = (await res.json())?.data?.items || [];
+        if (!items.length) break;
+        all = [...all, ...items];
+        if (items.length < 1000) break;
+        timeFrom = Math.max(...items.map(i => i.unixTime)) + 1;
       }
       return all
-        .sort((a, b) => a[0] - b[0])
-        .filter((c, i, arr) => i === 0 || c[0] !== arr[i-1][0])
-        .map(([time, open, high, low, close]) => ({ time, open, high, low, close }));
+        .sort((a, b) => a.unixTime - b.unixTime)
+        .filter((c, i, arr) => i === 0 || c.unixTime !== arr[i-1].unixTime)
+        .map(({ unixTime, o, h, l, c }) => ({ time: unixTime, open: o, high: h, low: l, close: c }));
     }
 
     async function loadTf(tf) {
@@ -434,8 +437,8 @@
       const el = document.getElementById('price-chart');
       el.style.opacity = '0.4';
       try {
-        const { path, qs } = TF_MAP[tf];
-        rawCandles = await fetchAll(path, qs);
+        const { type, fromTs } = TF_MAP[tf];
+        rawCandles = await fetchAll(type, fromTs());
         setFormat(showMCap);
         candleSeries.setData(displayCandles());
         priceChart.timeScale().fitContent();
