@@ -116,6 +116,15 @@
         </div>
       </div>
       <div class="chart-wrapper">
+        <div class="chart-legend" id="chart-legend">
+          <span class="leg-item">O <span class="leg-val" id="leg-o">—</span></span>
+          <span class="leg-item">H <span class="leg-val leg-up" id="leg-h">—</span></span>
+          <span class="leg-item">L <span class="leg-val leg-dn" id="leg-l">—</span></span>
+          <span class="leg-item">C <span class="leg-val" id="leg-c">—</span></span>
+          <span class="leg-sep"></span>
+          <span class="leg-item">Vol <span class="leg-val" id="leg-v">—</span></span>
+          <span class="leg-chg" id="leg-chg">—</span>
+        </div>
         <div id="price-chart"></div>
       </div>
     </div>
@@ -399,7 +408,35 @@
       '1D': { type: '1D', fromTs: () => LAUNCH_TS },
     };
 
-    let priceChart, candleSeries, rawCandles = [], showMCap = false;
+    let priceChart, candleSeries, volSeries, rawCandles = [], candleMap = new Map(), showMCap = false;
+
+    function fmtLeg(p) {
+      if (p == null) return '—';
+      if (showMCap) {
+        const m = p * SUPPLY;
+        return m >= 1e6 ? '$'+(m/1e6).toFixed(2)+'M' : m >= 1e3 ? '$'+(m/1e3).toFixed(2)+'K' : '$'+m.toFixed(0);
+      }
+      if (p < 0.000001) return '$'+p.toExponential(3);
+      return '$'+p.toFixed(10).replace(/\.?0+$/, '');
+    }
+
+    function fmtVol(v) {
+      if (!v) return '—';
+      return v >= 1e6 ? '$'+(v/1e6).toFixed(2)+'M' : v >= 1e3 ? '$'+(v/1e3).toFixed(2)+'K' : '$'+v.toFixed(2);
+    }
+
+    function updateLegend(c) {
+      if (!c) return;
+      const chg = ((c.close - c.open) / c.open * 100);
+      document.getElementById('leg-o').textContent = fmtLeg(c.open);
+      document.getElementById('leg-h').textContent = fmtLeg(c.high);
+      document.getElementById('leg-l').textContent = fmtLeg(c.low);
+      document.getElementById('leg-c').textContent = fmtLeg(c.close);
+      document.getElementById('leg-v').textContent = fmtVol(c.volume);
+      const chgEl = document.getElementById('leg-chg');
+      chgEl.textContent = (chg >= 0 ? '+' : '') + chg.toFixed(2) + '%';
+      chgEl.className = 'leg-chg ' + (chg >= 0 ? 'leg-up' : 'leg-dn');
+    }
 
     function setFormat(mcap) {
       candleSeries.applyOptions({ priceFormat: mcap
@@ -409,7 +446,7 @@
     }
 
     function displayCandles() {
-      if (!showMCap) return rawCandles;
+      if (!showMCap) return rawCandles.map(({ time, open, high, low, close }) => ({ time, open, high, low, close }));
       return rawCandles.map(c => ({ time: c.time, open: c.open*SUPPLY, high: c.high*SUPPLY, low: c.low*SUPPLY, close: c.close*SUPPLY }));
     }
 
@@ -429,7 +466,7 @@
       return all
         .sort((a, b) => a.unixTime - b.unixTime)
         .filter((c, i, arr) => i === 0 || c.unixTime !== arr[i-1].unixTime)
-        .map(({ unixTime, o, h, l, c }) => ({ time: unixTime, open: o, high: h, low: l, close: c }));
+        .map(({ unixTime, o, h, l, c, v }) => ({ time: unixTime, open: o, high: h, low: l, close: c, volume: v }));
     }
 
     async function loadTf(tf) {
@@ -439,9 +476,15 @@
       try {
         const { type, fromTs } = TF_MAP[tf];
         rawCandles = await fetchAll(type, fromTs());
+        candleMap = new Map(rawCandles.map(c => [c.time, c]));
         setFormat(showMCap);
         candleSeries.setData(displayCandles());
+        volSeries.setData(rawCandles.map(c => ({
+          time: c.time, value: c.volume,
+          color: c.close >= c.open ? 'rgba(38,166,154,0.5)' : 'rgba(239,83,80,0.5)',
+        })));
         priceChart.timeScale().fitContent();
+        updateLegend(rawCandles[rawCandles.length - 1]);
       } catch(e) { console.error('Chart error:', e); }
       el.style.opacity = '1';
     }
@@ -462,6 +505,20 @@
         wickUpColor: '#26a69a', wickDownColor: '#ef5350',
         priceFormat: { type: 'price', precision: 10, minMove: 0.0000000001 },
       });
+
+      volSeries = priceChart.addHistogramSeries({
+        priceFormat: { type: 'volume' },
+        priceScaleId: 'vol',
+      });
+      priceChart.priceScale('vol').applyOptions({ scaleMargins: { top: 0.82, bottom: 0 } });
+
+      priceChart.subscribeCrosshairMove(param => {
+        const raw = (param.time && candleMap.has(param.time))
+          ? candleMap.get(param.time)
+          : rawCandles[rawCandles.length - 1];
+        updateLegend(raw);
+      });
+
       new ResizeObserver(() => priceChart.applyOptions({ width: container.clientWidth })).observe(container);
 
       document.querySelectorAll('.tf-btn').forEach(btn =>

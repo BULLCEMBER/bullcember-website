@@ -672,6 +672,25 @@ section { padding: 100px 0; }
   box-shadow: 0 0 48px rgba(59, 127, 232, 0.08);
 }
 
+.chart-legend {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 10px 16px;
+  background: #060d1a;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.72rem;
+  font-family: 'Orbitron', sans-serif;
+  flex-wrap: wrap;
+}
+
+.leg-item { color: var(--muted); letter-spacing: 0.5px; }
+.leg-val { color: var(--text); margin-left: 5px; }
+.leg-sep { flex: 1; }
+.leg-up { color: #26a69a; }
+.leg-dn { color: #ef5350; }
+.leg-chg { font-weight: 700; font-size: 0.78rem; }
+
 #price-chart {
   width: 100%;
   height: 460px;
