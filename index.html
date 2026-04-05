@@ -105,9 +105,15 @@
       <div class="section-tag">LIVE CHART</div>
       <h2 class="section-title">Price <span class="highlight">Chart</span></h2>
       <div class="chart-controls">
-        <button class="tf-btn active" data-tf="1H">1H</button>
-        <button class="tf-btn" data-tf="4H">4H</button>
-        <button class="tf-btn" data-tf="1D">1D</button>
+        <div class="chart-tf-group">
+          <button class="tf-btn active" data-tf="1H">1H</button>
+          <button class="tf-btn" data-tf="4H">4H</button>
+          <button class="tf-btn" data-tf="1D">1D</button>
+        </div>
+        <div class="chart-mode-group">
+          <button class="mode-btn active" data-mode="price">Price</button>
+          <button class="mode-btn" data-mode="mcap">MCap</button>
+        </div>
       </div>
       <div class="chart-wrapper">
         <div id="price-chart"></div>
@@ -382,13 +388,60 @@
 
     // ===== CHART =====
     const GECKO = `https://api.geckoterminal.com/api/v2/networks/solana/pools/${PAIR}/ohlcv`;
-    const TF = {
-      '1H': `${GECKO}/hour?limit=168`,
-      '4H': `${GECKO}/hour?aggregate=4&limit=180`,
-      '1D': `${GECKO}/day?limit=365`,
+    const SUPPLY = 1_000_000_000;
+    const GECKO_HDR = { 'Accept': 'application/json;version=20230302' };
+
+    const TF_MAP = {
+      '1H': { path: 'hour', qs: 'limit=720' },
+      '4H': { path: 'hour', qs: 'aggregate=4&limit=1000' },
+      '1D': { path: 'day',  qs: 'limit=1000' },
     };
 
-    let priceChart, candleSeries;
+    let priceChart, candleSeries, rawCandles = [], showMCap = false;
+
+    function setFormat(mcap) {
+      candleSeries.applyOptions({ priceFormat: mcap
+        ? { type: 'custom', minMove: 1, formatter: p => p >= 1e6 ? '$'+(p/1e6).toFixed(2)+'M' : p >= 1e3 ? '$'+(p/1e3).toFixed(2)+'K' : '$'+p.toFixed(0) }
+        : { type: 'price', precision: 10, minMove: 0.0000000001 }
+      });
+    }
+
+    function displayCandles() {
+      if (!showMCap) return rawCandles;
+      return rawCandles.map(c => ({ time: c.time, open: c.open*SUPPLY, high: c.high*SUPPLY, low: c.low*SUPPLY, close: c.close*SUPPLY }));
+    }
+
+    async function fetchAll(path, qs) {
+      let all = [], beforeTs = null;
+      while (true) {
+        const url = `${GECKO}/${path}?${qs}${beforeTs ? '&before_timestamp='+beforeTs : ''}`;
+        const res = await fetch(url, { headers: GECKO_HDR });
+        const batch = (await res.json())?.data?.attributes?.ohlcv_list || [];
+        if (!batch.length) break;
+        all = [...all, ...batch];
+        const oldest = Math.min(...batch.map(c => c[0]));
+        if (batch.length < 1000) break;
+        beforeTs = oldest - 1;
+      }
+      return all
+        .sort((a, b) => a[0] - b[0])
+        .filter((c, i, arr) => i === 0 || c[0] !== arr[i-1][0])
+        .map(([time, open, high, low, close]) => ({ time, open, high, low, close }));
+    }
+
+    async function loadTf(tf) {
+      document.querySelectorAll('.tf-btn').forEach(b => b.classList.toggle('active', b.dataset.tf === tf));
+      const el = document.getElementById('price-chart');
+      el.style.opacity = '0.4';
+      try {
+        const { path, qs } = TF_MAP[tf];
+        rawCandles = await fetchAll(path, qs);
+        setFormat(showMCap);
+        candleSeries.setData(displayCandles());
+        priceChart.timeScale().fitContent();
+      } catch(e) { console.error('Chart error:', e); }
+      el.style.opacity = '1';
+    }
 
     function initChart() {
       const container = document.getElementById('price-chart');
@@ -401,38 +454,27 @@
         rightPriceScale: { borderColor: '#1A2A40', scaleMargins: { top: 0.1, bottom: 0.1 } },
         timeScale: { borderColor: '#1A2A40', timeVisible: true, secondsVisible: false },
       });
-
       candleSeries = priceChart.addCandlestickSeries({
-        upColor: '#26a69a', downColor: '#ef5350',
-        borderVisible: false,
+        upColor: '#26a69a', downColor: '#ef5350', borderVisible: false,
         wickUpColor: '#26a69a', wickDownColor: '#ef5350',
         priceFormat: { type: 'price', precision: 10, minMove: 0.0000000001 },
       });
+      new ResizeObserver(() => priceChart.applyOptions({ width: container.clientWidth })).observe(container);
 
-      new ResizeObserver(() => {
-        priceChart.applyOptions({ width: container.clientWidth });
-      }).observe(container);
+      document.querySelectorAll('.tf-btn').forEach(btn =>
+        btn.addEventListener('click', () => loadTf(btn.dataset.tf))
+      );
+      document.querySelectorAll('.mode-btn').forEach(btn =>
+        btn.addEventListener('click', () => {
+          showMCap = btn.dataset.mode === 'mcap';
+          document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b === btn));
+          setFormat(showMCap);
+          candleSeries.setData(displayCandles());
+          priceChart.timeScale().fitContent();
+        })
+      );
 
       loadTf('1H');
-
-      document.querySelectorAll('.tf-btn').forEach(btn => {
-        btn.addEventListener('click', () => loadTf(btn.dataset.tf));
-      });
-    }
-
-    async function loadTf(tf) {
-      document.querySelectorAll('.tf-btn').forEach(b => b.classList.toggle('active', b.dataset.tf === tf));
-      try {
-        const res = await fetch(TF[tf], { headers: { 'Accept': 'application/json;version=20230302' } });
-        const data = await res.json();
-        const raw = data?.data?.attributes?.ohlcv_list || [];
-        const candles = raw
-          .sort((a, b) => a[0] - b[0])
-          .map(([time, open, high, low, close]) => ({ time, open, high, low, close }))
-          .filter((c, i, arr) => i === 0 || c.time !== arr[i - 1].time);
-        candleSeries.setData(candles);
-        priceChart.timeScale().fitContent();
-      } catch (e) { console.error('Chart error:', e); }
     }
 
     initChart();

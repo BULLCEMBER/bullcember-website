@@ -623,9 +623,30 @@ section { padding: 100px 0; }
 
 .chart-controls {
   display: flex;
-  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 16px;
+  gap: 8px;
 }
+
+.chart-tf-group, .chart-mode-group { display: flex; gap: 8px; }
+
+.mode-btn {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--muted);
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 8px 18px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.mode-btn:hover { border-color: var(--orange); color: var(--orange); }
+.mode-btn.active { border-color: var(--orange); color: var(--orange); background: rgba(224,90,26,0.08); }
 
 .tf-btn {
   background: var(--card);
