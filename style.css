@@ -595,12 +595,11 @@ section { padding: 100px 0; }
 }
 
 .footer-pfp {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  border: 2px solid var(--blue);
+  width: 80px;
+  height: 80px;
+  border-radius: 0;
   margin-bottom: 16px;
-  object-fit: cover;
+  object-fit: contain;
   filter: drop-shadow(0 0 12px rgba(59, 127, 232, 0.4));
 }
 
