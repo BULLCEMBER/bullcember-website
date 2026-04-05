@@ -54,11 +54,11 @@ a { text-decoration: none; color: inherit; }
 }
 
 .nav-pfp {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 2px solid var(--blue);
-  object-fit: cover;
+  width: 44px;
+  height: 44px;
+  border-radius: 0;
+  object-fit: contain;
+  filter: drop-shadow(0 0 8px rgba(59, 127, 232, 0.4));
 }
 
 .nav-links {
