@@ -158,6 +158,8 @@ a { text-decoration: none; color: inherit; }
   height: 240px;
   border-radius: 50%;
   object-fit: contain;
+  padding: 36px;
+  box-sizing: border-box;
   position: relative;
   z-index: 2;
   filter: drop-shadow(0 0 36px rgba(59, 127, 232, 0.55));
@@ -949,7 +951,7 @@ section { padding: 100px 0; }
   .nav-links { display: none; }
   .hero { padding: 100px 16px 0; }
   .hero-pfp-wrapper { width: 180px; height: 180px; }
-  .hero-pfp { width: 165px; height: 165px; margin-top: 0; }
+  .hero-pfp { width: 168px; height: 168px; padding: 26px; margin-top: 0; }
   .live-bar {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
