@@ -80,17 +80,37 @@
           <span class="live-label">Liquidity</span>
           <span class="live-value" id="stat-liq">—</span>
         </div>
+        <div class="live-divider"></div>
+        <div class="live-item">
+          <span class="live-label">Holders</span>
+          <span class="live-value" id="stat-holders">—</span>
+        </div>
       </div>
 
       <div class="hero-btns">
         <a href="https://raydium.io/swap/?inputMint=sol&outputMint=8kDjxrxVACw3nRfDdLtak1rnJiNbMC9BiTKPQ9b1pump" target="_blank" class="btn-primary">Buy $BULLCEMBER</a>
-        <a href="https://dexscreener.com/solana/2aiqEdFASfHi3XhggpQNnBSYKK4PyY1xw5w1XB3CKRQp" target="_blank" class="btn-secondary">Chart</a>
+        <a href="#chart" class="btn-secondary">Chart</a>
       </div>
     </div>
 
     <!-- TICKER -->
     <div class="ticker-scroll">
       <span class="ticker-inner">🐂 $BULLCEMBER &nbsp;•&nbsp; 🚀 SOLANA &nbsp;•&nbsp; 📈 Q4 SEASON &nbsp;•&nbsp; ⚡ BULLRUN &nbsp;•&nbsp; 🐂 $BULLCEMBER &nbsp;•&nbsp; 🚀 SOLANA &nbsp;•&nbsp; 📈 Q4 SEASON &nbsp;•&nbsp; ⚡ BULLRUN &nbsp;•&nbsp; 🐂 $BULLCEMBER &nbsp;•&nbsp; 🚀 SOLANA &nbsp;•&nbsp; 📈 Q4 SEASON &nbsp;•&nbsp; ⚡ BULLRUN &nbsp;•&nbsp;</span>
+    </div>
+  </section>
+
+  <!-- CHART -->
+  <section class="chart-section" id="chart">
+    <div class="container">
+      <div class="section-tag">LIVE CHART</div>
+      <h2 class="section-title">Price <span class="highlight">Chart</span></h2>
+      <div class="chart-wrapper">
+        <iframe
+          src="https://dexscreener.com/solana/2aiqEdFASfHi3XhggpQNnBSYKK4PyY1xw5w1XB3CKRQp?embed=1&theme=dark&info=0"
+          title="$BULLCEMBER Live Chart"
+          allowfullscreen
+        ></iframe>
+      </div>
     </div>
   </section>
 
@@ -272,6 +292,7 @@
   <script>
     const CA = '8kDjxrxVACw3nRfDdLtak1rnJiNbMC9BiTKPQ9b1pump';
     const PAIR = '2aiqEdFASfHi3XhggpQNnBSYKK4PyY1xw5w1XB3CKRQp';
+    const HELIUS_KEY = 'YOUR_HELIUS_API_KEY'; // get free key at helius.dev
 
     function fmt(n, decimals = 2) {
       if (n === null || n === undefined) return '—';
@@ -327,8 +348,33 @@
       });
     }
 
+    async function fetchHolders() {
+      if (HELIUS_KEY === 'YOUR_HELIUS_API_KEY') return;
+      try {
+        const res = await fetch(`https://mainnet.helius-rpc.com/?api-key=${HELIUS_KEY}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            jsonrpc: '2.0',
+            id: 'holders',
+            method: 'getTokenAccounts',
+            params: { mint: CA, limit: 1 }
+          })
+        });
+        const data = await res.json();
+        const total = data?.result?.total;
+        if (total !== undefined) {
+          document.getElementById('stat-holders').textContent = total.toLocaleString();
+        }
+      } catch (e) {
+        console.error('Holder fetch failed:', e);
+      }
+    }
+
     fetchStats();
+    fetchHolders();
     setInterval(fetchStats, 30000);
+    setInterval(fetchHolders, 60000);
   </script>
 
 </body>
