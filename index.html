@@ -175,7 +175,7 @@
       <div class="about-grid">
         <div class="about-card">
           <div class="card-icon">🏆</div>
-          <h3>17 Months and Counting</h3>
+          <h3><span id="months-about">17</span> Months and Counting</h3>
           <p>Most meme coins don't survive month three. BULLCEMBER launched in November 2024 and is still here — battle-tested, community-held, waiting for December.</p>
         </div>
         <div class="about-card">
@@ -630,6 +630,7 @@
       const launch = new Date('2024-11-16T00:00:00Z');
       const now = new Date();
       const months = (now.getFullYear() - launch.getFullYear()) * 12 + (now.getMonth() - launch.getMonth());
+      document.getElementById('months-about').textContent = months;
       const ticker = document.getElementById('ticker-inner');
       ticker.innerHTML = ticker.innerHTML.replace(/— MONTHS/g, months + ' MONTHS');
     })();
