@@ -2,19 +2,20 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg:      #04080F;
-  --bg2:     #070D1A;
-  --card:    #0B1428;
-  --border:  #172040;
-  --blue:    #3B7FE8;
-  --blue2:   #2A5FC4;
-  --cyan:    #50C8E8;
-  --purple:  #5A2AAF;
-  --orange:  #E05A1A;
-  --cream:   #EDE8D8;
+  /* Gold-storm theme. Accent var names kept (--blue/--cyan) but remapped to gold tones. */
+  --bg:      #080604;
+  --bg2:     #0E0A05;
+  --card:    #16100A;
+  --border:  #3A2C14;
+  --blue:    #D9A227;
+  --blue2:   #A8761A;
+  --cyan:    #F5C84B;
+  --purple:  #6E4A12;
+  --orange:  #E89320;
+  --cream:   #F0E6CC;
   --gold:    #F5A623;
-  --text:    #C8DCF4;
-  --muted:   #4A6A90;
+  --text:    #E9DDC2;
+  --muted:   #9A8056;
 }
 
 html { scroll-behavior: smooth; }
@@ -37,7 +38,7 @@ a { text-decoration: none; color: inherit; }
   align-items: center;
   justify-content: space-between;
   padding: 14px 48px;
-  background: rgba(4, 8, 15, 0.88);
+  background: rgba(8, 6, 4, 0.88);
   backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border);
 }
@@ -46,7 +47,7 @@ a { text-decoration: none; color: inherit; }
   display: flex;
   align-items: center;
   gap: 10px;
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Cinzel', serif;
   font-size: 1.1rem;
   font-weight: 900;
   color: var(--cyan);
@@ -58,7 +59,7 @@ a { text-decoration: none; color: inherit; }
   height: 44px;
   border-radius: 0;
   object-fit: contain;
-  filter: drop-shadow(0 0 8px rgba(59, 127, 232, 0.4));
+  filter: drop-shadow(0 0 8px rgba(217, 162, 39, 0.4));
 }
 
 .nav-links {
@@ -115,8 +116,8 @@ a { text-decoration: none; color: inherit; }
   height: 800px;
   border-radius: 50%;
   background: radial-gradient(circle,
-    rgba(59, 127, 232, 0.18) 0%,
-    rgba(90, 42, 175, 0.10) 45%,
+    rgba(245, 200, 75, 0.22) 0%,
+    rgba(168, 118, 26, 0.12) 45%,
     transparent 70%);
   pointer-events: none;
 }
@@ -127,8 +128,8 @@ a { text-decoration: none; color: inherit; }
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(59, 127, 232, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(59, 127, 232, 0.04) 1px, transparent 1px);
+    linear-gradient(rgba(217, 162, 39, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(217, 162, 39, 0.04) 1px, transparent 1px);
   background-size: 60px 60px;
   pointer-events: none;
 }
@@ -163,7 +164,7 @@ a { text-decoration: none; color: inherit; }
   display: flex;
   align-items: center;
   justify-content: center;
-  filter: drop-shadow(0 0 30px rgba(59, 127, 232, 0.5));
+  filter: drop-shadow(0 0 30px rgba(217, 162, 39, 0.5));
 }
 
 .hero-pfp {
@@ -211,7 +212,7 @@ a { text-decoration: none; color: inherit; }
 
 /* Title */
 .hero-title {
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Cinzel', serif;
   font-size: clamp(1rem, 9vw, 6.5rem);
   font-weight: 900;
   color: #fff;
@@ -220,8 +221,8 @@ a { text-decoration: none; color: inherit; }
   line-height: 1;
   margin-bottom: 20px;
   text-shadow:
-    0 0 40px rgba(59, 127, 232, 0.6),
-    0 0 80px rgba(59, 127, 232, 0.2);
+    0 0 40px rgba(217, 162, 39, 0.6),
+    0 0 80px rgba(217, 162, 39, 0.2);
 }
 
 .hero-sub {
@@ -248,7 +249,7 @@ a { text-decoration: none; color: inherit; }
   gap: 0;
   width: 100%;
   max-width: 780px;
-  box-shadow: 0 0 40px rgba(59, 127, 232, 0.08);
+  box-shadow: 0 0 40px rgba(217, 162, 39, 0.08);
 }
 
 .live-item {
@@ -274,7 +275,7 @@ a { text-decoration: none; color: inherit; }
 }
 
 .live-value {
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Cinzel', serif;
   font-size: 1.05rem;
   font-weight: 700;
   color: #fff;
@@ -378,7 +379,7 @@ section { padding: 100px 0; }
 }
 
 .section-title {
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Cinzel', serif;
   font-size: clamp(1.8rem, 4vw, 3rem);
   font-weight: 900;
   line-height: 1.15;
@@ -408,7 +409,7 @@ section { padding: 100px 0; }
 .about-card:hover {
   transform: translateY(-6px);
   border-color: var(--blue);
-  box-shadow: 0 0 30px rgba(59, 127, 232, 0.12);
+  box-shadow: 0 0 30px rgba(217, 162, 39, 0.12);
 }
 
 .card-icon { margin-bottom: 20px; display: flex; }
@@ -459,7 +460,7 @@ section { padding: 100px 0; }
 }
 
 .toko-card .toko-value {
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Cinzel', serif;
   font-size: 1.2rem;
   font-weight: 700;
   color: var(--cyan);
@@ -473,7 +474,7 @@ section { padding: 100px 0; }
 }
 
 .toko-ca-text {
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Cinzel', serif;
   font-size: 0.85rem;
   color: var(--text);
   word-break: break-all;
@@ -515,11 +516,11 @@ section { padding: 100px 0; }
 
 .step:hover {
   border-color: var(--blue);
-  box-shadow: 0 0 24px rgba(59, 127, 232, 0.08);
+  box-shadow: 0 0 24px rgba(217, 162, 39, 0.08);
 }
 
 .step-num {
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Cinzel', serif;
   font-size: 2.2rem;
   font-weight: 900;
   color: var(--blue);
@@ -609,11 +610,11 @@ section { padding: 100px 0; }
   border-radius: 0;
   margin-bottom: 16px;
   object-fit: contain;
-  filter: drop-shadow(0 0 12px rgba(59, 127, 232, 0.4));
+  filter: drop-shadow(0 0 12px rgba(217, 162, 39, 0.4));
 }
 
 .footer-logo {
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Cinzel', serif;
   font-size: 1.5rem;
   font-weight: 900;
   color: var(--cyan);
@@ -652,7 +653,7 @@ section { padding: 100px 0; }
   border: 1px solid var(--border);
   border-radius: 8px;
   color: var(--muted);
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Cinzel', serif;
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 1px;
@@ -669,7 +670,7 @@ section { padding: 100px 0; }
   border: 1px solid var(--border);
   border-radius: 8px;
   color: var(--muted);
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Cinzel', serif;
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 1px;
@@ -679,13 +680,13 @@ section { padding: 100px 0; }
 }
 
 .tf-btn:hover { border-color: var(--cyan); color: var(--cyan); }
-.tf-btn.active { border-color: var(--cyan); color: var(--cyan); background: rgba(80,200,232,0.08); }
+.tf-btn.active { border-color: var(--cyan); color: var(--cyan); background: rgba(245,200,75,0.08); }
 
 .chart-wrapper {
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid var(--border);
-  box-shadow: 0 0 48px rgba(59, 127, 232, 0.08);
+  box-shadow: 0 0 48px rgba(217, 162, 39, 0.08);
 }
 
 .chart-legend {
@@ -693,10 +694,10 @@ section { padding: 100px 0; }
   align-items: center;
   gap: 20px;
   padding: 10px 16px;
-  background: #060d1a;
+  background: #0E0A05;
   border-bottom: 1px solid var(--border);
   font-size: 0.72rem;
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Cinzel', serif;
   flex-wrap: wrap;
 }
 
@@ -741,7 +742,7 @@ section { padding: 100px 0; }
 .partner-card:hover {
   border-color: var(--cyan);
   transform: translateY(-6px);
-  box-shadow: 0 0 32px rgba(80, 200, 232, 0.15);
+  box-shadow: 0 0 32px rgba(245, 200, 75, 0.15);
 }
 
 .partner-logo {
@@ -753,7 +754,7 @@ section { padding: 100px 0; }
 }
 
 .partner-name {
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Cinzel', serif;
   font-size: 1rem;
   font-weight: 700;
   color: var(--text);
@@ -805,11 +806,11 @@ section { padding: 100px 0; }
 }
 
 .grad-pct {
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Cinzel', serif;
   font-size: 1.3rem;
   font-weight: 900;
   color: var(--cyan);
-  text-shadow: 0 0 18px rgba(80, 200, 232, 0.5);
+  text-shadow: 0 0 18px rgba(245, 200, 75, 0.5);
 }
 
 .grad-bar {
@@ -826,7 +827,7 @@ section { padding: 100px 0; }
   width: 0;
   border-radius: 999px;
   background: linear-gradient(90deg, var(--blue), var(--cyan));
-  box-shadow: 0 0 16px rgba(80, 200, 232, 0.6);
+  box-shadow: 0 0 16px rgba(245, 200, 75, 0.6);
   transition: width 0.9s cubic-bezier(0.22, 1, 0.36, 1);
   position: relative;
   overflow: hidden;
@@ -907,7 +908,7 @@ section { padding: 100px 0; }
 }
 
 .final-cta-title {
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Cinzel', serif;
   font-size: clamp(2rem, 5vw, 3.5rem);
   font-weight: 900;
   color: #fff;
@@ -985,7 +986,7 @@ section { padding: 100px 0; }
 }
 
 .countdown-num {
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Cinzel', serif;
   font-size: clamp(3rem, 7vw, 5.5rem);
   font-weight: 900;
   color: #fff;
@@ -1003,7 +1004,7 @@ section { padding: 100px 0; }
 }
 
 .countdown-sep {
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Cinzel', serif;
   font-size: clamp(1.8rem, 4vw, 3rem);
   font-weight: 900;
   color: var(--orange);
