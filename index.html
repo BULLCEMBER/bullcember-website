@@ -35,7 +35,7 @@
       <img src="pfp.png" alt="$BULLCEMBER" class="nav-pfp" />
       $BULLCEMBER
     </div>
-    <ul class="nav-links">
+    <ul class="nav-links" id="nav-links">
       <li><a href="#chart">Chart</a></li>
       <li><a href="#countdown">December</a></li>
       <li><a href="#about">About</a></li>
@@ -44,6 +44,9 @@
       <li><a href="#community">Community</a></li>
     </ul>
     <a href="https://jup.ag/?sell=So11111111111111111111111111111111111111112&buy=DTRmPLZPfQRRRVwyZFuSxUhvnj9RHgDqFjQXx6vUpump" target="_blank" class="btn-nav">Buy Now</a>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
   <!-- HERO -->
   <section class="hero">
@@ -164,6 +167,17 @@
         </div>
         <div id="price-chart"></div>
       </div>
+    </div>
+  </section>
+  <!-- LIVE BUYS -->
+  <section class="buys" id="buys">
+    <div class="container">
+      <div class="section-tag">LIVE ON-CHAIN</div>
+      <h2 class="section-title">Live <span class="highlight">Buys</span></h2>
+      <p class="buys-sub">Real $BULLCEMBER buys, straight off the Solana chain.</p>
+      <ul class="buys-feed" id="buys-feed">
+        <li class="buys-empty">Watching the chain for fresh buys...</li>
+      </ul>
     </div>
   </section>
   <!-- ABOUT -->
@@ -349,6 +363,11 @@
         <div class="grad-meta" id="herd-mile-meta">Counting the herd...</div>
       </div>
       <h3 class="herd-subhead">What's Your Rank?</h3>
+      <div class="rank-check">
+        <input id="rank-input" class="rank-input" type="text" placeholder="Paste your wallet address" spellcheck="false" autocomplete="off" />
+        <button id="rank-btn" class="rank-btn">Check</button>
+      </div>
+      <div class="rank-result" id="rank-result"></div>
       <div class="herd-tiers">
         <div class="herd-tier">
           <div class="herd-tier-emoji">🐮</div>
@@ -452,6 +471,7 @@
         const data = await res.json();
         const pair = data.pair || (data.pairs && data.pairs[0]);
         if (!pair) return;
+        lastPriceUsd = parseFloat(pair.priceUsd) || 0;
         const price = fmtPrice(pair.priceUsd);
         const mcap = fmt(pair.fdv || pair.marketCap);
         const liq = fmt(pair.liquidity?.usd);
@@ -478,6 +498,40 @@
       document.getElementById('grad-fill').style.width = pct.toFixed(1) + '%';
       document.getElementById('grad-pct').textContent = complete ? 'Graduated' : pct.toFixed(1) + '%';
       document.getElementById('grad-sol').textContent = sol.toFixed(3);
+    }
+    let lastPriceUsd = 0;
+    function timeAgo(ts) {
+      const s = Math.max(0, Math.floor(Date.now() / 1000 - ts));
+      if (s < 60) return s + 's ago';
+      if (s < 3600) return Math.floor(s / 60) + 'm ago';
+      if (s < 86400) return Math.floor(s / 3600) + 'h ago';
+      return Math.floor(s / 86400) + 'd ago';
+    }
+    function renderBuys(buys) {
+      document.getElementById('buys-feed').innerHTML = buys.map(b => {
+        const short = b.buyer.slice(0, 4) + '…' + b.buyer.slice(-4);
+        const usd = lastPriceUsd ? ' · ' + fmt(b.tokens * lastPriceUsd) : '';
+        return `<li class="buy-row"><span class="buy-dot"></span>` +
+          `<a class="buy-addr" href="https://solscan.io/tx/${b.sig}" target="_blank" rel="noopener">${short}</a>` +
+          `<span class="buy-text">bought <strong>${fmtTok(b.tokens)}</strong> $BULLCEMBER${usd}</span>` +
+          `<span class="buy-time">${timeAgo(b.ts)}</span></li>`;
+      }).join('');
+    }
+    async function fetchBuys() {
+      try {
+        const r = await fetch(`https://api.helius.xyz/v0/addresses/${BONDING_CURVE}/transactions?api-key=${HELIUS_KEY}&limit=40`);
+        if (!r.ok) return;
+        const txns = await r.json();
+        if (!Array.isArray(txns)) return;
+        const buys = [];
+        for (const tx of txns) {
+          const tt = (tx.tokenTransfers || []).find(x => x.mint === CA && x.fromUserAccount === BONDING_CURVE);
+          if (!tt || !tt.tokenAmount) continue;
+          buys.push({ sig: tx.signature, buyer: tt.toUserAccount, tokens: tt.tokenAmount, ts: tx.timestamp });
+          if (buys.length >= 12) break;
+        }
+        if (buys.length) renderBuys(buys);
+      } catch (e) { console.error('Buy feed fetch failed:', e); }
     }
     async function fetchBondingCurve() {
       try {
@@ -509,7 +563,13 @@
     const TOKEN_DECIMALS = 1e6;
     const TOTAL_SUPPLY = 1e9;
     const HERD_MILESTONES = [100, 250, 500, 1000, 2500, 5000, 10000, 25000, 50000, 100000];
-    let herdTotal = 0, herdVisible = false, herdAnimated = false;
+    let herdTotal = 0, herdVisible = false, herdAnimated = false, herdRanked = [];
+    function tierOf(tok) {
+      if (tok >= 50e6) return { emoji: '🐂', name: 'Alpha Bull' };
+      if (tok >= 10e6) return { emoji: '🐃', name: 'Stampede' };
+      if (tok >= 1e6) return { emoji: '🐄', name: 'Bull' };
+      return { emoji: '🐮', name: 'Calf' };
+    }
     function fmtTok(n) {
       if (n >= 1e9) return (n / 1e9).toFixed(2) + 'B';
       if (n >= 1e6) return (n / 1e6).toFixed(2) + 'M';
@@ -546,6 +606,7 @@
       document.getElementById('tier-stampede').textContent = counts.stampede.toLocaleString();
       document.getElementById('tier-alpha').textContent = counts.alpha.toLocaleString();
       entries.sort((a, b) => b.tok - a.tok);
+      herdRanked = entries;
       document.getElementById('herd-board').innerHTML = entries.slice(0, 10).map((e, i) => {
         const short = e.owner.slice(0, 4) + '…' + e.owner.slice(-4);
         const pct = (e.tok / TOTAL_SUPPLY * 100).toFixed(2);
@@ -600,6 +661,52 @@
         es.forEach(en => { if (en.isIntersecting) { herdVisible = true; maybeAnimateHerd(); } });
       }, { threshold: 0.25 }).observe(sec);
     })();
+    function checkRank() {
+      const input = document.getElementById('rank-input');
+      const out = document.getElementById('rank-result');
+      const addr = input.value.trim();
+      if (!addr) { out.className = 'rank-result'; out.textContent = ''; return; }
+      if (!/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(addr)) {
+        out.className = 'rank-result show err';
+        out.textContent = 'That doesn\'t look like a Solana wallet address.';
+        return;
+      }
+      if (!herdRanked.length) {
+        out.className = 'rank-result show';
+        out.textContent = 'Herd data is still loading — try again in a second.';
+        return;
+      }
+      const idx = herdRanked.findIndex(e => e.owner === addr);
+      if (idx === -1) {
+        out.className = 'rank-result show err';
+        out.innerHTML = '🚫 Not in the herd yet. Grab a bag to join the stampede.';
+        return;
+      }
+      const e = herdRanked[idx];
+      const t = tierOf(e.tok);
+      const pct = (e.tok / TOTAL_SUPPLY * 100).toFixed(2);
+      out.className = 'rank-result show';
+      out.innerHTML = `${t.emoji} You're a <strong>${t.name}</strong> — rank <strong>#${idx + 1}</strong> of ${herdRanked.length} bulls · ${fmtTok(e.tok)} $BULLCEMBER (${pct}%)`;
+    }
+    (() => {
+      const btn = document.getElementById('rank-btn');
+      const input = document.getElementById('rank-input');
+      if (!btn || !input) return;
+      btn.addEventListener('click', checkRank);
+      input.addEventListener('keydown', (ev) => { if (ev.key === 'Enter') checkRank(); });
+    })();
+    (() => {
+      const toggle = document.getElementById('nav-toggle');
+      const links = document.getElementById('nav-links');
+      if (!toggle || !links) return;
+      const close = () => { toggle.classList.remove('open'); links.classList.remove('open'); toggle.setAttribute('aria-expanded', 'false'); };
+      toggle.addEventListener('click', () => {
+        const open = links.classList.toggle('open');
+        toggle.classList.toggle('open', open);
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+      links.querySelectorAll('a').forEach(a => a.addEventListener('click', close));
+    })();
     async function fetchTotalVolume() {
       try {
         let total = 0, timeFrom = 1782000000; // updated launch
@@ -627,11 +734,13 @@
     fetchStats();
     fetchHolders();
     fetchBondingCurve();
+    setTimeout(fetchBuys, 1200);
     setTimeout(fetchTotalVolume, 3000);
     scheduleDailyVolume();
     setInterval(fetchStats, 30000);
     setInterval(fetchHolders, 60000);
     setInterval(fetchBondingCurve, 30000);
+    setInterval(fetchBuys, 25000);
     // ===== CHART =====
     const BIRDEYE_KEY = '6925b84a60fd4ec6876b311926a87de4';
     const BIRDEYE_URL = 'https://public-api.birdeye.so/defi/ohlcv';
