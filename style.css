@@ -740,6 +740,40 @@ section { padding: 100px 0; }
   height: 460px;
 }
 
+/* ===== TRADE / SWAP ===== */
+.trade-section { padding: 80px 24px; background: var(--bg2); text-align: center; }
+
+.trade-sub {
+  color: var(--muted);
+  font-size: 1rem;
+  max-width: 540px;
+  margin: 0 auto 40px;
+  line-height: 1.7;
+}
+
+.trade-widget { display: flex; justify-content: center; }
+
+#jupiter-plugin {
+  width: 100%;
+  max-width: 480px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 0 48px rgba(217, 162, 39, 0.1);
+}
+
+.trade-fallback {
+  display: inline-block;
+  margin-top: 22px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--muted);
+  transition: color 0.2s;
+}
+
+.trade-fallback:hover { color: var(--cyan); }
+
 /* ===== PARTNERS ===== */
 .partners { padding: 80px 24px; background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 

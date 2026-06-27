@@ -39,6 +39,7 @@
     </div>
     <ul class="nav-links" id="nav-links">
       <li><a href="#chart">Chart</a></li>
+      <li><a href="#trade">Trade</a></li>
       <li><a href="#countdown">December</a></li>
       <li><a href="#about">About</a></li>
       <li><a href="#how-to-buy">Buy</a></li>
@@ -169,6 +170,18 @@
         </div>
         <div id="price-chart"></div>
       </div>
+    </div>
+  </section>
+  <!-- TRADE -->
+  <section class="trade-section" id="trade">
+    <div class="container">
+      <div class="section-tag">INSTANT SWAP</div>
+      <h2 class="section-title">Trade <span class="highlight">$BULLCEMBER</span></h2>
+      <p class="trade-sub">Connect your wallet and swap in one place — routed by Jupiter for best price. Non-custodial: every transaction is signed in your own wallet, we never touch your funds.</p>
+      <div class="trade-widget">
+        <div id="jupiter-plugin"></div>
+      </div>
+      <a href="https://jup.ag/swap/SOL-DTRmPLZPfQRRRVwyZFuSxUhvnj9RHgDqFjQXx6vUpump" target="_blank" rel="noopener" class="trade-fallback">Having trouble? Open on jup.ag ↗</a>
     </div>
   </section>
   <!-- LIVE BUYS -->
@@ -447,6 +460,7 @@
     <p class="footer-copy">© 2026 BULLCEMBER</p>
   </footer>
   <script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
+  <script src="https://plugin.jup.ag/plugin-v1.js" data-preload defer></script>
   <script>
     const CA = 'DTRmPLZPfQRRRVwyZFuSxUhvnj9RHgDqFjQXx6vUpump';
     // Pre-graduation PAIR is the bonding curve itself. After graduation to PumpSwap,
@@ -755,6 +769,22 @@
     setInterval(fetchHolders, 60000);
     setInterval(fetchBondingCurve, 30000);
     setInterval(fetchBuys, 25000);
+    // ===== JUPITER SWAP PLUGIN =====
+    window.addEventListener('load', () => {
+      if (!window.Jupiter) return;
+      window.Jupiter.init({
+        displayMode: 'integrated',
+        integratedTargetId: 'jupiter-plugin',
+        containerStyles: { maxWidth: '480px', borderRadius: '16px' },
+        formProps: {
+          swapMode: 'ExactIn',
+          initialInputMint: 'So11111111111111111111111111111111111111112',
+          initialOutputMint: CA,
+          fixedMint: CA,
+        },
+        branding: { logoUri: 'https://bullcember.net/pfp.png', name: 'BULLCEMBER' },
+      });
+    });
     // ===== CHART =====
     const BIRDEYE_KEY = '6925b84a60fd4ec6876b311926a87de4';
     const BIRDEYE_URL = 'https://public-api.birdeye.so/defi/ohlcv';
