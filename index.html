@@ -472,14 +472,17 @@
         const pair = data.pair || (data.pairs && data.pairs[0]);
         if (!pair) return;
         lastPriceUsd = parseFloat(pair.priceUsd) || 0;
+        const priceNative = parseFloat(pair.priceNative);
+        if (priceNative) lastSolUsd = lastPriceUsd / priceNative;
         const price = fmtPrice(pair.priceUsd);
         const mcap = fmt(pair.fdv || pair.marketCap);
-        const liq = fmt(pair.liquidity?.usd);
         const vol = fmt(pair.volume?.h24);
         const chg = pair.priceChange?.h24;
         document.getElementById('stat-price').textContent = price;
         document.getElementById('stat-mcap').textContent = mcap;
-        document.getElementById('stat-liq').textContent = liq;
+        // pump.fun pre-graduation pairs report no liquidity; the bonding curve fills it in.
+        // Once graduated, DexScreener reports real pool liquidity — take it when present.
+        if (pair.liquidity?.usd) document.getElementById('stat-liq').textContent = fmt(pair.liquidity.usd);
         document.getElementById('stat-vol').textContent = vol;
         const chgEl = document.getElementById('stat-change');
         if (chg !== undefined && chg !== null) {
@@ -498,8 +501,14 @@
       document.getElementById('grad-fill').style.width = pct.toFixed(1) + '%';
       document.getElementById('grad-pct').textContent = complete ? 'Graduated' : pct.toFixed(1) + '%';
       document.getElementById('grad-sol').textContent = sol.toFixed(3);
+      // Pre-graduation there's no DexScreener liquidity, so estimate pool depth from the
+      // curve's SOL reserve (both sides ≈ 2× the SOL value). Post-graduation fetchStats owns it.
+      if (!complete && lastSolUsd) {
+        document.getElementById('stat-liq').textContent = fmt(sol * lastSolUsd * 2);
+      }
     }
     let lastPriceUsd = 0;
+    let lastSolUsd = 0;
     function timeAgo(ts) {
       const s = Math.max(0, Math.floor(Date.now() / 1000 - ts));
       if (s < 60) return s + 's ago';
@@ -713,8 +722,8 @@
         const now = Math.floor(Date.now() / 1000);
         while (timeFrom < now) {
           const res = await fetch(
-            `https://public-api.birdeye.so/defi/ohlcv?address=${CA}&type=1D&time_from=${timeFrom}&time_to=${now}`,
-            { headers: { 'X-API-KEY': '6925b84a60fd4ec6876b311926a87de4', 'x-chain': 'solana' } }
+            `${BIRDEYE_URL}?address=${CA}&type=1D&time_from=${timeFrom}&time_to=${now}`,
+            { headers: BIRDEYE_HDR }
           );
           const items = (await res.json())?.data?.items || [];
           if (!items.length) break;
