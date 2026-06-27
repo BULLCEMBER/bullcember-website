@@ -256,6 +256,14 @@
             </div>
           </div>
         </div>
+        <div class="toko-card toko-wide grad-card">
+          <div class="grad-head">
+            <div class="toko-label">Bonding Curve Progress</div>
+            <div class="grad-pct" id="grad-pct">0%</div>
+          </div>
+          <div class="grad-bar"><div class="grad-fill" id="grad-fill"></div></div>
+          <div class="grad-meta"><span id="grad-sol">0</span> SOL in the bonding curve, graduates to PumpSwap at 85 SOL</div>
+        </div>
         <div class="toko-card toko-wide">
           <div class="toko-label">Contract Address</div>
           <div class="toko-ca-row">
@@ -368,6 +376,8 @@
     const CA = 'DTRmPLZPfQRRRVwyZFuSxUhvnj9RHgDqFjQXx6vUpump';
     const PAIR = 'DExz6gLccnrgCQRphPhCqT3TUZPEY33RerUhoAwvvbhg';
     const HELIUS_KEY = 'c031e185-55ff-4b43-8e6b-63054ca1f2ee';
+    const BONDING_CURVE = 'DExz6gLccnrgCQRphPhCqT3TUZPEY33RerUhoAwvvbhg'; // pump.fun bonding curve PDA for this mint
+    const INIT_REAL_TOKEN = 793100000000000; // initial real token reserves on the curve (793.1M * 1e6)
     function fmt(n, decimals = 2) {
       if (n === null || n === undefined) return '—';
       if (n >= 1e9) return '$' + (n / 1e9).toFixed(2) + 'B';
@@ -406,6 +416,33 @@
       } catch (e) {
         console.error('DexScreener fetch failed:', e);
       }
+    }
+    function readU64LE(bytes, off) {
+      return new DataView(bytes.buffer, bytes.byteOffset + off, 8).getBigUint64(0, true);
+    }
+    function updateGraduation(pct, sol, complete) {
+      document.getElementById('grad-fill').style.width = pct.toFixed(1) + '%';
+      document.getElementById('grad-pct').textContent = complete ? 'Graduated' : pct.toFixed(1) + '%';
+      document.getElementById('grad-sol').textContent = sol.toFixed(3);
+    }
+    async function fetchBondingCurve() {
+      try {
+        const res = await fetch(`https://mainnet.helius-rpc.com/?api-key=${HELIUS_KEY}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ jsonrpc: '2.0', id: 'bc', method: 'getAccountInfo', params: [BONDING_CURVE, { encoding: 'base64' }] })
+        });
+        const val = (await res.json())?.result?.value;
+        if (!val) { updateGraduation(100, 85, true); return; }
+        const bin = atob(val.data[0]);
+        const bytes = new Uint8Array(bin.length);
+        for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+        const realTok = Number(readU64LE(bytes, 24));
+        const realSol = Number(readU64LE(bytes, 32)) / 1e9;
+        const complete = bytes[48] === 1;
+        const pct = complete ? 100 : Math.min(100, (1 - realTok / INIT_REAL_TOKEN) * 100);
+        updateGraduation(pct, realSol, complete);
+      } catch (e) { console.error('Bonding curve fetch failed:', e); }
     }
     function copyCA() {
       navigator.clipboard.writeText(CA).then(() => {
@@ -466,10 +503,12 @@
     }
     fetchStats();
     fetchHolders();
+    fetchBondingCurve();
     setTimeout(fetchTotalVolume, 3000);
     scheduleDailyVolume();
     setInterval(fetchStats, 30000);
     setInterval(fetchHolders, 60000);
+    setInterval(fetchBondingCurve, 30000);
     // ===== CHART =====
     const BIRDEYE_KEY = '6925b84a60fd4ec6876b311926a87de4';
     const BIRDEYE_URL = 'https://public-api.birdeye.so/defi/ohlcv';

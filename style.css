@@ -794,6 +794,73 @@ section { padding: 100px 0; }
   opacity: 0.9;
 }
 
+/* ===== GRADUATION PROGRESS ===== */
+.grad-card { border-color: var(--blue); }
+
+.grad-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.grad-pct {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: var(--cyan);
+  text-shadow: 0 0 18px rgba(80, 200, 232, 0.5);
+}
+
+.grad-bar {
+  position: relative;
+  height: 18px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.grad-fill {
+  height: 100%;
+  width: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--blue), var(--cyan));
+  box-shadow: 0 0 16px rgba(80, 200, 232, 0.6);
+  transition: width 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.grad-fill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(255, 255, 255, 0.35),
+    transparent);
+  transform: translateX(-100%);
+  animation: grad-shimmer 2.2s ease-in-out infinite;
+}
+
+@keyframes grad-shimmer {
+  100% { transform: translateX(100%); }
+}
+
+.grad-meta {
+  margin-top: 14px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--muted);
+}
+
+.grad-meta span {
+  color: var(--cyan);
+  font-weight: 700;
+}
+
 /* ===== POWERED BY SOLANA ===== */
 .powered-by {
   font-size: 0.8rem;
