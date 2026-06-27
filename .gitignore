@@ -1,2 +1,16 @@
 .claude/
 *.local.json
+
+# Working files — generators and social/marketing assets not served by the site.
+# The live site only needs index.html, style.css, pfp.png, og-image.png, CNAME.
+*-template.html
+gif-*.html
+*.gif
+capture-og.cjs
+*.local-backup.png
+bullcember-hero.png
+community-banner.png
+dex-pfp.png
+twitter-pfp.png
+x-banner.png
+december-clock/
