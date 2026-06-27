@@ -7,8 +7,10 @@
   <meta name="description" content="$BULLCEMBER just launched on Solana. The most bullish month in crypto finally has a coin. Zero taxes, no VCs, pure community. Q4 2026 is coming. Be ready for December." />
   <link rel="canonical" href="https://bullcember.net/" />
   <meta name="theme-color" content="#080604" />
-  <link rel="icon" href="pfp.png" type="image/png" />
-  <link rel="apple-touch-icon" href="pfp.png" />
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="icon" href="favicon-32x32.png" type="image/png" sizes="32x32" />
+  <link rel="icon" href="favicon-16x16.png" type="image/png" sizes="16x16" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://bullcember.net" />
@@ -364,7 +366,7 @@
       </div>
       <h3 class="herd-subhead">What's Your Rank?</h3>
       <div class="rank-check">
-        <input id="rank-input" class="rank-input" type="text" placeholder="Paste your wallet address" spellcheck="false" autocomplete="off" />
+        <input id="rank-input" class="rank-input" type="text" placeholder="Paste your wallet address" aria-label="Your Solana wallet address" spellcheck="false" autocomplete="off" />
         <button id="rank-btn" class="rank-btn">Check</button>
       </div>
       <div class="rank-result" id="rank-result"></div>
@@ -447,6 +449,8 @@
   <script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
   <script>
     const CA = 'DTRmPLZPfQRRRVwyZFuSxUhvnj9RHgDqFjQXx6vUpump';
+    // Pre-graduation PAIR is the bonding curve itself. After graduation to PumpSwap,
+    // update PAIR to the new PumpSwap pair address or DexScreener stats will go stale.
     const PAIR = 'DExz6gLccnrgCQRphPhCqT3TUZPEY33RerUhoAwvvbhg';
     const HELIUS_KEY = 'c031e185-55ff-4b43-8e6b-63054ca1f2ee';
     const BONDING_CURVE = 'DExz6gLccnrgCQRphPhCqT3TUZPEY33RerUhoAwvvbhg'; // pump.fun bonding curve PDA for this mint
@@ -465,7 +469,7 @@
       if (n < 0.01) return '$' + n.toFixed(8);
       return '$' + n.toFixed(4);
     }
-    async function fetchStats() {
+    async function fetchStats(retry = true) {
       try {
         const res = await fetch(`https://api.dexscreener.com/latest/dex/pairs/solana/${PAIR}`);
         const data = await res.json();
@@ -491,6 +495,7 @@
           chgEl.className = 'live-value ' + (chg >= 0 ? 'positive' : 'negative');
         }
       } catch (e) {
+        if (retry) { setTimeout(() => fetchStats(false), 2000); return; }
         console.error('DexScreener fetch failed:', e);
       }
     }
