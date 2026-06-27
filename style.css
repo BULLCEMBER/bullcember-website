@@ -659,7 +659,7 @@ section { padding: 100px 0; }
 
 .footer-copy {
   font-size: 0.72rem;
-  color: #1A2A40;
+  color: var(--muted);
 }
 
 /* ===== CHART ===== */
