@@ -40,6 +40,7 @@
       <li><a href="#countdown">December</a></li>
       <li><a href="#about">About</a></li>
       <li><a href="#how-to-buy">Buy</a></li>
+      <li><a href="#herd">Herd</a></li>
       <li><a href="#community">Community</a></li>
     </ul>
     <a href="https://jup.ag/?sell=So11111111111111111111111111111111111111112&buy=DTRmPLZPfQRRRVwyZFuSxUhvnj9RHgDqFjQXx6vUpump" target="_blank" class="btn-nav">Buy Now</a>
@@ -330,10 +331,63 @@
       </div>
     </div>
   </section>
+  <!-- HERD -->
+  <section class="herd" id="herd">
+    <div class="container">
+      <div class="section-tag">THE BULLCEMBER HERD</div>
+      <h2 class="section-title">Meet the <span class="highlight">Herd</span></h2>
+      <div class="herd-count">
+        <span class="herd-num" id="herd-num">—</span>
+        <span class="herd-count-label">🐂 Bulls in the Herd</span>
+      </div>
+      <div class="herd-milestone">
+        <div class="grad-head">
+          <div class="toko-label">Next Herd Milestone</div>
+          <div class="grad-pct" id="herd-mile-pct">0%</div>
+        </div>
+        <div class="grad-bar"><div class="grad-fill" id="herd-mile-fill"></div></div>
+        <div class="grad-meta" id="herd-mile-meta">Counting the herd...</div>
+      </div>
+      <h3 class="herd-subhead">What's Your Rank?</h3>
+      <div class="herd-tiers">
+        <div class="herd-tier">
+          <div class="herd-tier-emoji">🐮</div>
+          <div class="herd-tier-name">Calf</div>
+          <div class="herd-tier-range">Up to 1M</div>
+          <div class="herd-tier-count"><span id="tier-calf">—</span><small>bulls</small></div>
+        </div>
+        <div class="herd-tier">
+          <div class="herd-tier-emoji">🐄</div>
+          <div class="herd-tier-name">Bull</div>
+          <div class="herd-tier-range">1M – 10M</div>
+          <div class="herd-tier-count"><span id="tier-bull">—</span><small>bulls</small></div>
+        </div>
+        <div class="herd-tier">
+          <div class="herd-tier-emoji">🐃</div>
+          <div class="herd-tier-name">Stampede</div>
+          <div class="herd-tier-range">10M – 50M</div>
+          <div class="herd-tier-count"><span id="tier-stampede">—</span><small>bulls</small></div>
+        </div>
+        <div class="herd-tier">
+          <div class="herd-tier-emoji">🐂</div>
+          <div class="herd-tier-name">Alpha Bull</div>
+          <div class="herd-tier-range">50M+</div>
+          <div class="herd-tier-count"><span id="tier-alpha">—</span><small>bulls</small></div>
+        </div>
+      </div>
+      <div class="herd-board-wrap">
+        <h3 class="herd-subhead">Top of the Herd</h3>
+        <ol class="herd-board" id="herd-board">
+          <li class="herd-empty">Loading the leaderboard...</li>
+        </ol>
+        <p class="herd-board-note">Live top wallets by bag. Wallet addresses are public on Solana. Tap any to view on Solscan.</p>
+      </div>
+    </div>
+  </section>
   <!-- COMMUNITY -->
   <section class="community" id="community">
     <div class="container">
-      <div class="section-tag">JOIN THE SURVIVORS</div>
+      <div class="section-tag">JOIN THE HERD</div>
       <h2 class="section-title">Join the <span class="highlight">Herd</span></h2>
       <p class="community-sub"><span id="community-holders">—</span> holders still in the herd. December is coming. Get in position.</p>
       <div class="social-links">
@@ -452,9 +506,63 @@
         setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
       });
     }
+    const TOKEN_DECIMALS = 1e6;
+    const TOTAL_SUPPLY = 1e9;
+    const HERD_MILESTONES = [100, 250, 500, 1000, 2500, 5000, 10000, 25000, 50000, 100000];
+    let herdTotal = 0, herdVisible = false, herdAnimated = false;
+    function fmtTok(n) {
+      if (n >= 1e9) return (n / 1e9).toFixed(2) + 'B';
+      if (n >= 1e6) return (n / 1e6).toFixed(2) + 'M';
+      if (n >= 1e3) return (n / 1e3).toFixed(1) + 'K';
+      return Math.round(n).toString();
+    }
+    function animateCount(el, to) {
+      const dur = 1200, start = performance.now();
+      function step(t) {
+        const p = Math.min(1, (t - start) / dur);
+        const ease = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(to * ease).toLocaleString();
+        if (p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+    function maybeAnimateHerd() {
+      if (herdVisible && herdTotal > 0 && !herdAnimated) {
+        herdAnimated = true;
+        animateCount(document.getElementById('herd-num'), herdTotal);
+      }
+    }
+    function renderHerd(balances) {
+      const entries = [...balances.entries()].map(([owner, raw]) => ({ owner, tok: raw / TOKEN_DECIMALS }));
+      const counts = { calf: 0, bull: 0, stampede: 0, alpha: 0 };
+      for (const e of entries) {
+        if (e.tok >= 50e6) counts.alpha++;
+        else if (e.tok >= 10e6) counts.stampede++;
+        else if (e.tok >= 1e6) counts.bull++;
+        else counts.calf++;
+      }
+      document.getElementById('tier-calf').textContent = counts.calf.toLocaleString();
+      document.getElementById('tier-bull').textContent = counts.bull.toLocaleString();
+      document.getElementById('tier-stampede').textContent = counts.stampede.toLocaleString();
+      document.getElementById('tier-alpha').textContent = counts.alpha.toLocaleString();
+      entries.sort((a, b) => b.tok - a.tok);
+      document.getElementById('herd-board').innerHTML = entries.slice(0, 10).map((e, i) => {
+        const short = e.owner.slice(0, 4) + '…' + e.owner.slice(-4);
+        const pct = (e.tok / TOTAL_SUPPLY * 100).toFixed(2);
+        return `<li class="herd-row"><span class="herd-rank">${i + 1}</span>` +
+          `<a class="herd-addr" href="https://solscan.io/account/${e.owner}" target="_blank" rel="noopener">${short}</a>` +
+          `<span class="herd-amt">${fmtTok(e.tok)}</span><span class="herd-share">${pct}%</span></li>`;
+      }).join('');
+      const next = HERD_MILESTONES.find(m => m > herdTotal) || Math.ceil((herdTotal + 1) / 10000) * 10000;
+      const prog = Math.min(100, herdTotal / next * 100);
+      document.getElementById('herd-mile-fill').style.width = prog.toFixed(1) + '%';
+      document.getElementById('herd-mile-pct').textContent = Math.round(prog) + '%';
+      document.getElementById('herd-mile-meta').textContent = herdTotal.toLocaleString() + ' of ' + next.toLocaleString() + ' bulls — the herd keeps growing';
+      document.getElementById('herd-num').textContent = herdTotal.toLocaleString();
+    }
     async function fetchHolders() {
       try {
-        let total = 0;
+        const balances = new Map();
         let cursor = undefined;
         do {
           const params = { mint: CA, limit: 1000 };
@@ -466,17 +574,32 @@
           });
           const data = await res.json();
           const accounts = data?.result?.token_accounts || [];
-          total += accounts.length;
+          for (const a of accounts) {
+            if (!a.owner) continue;
+            balances.set(a.owner, (balances.get(a.owner) || 0) + Number(a.amount || 0));
+          }
           cursor = accounts.length === 1000 ? data?.result?.cursor : undefined;
         } while (cursor);
+        balances.delete(BONDING_CURVE); // exclude the curve's unsold reserve from the herd
+        const total = balances.size;
         if (total > 0) {
+          herdTotal = total;
           document.getElementById('stat-holders').textContent = total.toLocaleString();
           document.getElementById('community-holders').textContent = total.toLocaleString();
+          renderHerd(balances);
+          maybeAnimateHerd();
         }
       } catch (e) {
         console.error('Holder fetch failed:', e);
       }
     }
+    (() => {
+      const sec = document.getElementById('herd');
+      if (!sec) return;
+      new IntersectionObserver((es) => {
+        es.forEach(en => { if (en.isIntersecting) { herdVisible = true; maybeAnimateHerd(); } });
+      }, { threshold: 0.25 }).observe(sec);
+    })();
     async function fetchTotalVolume() {
       try {
         let total = 0, timeFrom = 1782000000; // updated launch
