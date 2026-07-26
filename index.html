@@ -6,7 +6,7 @@
   <title>$BULLCEMBER: The Bullish December on Solana</title>
   <meta name="description" content="$BULLCEMBER just launched on Solana. The most bullish month in crypto finally has a coin. Zero taxes, no VCs, pure community. Q4 2026 is coming. Be ready for December." />
   <link rel="canonical" href="https://bullcember.net/" />
-  <meta name="theme-color" content="#080604" />
+  <meta name="theme-color" content="#05080F" />
   <link rel="icon" href="favicon.ico" sizes="any" />
   <link rel="icon" href="favicon-32x32.png" type="image/png" sizes="32x32" />
   <link rel="icon" href="favicon-16x16.png" type="image/png" sizes="16x16" />
@@ -43,6 +43,7 @@
       <li><a href="#countdown">December</a></li>
       <li><a href="#about">About</a></li>
       <li><a href="#how-to-buy">Buy</a></li>
+      <li><a href="#engine">Engine</a></li>
       <li><a href="#herd">Herd</a></li>
       <li><a href="#community">Community</a></li>
     </ul>
@@ -203,7 +204,7 @@
       <div class="about-grid">
         <div class="about-card">
           <div class="card-icon">
-            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#F5C84B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#8FE0F2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M6 9H4a2 2 0 0 1-2-2V5a1 1 0 0 1 1-1h2"/><path d="M18 9h2a2 2 0 0 0 2-2V5a1 1 0 0 0-1-1h-2"/>
               <path d="M4 22h16"/><path d="M12 17v5"/><path d="M6 4v5a6 6 0 0 0 12 0V4H6z"/>
             </svg>
@@ -213,7 +214,7 @@
         </div>
         <div class="about-card">
           <div class="card-icon">
-            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#F5C84B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#8FE0F2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
             </svg>
           </div>
@@ -222,7 +223,7 @@
         </div>
         <div class="about-card">
           <div class="card-icon">
-            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#F5C84B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#8FE0F2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
               <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
             </svg>
@@ -232,7 +233,7 @@
         </div>
         <div class="about-card">
           <div class="card-icon">
-            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#E89320" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#22A7E0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
             </svg>
           </div>
@@ -304,6 +305,56 @@
       </div>
     </div>
   </section>
+  <!-- THE BULLCEMBER ENGINE -->
+  <section class="engine" id="engine">
+    <div class="container">
+      <div class="section-tag">ON-CHAIN</div>
+      <h2 class="section-title">The <span class="highlight">Engine</span></h2>
+      <p class="engine-lead">Creator fees don't sit in a wallet — they're used to <strong>buy $BULLCEMBER off the market and burn it</strong>. No supply is ever sent to anyone. Every number below is pulled live from the Solana blockchain.</p>
+
+      <!-- LIVE ON-CHAIN TILES -->
+      <div class="engine-live">
+        <div class="elive burn">
+          <div class="elive-ico">🔥</div>
+          <div class="elive-k">Burned Forever</div>
+          <div class="elive-v" id="enBurned">—</div>
+          <div class="elive-sub" id="enBurnedSub">bought &amp; burned</div>
+        </div>
+        <div class="elive buy">
+          <div class="elive-ico">🐂</div>
+          <div class="elive-k">Bought Back</div>
+          <div class="elive-v" id="enBuy">—</div>
+          <div class="elive-sub" id="enBuySub">off the market</div>
+        </div>
+      </div>
+      <div class="engine-updated"><span class="live-dot"></span><span id="enUpdated">loading on-chain data…</span><button id="enRefresh" class="refresh-btn" type="button">🔄 Refresh</button></div>
+
+      <!-- LIVE ACTIVITY FEED -->
+      <div class="feed" id="engineFeed" hidden>
+        <div class="feed-head">🐂 Live Activity — every buyback &amp; burn</div>
+        <div class="feed-tabs">
+          <button class="ftab active" data-f="all">All</button>
+          <button class="ftab" data-f="buyback">🐂 Buybacks</button>
+          <button class="ftab" data-f="burn">🔥 Burns</button>
+        </div>
+        <div class="feed-list" id="feedList"></div>
+      </div>
+
+      <div class="engine-cards">
+        <div class="engine-card">
+          <div class="engine-card-ico">🐂</div>
+          <h3>Buyback</h3>
+          <p>A share of every creator fee is used to buy $BULLCEMBER back off the open market — real demand, on-chain and verifiable.</p>
+        </div>
+        <div class="engine-card">
+          <div class="engine-card-ico">🔥</div>
+          <h3>Burn</h3>
+          <p>Every coin bought back is burned — gone forever, permanently shrinking the supply. Deflationary by design. No airdrops, no handouts, no supply sent to anyone.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- LISTED ON -->
   <section class="partners" id="partners">
     <div class="container">
@@ -774,6 +825,160 @@
     setInterval(fetchHolders, 60000);
     setInterval(fetchBondingCurve, 30000);
     setInterval(fetchBuys, 25000);
+
+    // ===== THE BULLCEMBER ENGINE: buybacks + burns (no supply sent to anyone) =====
+    const DEV = 'BXrU6jcjtZnar27jfWCXXhr9EqQGcFvyfnpC9cRjYLmC'; // pump.fun creator / fee wallet
+    const ENGINE_RPC = `https://mainnet.helius-rpc.com/?api-key=${HELIUS_KEY}`;
+    const BURN_SINCE = 1782070621; // launch (pump.fun created_timestamp)
+
+    let enBaseline = null;         // latest data/stats.json
+    let enLive = [];               // events detected client-side (newer than baseline)
+    let DEV_ATA = null;
+    const enSeen = new Set();
+    let EN_FEED = [];
+    let EN_FILTER = 'all';
+
+    const enSetV = (id, val) => { const el = document.getElementById(id); if (el) { el.textContent = val; el.classList.remove('pending'); } };
+    const enAgoIso = iso => timeAgo(Math.floor(new Date(iso).getTime() / 1000));
+
+    async function enRpc(method, params) {
+      const r = await fetch(ENGINE_RPC, { method: 'POST', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ jsonrpc: '2.0', id: 1, method, params }) });
+      const j = await r.json();
+      if (j.error) throw new Error(j.error.message);
+      return j.result;
+    }
+    const enBaseNewest = () => (enBaseline?.feed || []).reduce((m, e) => Math.max(m, e.time || 0), 0);
+
+    function enCombined() {
+      const cut = enBaseNewest();
+      const live = enLive.filter(e => e.time > cut);
+      const b = enBaseline || { burned: { amount: 0, count: 0 }, buyback: { bull: 0, sol: 0, count: 0 }, feed: [] };
+      const of = t => live.filter(e => e.type === t);
+      const burnL = of('burn').filter(e => e.time >= BURN_SINCE);
+      const sumF = (a, f) => a.reduce((s, e) => s + (e[f] || 0), 0);
+      const totals = {
+        burned:  { amount: (b.burned?.amount || 0) + sumF(burnL, 'bull'), count: (b.burned?.count || 0) + burnL.length },
+        buyback: { bull: (b.buyback?.bull || 0) + sumF(of('buyback'), 'bull'), sol: (b.buyback?.sol || 0) + sumF(of('buyback'), 'sol'), count: (b.buyback?.count || 0) + of('buyback').length },
+      };
+      const feed = [...live, ...(b.feed || [])].filter((e, i, a) => a.findIndex(x => x.sig === e.sig) === i).sort((a, b) => (b.time || 0) - (a.time || 0));
+      return { totals, feed, live: live.length };
+    }
+
+    function enRenderAll() {
+      const c = enCombined();
+      enSetV('enBurned', fmtTok(c.totals.burned.amount) + ' 🔥');
+      enSetV('enBurnedSub', c.totals.burned.count ? c.totals.burned.count + ' burn' + (c.totals.burned.count === 1 ? '' : 's') : 'nothing burned yet');
+      enSetV('enBuy', fmtTok(c.totals.buyback.bull));
+      const parts = [];
+      if (c.totals.buyback.count) parts.push(c.totals.buyback.count + ' buys');
+      if (c.totals.buyback.sol) parts.push(c.totals.buyback.sol.toFixed(2) + ' SOL');
+      enSetV('enBuySub', parts.length ? parts.join(' · ') : 'off the market');
+      EN_FEED = c.feed;
+      enRenderFeed();
+      const u = document.getElementById('enUpdated');
+      if (u) u.textContent = c.live
+        ? '🟢 ' + c.live + ' new event' + (c.live === 1 ? '' : 's') + ' since sync'
+        : 'Updated ' + (enBaseline?.updatedAt ? enAgoIso(enBaseline.updatedAt) : 'just now');
+    }
+
+    async function enLoadBaseline() {
+      try {
+        const res = await fetch('data/stats.json?t=' + Math.floor(Date.now() / 60000), { cache: 'no-store' });
+        if (!res.ok) return;
+        enBaseline = await res.json();
+        (enBaseline.feed || []).forEach(e => enSeen.add(e.sig));
+        enRenderAll();
+      } catch (e) { const u = document.getElementById('enUpdated'); if (u && !enBaseline) u.textContent = 'Syncing on-chain data…'; }
+    }
+    async function enResolveATA() {
+      try {
+        const d = await enRpc('getTokenAccountsByOwner', [DEV, { mint: CA }, { encoding: 'jsonParsed' }]);
+        DEV_ATA = d.value[0]?.pubkey || null;
+      } catch (e) {}
+    }
+    const enOwnerBal = (list, o) => { const e = (list || []).find(b => b.owner === o && b.mint === CA); return e ? Number(e.uiTokenAmount.uiAmount || 0) : 0; };
+    function enBurnAmt(tx) {
+      let t = 0;
+      const scan = ins => (ins || []).forEach(ix => { const p = ix.parsed; if (p && (p.type === 'burn' || p.type === 'burnChecked') && p.info && p.info.mint === CA) t += p.info.tokenAmount ? Number(p.info.tokenAmount.uiAmount) : Number(p.info.amount) / 1e6; });
+      scan(tx.transaction.message.instructions);
+      (tx.meta?.innerInstructions || []).forEach(ii => scan(ii.instructions));
+      return t;
+    }
+    function enDevSol(tx) {
+      const keys = tx.transaction.message.accountKeys.map(k => typeof k === 'string' ? k : k.pubkey);
+      const i = keys.indexOf(DEV);
+      if (i < 0 || !tx.meta) return 0;
+      return (tx.meta.postBalances[i] - tx.meta.preBalances[i]) / 1e9;
+    }
+    function enClassify(sig, tx) {
+      const time = tx.blockTime, pre = tx.meta?.preTokenBalances, post = tx.meta?.postTokenBalances;
+      const dd = enOwnerBal(post, DEV) - enOwnerBal(pre, DEV);
+      const burned = enBurnAmt(tx), sol = enDevSol(tx), evs = [];
+      if (burned > 0.0001 && time >= BURN_SINCE) evs.push({ type: 'burn', time, bull: Math.round(burned), sig });
+      if (dd > 0.0001 && sol < -0.0005) evs.push({ type: 'buyback', time, bull: Math.round(dd), sol: Number((-sol).toFixed(4)), sig });
+      return evs;
+    }
+    async function enPoll() {
+      if (!DEV_ATA) await enResolveATA();
+      if (!DEV_ATA) return;
+      const cut = enBaseNewest(), fresh = [];
+      try {
+        const sigs = await enRpc('getSignaturesForAddress', [DEV_ATA, { limit: 50 }]);
+        for (const s of sigs) { if (!s.err && s.blockTime && s.blockTime > cut && !enSeen.has(s.signature) && !fresh.includes(s.signature)) fresh.push(s.signature); }
+      } catch (e) {}
+      let changed = false;
+      for (const sig of fresh) {
+        enSeen.add(sig);
+        try {
+          const tx = await enRpc('getTransaction', [sig, { maxSupportedTransactionVersion: 0, encoding: 'jsonParsed' }]);
+          if (!tx || tx.meta?.err) continue;
+          const evs = enClassify(sig, tx);
+          if (evs.length) { enLive.push(...evs); changed = true; }
+        } catch (e) {}
+      }
+      if (changed) enRenderAll();
+    }
+    const EN_META = {
+      buyback: { ic: '🐂', label: 'Buyback', cls: 'buyback', sign: '+' },
+      burn:    { ic: '🔥', label: 'Burn',    cls: 'burn',    sign: '−' },
+    };
+    function enRenderFeed() {
+      const box = document.getElementById('engineFeed');
+      const list = document.getElementById('feedList');
+      if (!box || !list) return;
+      box.hidden = false;
+      const feed = EN_FILTER === 'all' ? EN_FEED : EN_FEED.filter(e => e.type === EN_FILTER);
+      if (feed.length === 0) { list.innerHTML = '<div class="feed-empty">Nothing here yet… 🐂</div>'; return; }
+      list.innerHTML = feed.map(ev => {
+        const m = EN_META[ev.type] || EN_META.buyback;
+        const amt = m.sign + fmtTok(ev.bull) + ' $BULLCEMBER';
+        const sol = ev.sol ? ' · ' + ev.sol.toFixed(2) + ' SOL' : '';
+        const when = ev.time ? timeAgo(ev.time) : '';
+        return `<a class="feed-row ${m.cls}" href="https://solscan.io/tx/${ev.sig}" target="_blank" rel="noopener">` +
+          `<span class="feed-ic">${m.ic}</span>` +
+          `<span class="feed-main"><span class="feed-t">${m.label}</span><br><span class="feed-sub">${when}${sol}</span></span>` +
+          `<span class="feed-amt">${amt}</span></a>`;
+      }).join('');
+    }
+    document.querySelectorAll('.ftab').forEach(btn => btn.addEventListener('click', () => {
+      document.querySelectorAll('.ftab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      EN_FILTER = btn.dataset.f;
+      enRenderFeed();
+    }));
+    async function enManualRefresh() {
+      const btn = document.getElementById('enRefresh');
+      if (btn && btn.disabled) return;
+      if (btn) { btn.dataset.label = btn.dataset.label || btn.textContent; btn.disabled = true; btn.textContent = '⏳ Checking…'; }
+      try { await enPoll(); await enLoadBaseline(); } catch (e) {}
+      if (btn) { btn.textContent = '✓ Up to date'; setTimeout(() => { btn.textContent = btn.dataset.label; btn.disabled = false; }, 6000); }
+    }
+    document.getElementById('enRefresh')?.addEventListener('click', enManualRefresh);
+    // boot: paint the free baseline instantly, then ONE live Helius check on load
+    (async () => { await enLoadBaseline(); try { await enPoll(); } catch (e) {} })();
+    setInterval(enLoadBaseline, 60000); // keep baseline current from the Action (free)
+
     // ===== JUPITER SWAP PLUGIN =====
     window.addEventListener('load', () => {
       if (!window.Jupiter) return;
@@ -879,11 +1084,11 @@
       priceChart = LightweightCharts.createChart(container, {
         width: container.clientWidth,
         height: 460,
-        layout: { background: { color: '#0E0A05' }, textColor: '#9A8056' },
-        grid: { vertLines: { color: '#1A1206' }, horzLines: { color: '#1A1206' } },
+        layout: { background: { color: '#0A111F' }, textColor: '#8299B0' },
+        grid: { vertLines: { color: '#16233A' }, horzLines: { color: '#16233A' } },
         crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
-        rightPriceScale: { borderColor: '#3A2C14', scaleMargins: { top: 0.1, bottom: 0.1 } },
-        timeScale: { borderColor: '#3A2C14', timeVisible: true, secondsVisible: false },
+        rightPriceScale: { borderColor: '#263B54', scaleMargins: { top: 0.1, bottom: 0.1 } },
+        timeScale: { borderColor: '#263B54', timeVisible: true, secondsVisible: false },
       });
       candleSeries = priceChart.addCandlestickSeries({
         upColor: '#26a69a', downColor: '#ef5350', borderVisible: false,
