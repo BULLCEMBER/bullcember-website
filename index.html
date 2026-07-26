@@ -837,6 +837,7 @@
     const enSeen = new Set();
     let EN_FEED = [];
     let EN_FILTER = 'all';
+    let enChecked = 0; // unix secs of the last live Helius check (drives the "Checked …" line)
 
     const enSetV = (id, val) => { const el = document.getElementById(id); if (el) { el.textContent = val; el.classList.remove('pending'); } };
     const enAgoIso = iso => timeAgo(Math.floor(new Date(iso).getTime() / 1000));
@@ -877,9 +878,16 @@
       EN_FEED = c.feed;
       enRenderFeed();
       const u = document.getElementById('enUpdated');
-      if (u) u.textContent = c.live
-        ? '🟢 ' + c.live + ' new event' + (c.live === 1 ? '' : 's') + ' since sync'
-        : 'Updated ' + (enBaseline?.updatedAt ? enAgoIso(enBaseline.updatedAt) : 'just now');
+      if (u) {
+        if (c.live) {
+          u.textContent = '🟢 ' + c.live + ' new event' + (c.live === 1 ? '' : 's') + ' since last check';
+        } else if (enChecked) {
+          const secs = Math.floor(Date.now() / 1000) - enChecked;
+          u.textContent = 'Checked ' + (secs < 45 ? 'just now' : timeAgo(enChecked));
+        } else {
+          u.textContent = 'Updated ' + (enBaseline?.updatedAt ? enAgoIso(enBaseline.updatedAt) : 'just now');
+        }
+      }
     }
 
     async function enLoadBaseline() {
@@ -937,7 +945,8 @@
           if (evs.length) { enLive.push(...evs); changed = true; }
         } catch (e) {}
       }
-      if (changed) enRenderAll();
+      enChecked = Math.floor(Date.now() / 1000);
+      enRenderAll();
     }
     const EN_META = {
       buyback: { ic: '🐂', label: 'Buyback', cls: 'buyback', sign: '+' },
