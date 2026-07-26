@@ -1683,3 +1683,17 @@ section { padding: 100px 0; }
   .engine-live { grid-template-columns: 1fr; }
   .engine-cards { grid-template-columns: 1fr; }
 }
+
+/* ===== FULL-WIDTH BRAND BANNER ===== */
+.brand-banner {
+  width: 100%;
+  line-height: 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 0 60px rgba(217, 162, 39, 0.12);
+}
+.brand-banner img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
