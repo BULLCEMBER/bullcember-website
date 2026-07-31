@@ -1,99 +1,238 @@
 /* ===== RESET & BASE ===== */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* ============================================================================
+   BULLCEMBER — design tokens  ·  direction: TERMINAL
+   Every value in this stylesheet should reference a token below. If you find
+   yourself typing a raw hex, px, or duration further down, add a token instead.
+   ========================================================================= */
 :root {
-  /* Bullcember gold-on-black theme — deep black with metallic gold accents.
-     Accent var names (--blue/--cyan) are kept but map to gold tones. */
-  --bg:      #0A0806;
-  --bg2:     #100B06;
-  --card:    #17100A;
-  --border:  #3A2C14;
-  --blue:    #D9A227;
-  --blue2:   #A8761A;
-  --cyan:    #F5C84B;
-  --purple:  #6E4A12;
-  --orange:  #E89320;
-  --cream:   #F0E6CC;
-  --gold:    #F5A623;
-  --text:    #ECE1C6;
-  --muted:   #9A8056;
+  /* ---- canvas & surfaces ------------------------------------------------ */
+  --bg:            #08090A;   /* page */
+  --bg-2:          #0B0D0F;   /* alternating section band */
+  --surface:       #0E1012;   /* cards, tiles, rows */
+  --surface-2:     #131619;   /* raised / hover */
+  --line:          #1E2225;   /* hairline rules — the primary structural device */
+  --line-strong:   #2A3034;   /* emphasis borders, active states */
+
+  /* ---- ink -------------------------------------------------------------- */
+  --fg:            #E6E8EA;   /* 16.2:1 on --bg  (AAA) */
+  --fg-dim:        #B4BAC0;   /* 10.4:1          (AAA) */
+  --muted:         #8A9199;   /*  6.2:1          (AA)  */
+
+  /* ---- signal ----------------------------------------------------------- */
+  --signal:        #00E08A;   /* 11.4:1 — the single accent. Use sparingly. */
+  --signal-dim:    #00B36E;
+  --signal-wash:   rgba(0, 224, 138, 0.08);
+  --on-signal:     #04120C;   /* ink on a signal-filled surface */
+  --burn:          #FF6B4A;
+  --up:            #00E08A;
+  --down:          #FF4D4D;
+  --warn:          #FFC53D;
+
+  /* ---- type ------------------------------------------------------------- */
+  --f-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  --f-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --f-body:    'Inter', system-ui, -apple-system, sans-serif;
+
+  /* modular scale, ~1.25. Numerics use --f-mono with tabular figures. */
+  --t-2xs:  0.6875rem;   /* 11px — micro labels */
+  --t-xs:   0.75rem;     /* 12px — eyebrows, meta */
+  --t-sm:   0.8125rem;   /* 13px — dense UI */
+  --t-base: 0.9375rem;   /* 15px — body */
+  --t-md:   1.0625rem;   /* 17px — lead paragraphs */
+  --t-lg:   1.25rem;
+  --t-xl:   1.5rem;
+  --t-2xl:  2rem;
+  --t-3xl:  clamp(1.75rem, 3.4vw, 2.75rem);   /* section titles */
+  --t-4xl:  clamp(2.4rem, 7vw, 4.5rem);       /* hero */
+
+  --lh-tight: 1.05;
+  --lh-snug:  1.35;
+  --lh-body:  1.65;
+  --ls-display: -0.03em;   /* Space Grotesk wants negative tracking at size */
+  --ls-label:    0.18em;   /* mono labels want the opposite */
+
+  /* ---- space (4px base) ------------------------------------------------- */
+  --s-1: 4px;   --s-2: 8px;   --s-3: 12px;  --s-4: 16px;  --s-5: 20px;
+  --s-6: 24px;  --s-8: 32px;  --s-10: 40px; --s-12: 48px; --s-16: 64px;
+  --s-20: 80px; --s-24: 96px;
+  --section-y: clamp(56px, 9vw, 104px);
+
+  /* ---- radii ------------------------------------------------------------ */
+  --r-xs: 2px;  --r-sm: 4px;  --r-md: 6px;  --r-lg: 10px;  --r-full: 999px;
+
+  /* ---- elevation — structural, not glow --------------------------------- */
+  --e-inset: inset 0 1px 0 rgba(255,255,255,0.03);
+  --e-1: 0 1px 2px rgba(0,0,0,0.4);
+  --e-2: 0 8px 24px rgba(0,0,0,0.5);
+  --focus-ring: 0 0 0 2px var(--bg), 0 0 0 4px var(--signal);
+
+  /* ---- motion ----------------------------------------------------------- */
+  --dur-1: 120ms;  --dur-2: 200ms;  --dur-3: 320ms;
+  --ease: cubic-bezier(0.2, 0.6, 0.2, 1);
+
+  /* ---- layout ----------------------------------------------------------- */
+  --maxw: 1180px;
+  --gutter: clamp(16px, 4vw, 32px);
+  --nav-h: 64px;
 }
 
-html { scroll-behavior: smooth; }
+/* ----------------------------------------------------------------------------
+   Legacy aliases. The old palette used --blue/--cyan/--purple to hold GOLD
+   values, left over from an even earlier ice theme. These keep un-migrated
+   rules rendering correctly during the section-by-section migration and are
+   deleted once nothing references them.
+   ------------------------------------------------------------------------- */
+:root {
+  --bg2:    var(--bg-2);
+  --card:   var(--surface);
+  --border: var(--line);
+  --text:   var(--fg);
+  --blue:   var(--signal);
+  --blue2:  var(--signal-dim);
+  --cyan:   var(--signal);
+  --purple: var(--line-strong);
+  --orange: var(--signal);
+  --gold:   var(--signal);
+  --cream:  var(--fg);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--nav-h) + var(--s-4)); /* anchors clear the fixed nav */
+}
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--f-body);
+  font-size: var(--t-base);
+  line-height: var(--lh-body);
   background: var(--bg);
-  color: var(--text);
+  color: var(--fg);
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 a { text-decoration: none; color: inherit; }
+
+/* Every number on this page is data — align it in columns and stop it dancing
+   as it ticks. Applies to the live stats, engine tiles, feed, chart legend. */
+.live-value, .countdown-num, .toko-value, .elive-v, .feed-amt,
+.leg-val, .stat-value, .herd-num, .buy-amt {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
+/* --- keyboard access ------------------------------------------------------
+   The previous stylesheet had no :focus-visible rule anywhere, so every
+   affordance was hover-only and the site could not be navigated by keyboard. */
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: var(--r-sm);
+}
+.skip-link {
+  position: absolute;
+  left: var(--s-4);
+  top: -100px;
+  z-index: 200;
+  padding: var(--s-3) var(--s-5);
+  background: var(--signal);
+  color: var(--on-signal);
+  font-family: var(--f-mono);
+  font-size: var(--t-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: var(--r-sm);
+  transition: top var(--dur-2) var(--ease);
+}
+.skip-link:focus { top: var(--s-4); }
+
+/* --- reduced motion -------------------------------------------------------
+   Four infinite animations run on this page (ticker, pulse-btn, spin-ring,
+   enginePulse). None of them were gated before. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .ticker-inner { animation: none !important; transform: none !important; }
+}
 
 /* ===== NAVBAR ===== */
 .navbar {
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 100;
+  min-height: var(--nav-h);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 48px;
-  background: rgba(10, 8, 6, 0.88);
-  backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border);
+  gap: var(--s-6);
+  padding: var(--s-3) var(--gutter);
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter: blur(14px) saturate(140%);
+  border-bottom: 1px solid var(--line);
 }
 
 .nav-logo {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-family: 'Cinzel', serif;
-  font-size: 1.1rem;
-  font-weight: 900;
-  color: var(--cyan);
-  letter-spacing: 2px;
+  gap: var(--s-3);
+  font-family: var(--f-display);
+  font-size: var(--t-md);
+  font-weight: 700;
+  color: var(--fg);
+  letter-spacing: var(--ls-display);
 }
 
 .nav-pfp {
-  width: 44px;
-  height: 44px;
+  width: 32px;
+  height: 32px;
   border-radius: 0;
   object-fit: contain;
-  filter: drop-shadow(0 0 8px rgba(217, 162, 39, 0.4));
 }
 
 .nav-links {
   display: flex;
-  gap: 36px;
+  gap: var(--s-6);
   list-style: none;
 }
 
+/* mono + wide tracking reads as a system label, not a marketing link */
 .nav-links a {
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-family: var(--f-mono);
+  font-size: var(--t-2xs);
+  font-weight: 500;
   color: var(--muted);
   text-transform: uppercase;
-  letter-spacing: 1.5px;
-  transition: color 0.2s;
+  letter-spacing: 0.12em;
+  transition: color var(--dur-1) var(--ease);
 }
 
-.nav-links a:hover { color: var(--cyan); }
+.nav-links a:hover { color: var(--fg); }
 
+/* --on-signal, never #fff: white on the signal green is 2.3:1 and unreadable */
 .btn-nav {
-  padding: 10px 24px;
-  background: var(--orange);
-  border-radius: 8px;
-  font-size: 0.85rem;
-  font-weight: 800;
-  color: #fff;
+  padding: var(--s-2) var(--s-5);
+  background: var(--signal);
+  border-radius: var(--r-sm);
+  font-family: var(--f-mono);
+  font-size: var(--t-2xs);
+  font-weight: 700;
+  color: var(--on-signal);
   text-transform: uppercase;
-  letter-spacing: 1px;
-  transition: opacity 0.2s, transform 0.2s;
-  box-shadow: 0 0 20px rgba(232, 147, 32, 0.35);
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+  transition: background var(--dur-1) var(--ease);
 }
 
-.btn-nav:hover { opacity: 0.85; transform: translateY(-2px); }
+.btn-nav:hover { background: #2BF5A5; }
 
 .nav-toggle {
   display: none;
@@ -125,61 +264,65 @@ a { text-decoration: none; color: inherit; }
 /* ===== HERO ===== */
 .hero {
   position: relative;
-  min-height: 100vh;
+  min-height: min(100svh, 880px);
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
   overflow: hidden;
-  padding: 56px 24px 0;
+  padding: calc(var(--nav-h) + var(--s-12)) 0 0;
 }
 
-/* Radial glow background */
+/* A single low wash anchored behind the headline. The old version was an
+   800px radial gold glow at 22% — the whole page read as backlit. */
 .hero-glow {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -60%);
-  width: 800px;
-  height: 800px;
+  top: 42%;
+  left: 22%;
+  transform: translate(-50%, -50%);
+  width: min(760px, 90vw);
+  height: 520px;
   border-radius: 50%;
-  background: radial-gradient(circle,
-    rgba(245, 200, 75, 0.22) 0%,
-    rgba(168, 118, 26, 0.12) 45%,
-    transparent 70%);
+  background: radial-gradient(circle, var(--signal-wash) 0%, transparent 68%);
   pointer-events: none;
 }
 
-/* Grid lines effect */
+/* Structural grid, masked so it dissolves toward the fold rather than
+   stopping at a hard edge. This is the direction's main background device. */
 .hero::before {
   content: '';
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(217, 162, 39, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(217, 162, 39, 0.04) 1px, transparent 1px);
-  background-size: 60px 60px;
-  pointer-events: none;
-}
-
-/* Frost creeping down from the top edge */
-.hero::after {
-  content: '';
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: 200px;
-  background: linear-gradient(180deg, rgba(245, 200, 75, 0.10), transparent);
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 48px 48px;
+  opacity: 0.5;
+  -webkit-mask-image: radial-gradient(ellipse 90% 70% at 30% 40%, #000 30%, transparent 100%);
+  mask-image: radial-gradient(ellipse 90% 70% at 30% 40%, #000 30%, transparent 100%);
   pointer-events: none;
 }
 
 .hero-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  position: relative;
   z-index: 2;
   width: 100%;
-  max-width: 900px;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: var(--s-12);
+  align-items: center;
 }
+
+/* Explicit placement — the mascot sits right of the headline stack while the
+   data strip spans the full measure underneath. DOM order is unchanged. */
+.hero-tag          { grid-column: 1; grid-row: 1; }
+.hero-title        { grid-column: 1; grid-row: 2; }
+.hero-sub          { grid-column: 1; grid-row: 3; }
+.hero-btns         { grid-column: 1; grid-row: 4; }
+.hero-pfp-wrapper  { grid-column: 2; grid-row: 1 / 5; justify-self: end; }
+.live-bar          { grid-column: 1 / -1; grid-row: 5; }
 
 /* PFP */
 .hero-pfp-wrapper {
@@ -192,44 +335,50 @@ a { text-decoration: none; color: inherit; }
   justify-content: center;
 }
 
+/* The mascot is framed as an instrument panel rather than a spinning medallion —
+   square plate, hairline border, corner registration marks. */
 .pfp-circle {
   position: relative;
   z-index: 2;
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
+  width: 216px;
+  height: 216px;
+  border-radius: var(--r-md);
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  filter: drop-shadow(0 0 30px rgba(217, 162, 39, 0.5));
+  background:
+    linear-gradient(180deg, var(--surface-2), var(--surface));
+  border: 1px solid var(--line);
 }
 
 .hero-pfp {
-  /* 70% of 200px = 140px — fits within the inscribed square of the circle */
-  width: 70%;
-  height: 70%;
+  width: 74%;
+  height: 74%;
   object-fit: contain;
 }
 
+/* .ring1 / .ring2 are repurposed from the old rotating rings into static
+   corner brackets. Markup is untouched. */
 .pfp-ring {
   position: absolute;
-  border-radius: 50%;
-  border: 2px solid var(--blue);
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--signal);
+  border-radius: 0;
+  pointer-events: none;
 }
 
 .ring1 {
-  inset: -8px;
-  opacity: 0.5;
-  animation: spin-ring 8s linear infinite;
-  border-style: dashed;
+  inset: -7px auto auto -7px;
+  border-right: 0;
+  border-bottom: 0;
 }
 
 .ring2 {
-  inset: -18px;
-  opacity: 0.2;
-  animation: spin-ring 14s linear infinite reverse;
-  border-color: var(--cyan);
+  inset: auto -7px -7px auto;
+  border-left: 0;
+  border-top: 0;
 }
 
 @keyframes spin-ring {
@@ -239,157 +388,161 @@ a { text-decoration: none; color: inherit; }
 
 /* Tag */
 .hero-tag {
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 3px;
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  font-family: var(--f-mono);
+  font-size: var(--t-xs);
+  font-weight: 500;
+  letter-spacing: var(--ls-label);
   text-transform: uppercase;
-  color: var(--cyan);
-  margin-bottom: 20px;
-  opacity: 0.8;
+  color: var(--signal);
+  margin-bottom: var(--s-5);
+}
+/* leading rule — the eyebrow reads as a channel label, not a marketing kicker */
+.hero-tag::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--signal);
+  flex: none;
 }
 
 /* Title */
 .hero-title {
-  font-family: 'Cinzel', serif;
-  font-size: clamp(1rem, 9vw, 6.5rem);
-  font-weight: 900;
-  color: #fff;
-  letter-spacing: 4px;
-  text-align: center;
-  line-height: 1;
-  margin-bottom: 20px;
-  text-shadow:
-    0 0 40px rgba(217, 162, 39, 0.6),
-    0 0 80px rgba(217, 162, 39, 0.2);
+  font-family: var(--f-display);
+  font-size: var(--t-4xl);
+  font-weight: 700;
+  color: var(--fg);
+  letter-spacing: var(--ls-display);
+  line-height: var(--lh-tight);
+  margin-bottom: var(--s-5);
 }
 
 .hero-sub {
-  font-size: clamp(1rem, 2.2vw, 1.2rem);
+  font-size: var(--t-md);
   color: var(--muted);
-  text-align: center;
-  line-height: 1.7;
-  max-width: 480px;
-  margin-bottom: 48px;
+  line-height: var(--lh-body);
+  max-width: 46ch;
+  margin-bottom: var(--s-8);
 }
 
 /* ===== LIVE STATS BAR ===== */
+/* Full-measure instrument strip: seven readouts separated by hairlines,
+   values left-aligned so the tabular figures form a real column. */
 .live-bar {
   display: flex;
-  align-items: center;
-  gap: 0;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 20px 32px;
-  margin-bottom: 36px;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0;
+  align-items: stretch;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  box-shadow: var(--e-inset);
+  margin-top: var(--s-10);
   width: 100%;
-  max-width: 780px;
-  box-shadow: 0 0 40px rgba(217, 162, 39, 0.08);
+  overflow: hidden;
 }
 
 .live-item {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  padding: 0 28px;
+  align-items: flex-start;
+  gap: var(--s-2);
+  flex: 1 1 0;
+  min-width: 0;
+  padding: var(--s-4) var(--s-5);
 }
 
 .live-divider {
   width: 1px;
-  height: 40px;
-  background: var(--border);
+  align-self: stretch;
+  background: var(--line);
+  flex: none;
 }
 
 .live-label {
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 2px;
+  font-family: var(--f-mono);
+  font-size: var(--t-2xs);
+  font-weight: 500;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--muted);
+  white-space: nowrap;
 }
 
 .live-value {
-  font-family: 'Cinzel', serif;
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: #fff;
+  font-family: var(--f-mono);
+  font-size: var(--t-sm);
+  font-weight: 600;
+  color: var(--fg);
+  letter-spacing: -0.01em;
 }
 
-.live-value.positive { color: #34D399; }
-.live-value.negative { color: #F87171; }
+.live-value.positive { color: var(--up); }
+.live-value.negative { color: var(--down); }
 
 /* Hero buttons */
 .hero-btns {
   display: flex;
-  gap: 16px;
+  gap: var(--s-3);
   flex-wrap: wrap;
-  justify-content: center;
-  margin-bottom: 32px;
 }
 
-@keyframes pulse-btn {
-  0%, 100% { box-shadow: 0 0 30px rgba(232, 147, 32, 0.4); }
-  50% { box-shadow: 0 0 60px rgba(232, 147, 32, 0.75), 0 0 100px rgba(232, 147, 32, 0.15); }
-}
-
+/* The primary CTA no longer pulses forever. An infinite animation on the most
+   important control is a distraction and a battery cost, and it left users no
+   resting state to read. Emphasis now comes from the fill. */
 .btn-primary {
-  padding: 16px 40px;
-  background: linear-gradient(135deg, var(--orange), #A8761A);
-  color: #fff;
-  border-radius: 10px;
-  font-weight: 900;
-  font-size: 1rem;
+  padding: var(--s-4) var(--s-8);
+  background: var(--signal);
+  color: var(--on-signal);
+  border-radius: var(--r-sm);
+  font-family: var(--f-mono);
+  font-weight: 700;
+  font-size: var(--t-sm);
   text-transform: uppercase;
-  letter-spacing: 1.5px;
-  transition: transform 0.2s, box-shadow 0.2s;
-  animation: pulse-btn 2.5s ease-in-out infinite;
+  letter-spacing: 0.1em;
+  transition: background var(--dur-1) var(--ease);
 }
 
-.btn-primary:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 0 50px rgba(232, 147, 32, 0.6);
-  animation-play-state: paused;
-}
+.btn-primary:hover { background: #2BF5A5; }
 
 .btn-secondary {
-  padding: 16px 40px;
-  border: 2px solid var(--blue);
-  color: var(--blue);
-  border-radius: 10px;
-  font-weight: 700;
-  font-size: 1rem;
+  padding: var(--s-4) var(--s-8);
+  border: 1px solid var(--line-strong);
+  color: var(--fg);
+  border-radius: var(--r-sm);
+  font-family: var(--f-mono);
+  font-weight: 600;
+  font-size: var(--t-sm);
   text-transform: uppercase;
-  letter-spacing: 1.5px;
-  transition: background 0.2s, color 0.2s, transform 0.2s;
+  letter-spacing: 0.1em;
+  transition: border-color var(--dur-1) var(--ease), color var(--dur-1) var(--ease);
 }
 
 .btn-secondary:hover {
-  background: var(--blue);
-  color: #fff;
-  transform: translateY(-3px);
+  border-color: var(--signal);
+  color: var(--signal);
 }
 
 /* ===== TICKER ===== */
 .ticker-scroll {
-  width: 100vw;
+  width: 100%;
   overflow: hidden;
-  background: linear-gradient(90deg, var(--blue2), var(--purple), var(--blue2));
-  padding: 11px 0;
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: var(--s-3) 0;
   white-space: nowrap;
-  margin-top: auto;
+  margin-top: var(--s-16);
 }
 
 .ticker-inner {
   display: inline-block;
-  animation: ticker 30s linear infinite;
-  font-weight: 800;
-  font-size: 0.8rem;
-  color: #fff;
-  letter-spacing: 1.5px;
+  animation: ticker 45s linear infinite;
+  font-family: var(--f-mono);
+  font-weight: 500;
+  font-size: var(--t-2xs);
+  color: var(--muted);
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
@@ -400,32 +553,44 @@ a { text-decoration: none; color: inherit; }
 
 /* ===== SHARED SECTION STYLES ===== */
 .container {
-  max-width: 1100px;
+  max-width: var(--maxw);
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 var(--gutter);
 }
 
-section { padding: 100px 0; }
+section { padding: var(--section-y) 0; }
 
 .section-tag {
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 4px;
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  font-family: var(--f-mono);
+  font-size: var(--t-2xs);
+  font-weight: 500;
+  letter-spacing: var(--ls-label);
   text-transform: uppercase;
-  color: var(--cyan);
-  margin-bottom: 12px;
+  color: var(--signal);
+  margin-bottom: var(--s-3);
+}
+.section-tag::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--signal);
+  flex: none;
 }
 
 .section-title {
-  font-family: 'Cinzel', serif;
-  font-size: clamp(1.8rem, 4vw, 3rem);
-  font-weight: 900;
-  line-height: 1.15;
-  margin-bottom: 52px;
-  color: #fff;
+  font-family: var(--f-display);
+  font-size: var(--t-3xl);
+  font-weight: 700;
+  line-height: var(--lh-snug);
+  letter-spacing: var(--ls-display);
+  margin-bottom: var(--s-12);
+  color: var(--fg);
 }
 
-.highlight { color: var(--orange); }
+.highlight { color: var(--signal); }
 
 /* ===== ABOUT ===== */
 .about { background: var(--bg2); }
@@ -498,7 +663,7 @@ section { padding: 100px 0; }
 }
 
 .toko-card .toko-value {
-  font-family: 'Cinzel', serif;
+  font-family: var(--f-mono);
   font-size: 1.2rem;
   font-weight: 700;
   color: var(--cyan);
@@ -512,7 +677,7 @@ section { padding: 100px 0; }
 }
 
 .toko-ca-text {
-  font-family: 'Cinzel', serif;
+  font-family: var(--f-mono);
   font-size: 0.85rem;
   color: var(--text);
   word-break: break-all;
@@ -534,7 +699,7 @@ section { padding: 100px 0; }
 }
 
 .copy-btn:hover,
-.copy-btn.copied { background: var(--orange); color: #fff; }
+.copy-btn.copied { background: var(--signal); color: var(--on-signal); }
 
 /* ===== HOW TO BUY ===== */
 .how-to-buy { background: var(--bg2); }
@@ -558,7 +723,7 @@ section { padding: 100px 0; }
 }
 
 .step-num {
-  font-family: 'Cinzel', serif;
+  font-family: var(--f-display);
   font-size: 2.2rem;
   font-weight: 900;
   color: var(--blue);
@@ -652,7 +817,7 @@ section { padding: 100px 0; }
 }
 
 .footer-logo {
-  font-family: 'Cinzel', serif;
+  font-family: var(--f-display);
   font-size: 1.5rem;
   font-weight: 900;
   color: var(--cyan);
@@ -691,7 +856,7 @@ section { padding: 100px 0; }
   border: 1px solid var(--border);
   border-radius: 8px;
   color: var(--muted);
-  font-family: 'Cinzel', serif;
+  font-family: var(--f-mono);
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 1px;
@@ -708,7 +873,7 @@ section { padding: 100px 0; }
   border: 1px solid var(--border);
   border-radius: 8px;
   color: var(--muted);
-  font-family: 'Cinzel', serif;
+  font-family: var(--f-mono);
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 1px;
@@ -735,7 +900,7 @@ section { padding: 100px 0; }
   background: #100B06;
   border-bottom: 1px solid var(--border);
   font-size: 0.72rem;
-  font-family: 'Cinzel', serif;
+  font-family: var(--f-mono);
   flex-wrap: wrap;
 }
 
@@ -826,7 +991,7 @@ section { padding: 100px 0; }
 }
 
 .partner-name {
-  font-family: 'Cinzel', serif;
+  font-family: var(--f-display);
   font-size: 1rem;
   font-weight: 700;
   color: var(--text);
@@ -878,7 +1043,7 @@ section { padding: 100px 0; }
 }
 
 .grad-pct {
-  font-family: 'Cinzel', serif;
+  font-family: var(--f-mono);
   font-size: 1.3rem;
   font-weight: 900;
   color: var(--cyan);
@@ -997,7 +1162,7 @@ section { padding: 100px 0; }
 
 .herd-num {
   display: block;
-  font-family: 'Cinzel', serif;
+  font-family: var(--f-mono);
   font-weight: 900;
   font-size: clamp(3rem, 11vw, 6.5rem);
   line-height: 1;
@@ -1018,7 +1183,7 @@ section { padding: 100px 0; }
 .herd-milestone { max-width: 620px; margin: 36px auto 64px; text-align: left; }
 
 .herd-subhead {
-  font-family: 'Cinzel', serif;
+  font-family: var(--f-display);
   font-weight: 800;
   font-size: 1.4rem;
   color: var(--text);
@@ -1051,7 +1216,7 @@ section { padding: 100px 0; }
 .herd-tier-emoji { font-size: 2.6rem; line-height: 1; }
 
 .herd-tier-name {
-  font-family: 'Cinzel', serif;
+  font-family: var(--f-display);
   font-weight: 800;
   font-size: 1.05rem;
   letter-spacing: 1px;
@@ -1067,7 +1232,7 @@ section { padding: 100px 0; }
 }
 
 .herd-tier-count {
-  font-family: 'Cinzel', serif;
+  font-family: var(--f-mono);
   font-weight: 900;
   font-size: 1.6rem;
   color: var(--text);
@@ -1110,7 +1275,7 @@ section { padding: 100px 0; }
 }
 
 .herd-rank {
-  font-family: 'Cinzel', serif;
+  font-family: var(--f-mono);
   font-weight: 900;
   font-size: 1.05rem;
   color: var(--cyan);
@@ -1165,10 +1330,10 @@ section { padding: 100px 0; }
 
 .rank-btn {
   padding: 13px 26px;
-  background: var(--orange);
+  background: var(--signal);
   border: none;
   border-radius: 10px;
-  color: #fff;
+  color: var(--on-signal);
   font-weight: 800;
   font-size: 0.85rem;
   text-transform: uppercase;
@@ -1249,7 +1414,7 @@ section { padding: 100px 0; }
 }
 
 .final-cta-title {
-  font-family: 'Cinzel', serif;
+  font-family: var(--f-display);
   font-size: clamp(2rem, 5vw, 3.5rem);
   font-weight: 900;
   color: #fff;
@@ -1327,7 +1492,7 @@ section { padding: 100px 0; }
 }
 
 .countdown-num {
-  font-family: 'Cinzel', serif;
+  font-family: var(--f-mono);
   font-size: clamp(3rem, 7vw, 5.5rem);
   font-weight: 900;
   color: #fff;
@@ -1345,7 +1510,7 @@ section { padding: 100px 0; }
 }
 
 .countdown-sep {
-  font-family: 'Cinzel', serif;
+  font-family: var(--f-mono);
   font-size: clamp(1.8rem, 4vw, 3rem);
   font-weight: 900;
   color: var(--orange);
@@ -1386,16 +1551,22 @@ section { padding: 100px 0; }
     border-bottom: 1px solid var(--border);
   }
   .nav-links li:last-child a { border-bottom: none; }
-  .hero { padding: 40px 16px 0; }
-  .hero-pfp-wrapper { width: 160px; height: 160px; }
-  .pfp-circle { width: 140px; height: 140px; }
+  .hero { padding: calc(var(--nav-h) + var(--s-8)) 0 0; min-height: 0; }
+  /* single column — mascot above the headline, matching DOM order */
+  .hero-content { grid-template-columns: 1fr; row-gap: 0; }
+  .hero-tag, .hero-title, .hero-sub, .hero-btns { grid-column: 1; }
+  .hero-pfp-wrapper { grid-column: 1; grid-row: auto; justify-self: start; width: 160px; height: 160px; }
+  .pfp-circle { width: 156px; height: 156px; }
   .live-bar {
+    grid-column: 1;
+    grid-row: auto;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px 0;
-    padding: 20px 16px;
+    grid-template-columns: repeat(2, 1fr);
+    border-radius: var(--r-md);
   }
-  .live-item { padding: 0; }
+  /* hairlines become cell borders once this wraps to a grid */
+  .live-item { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .live-item:nth-child(4n) { border-right: 0; }
   .live-divider { display: none; }
   section { padding: 70px 0; }
   .step { flex-direction: column; gap: 10px; }
@@ -1411,16 +1582,16 @@ section { padding: 100px 0; }
   .nav-pfp { width: 30px; height: 30px; }
   .btn-nav { padding: 8px 14px; font-size: 0.75rem; }
 
-  .hero { padding: 90px 12px 0; }
+  .hero { padding: calc(var(--nav-h) + var(--s-6)) 0 0; }
   .hero-pfp-wrapper { width: 140px; height: 140px; }
   .pfp-circle { width: 120px; height: 120px; }
-  .hero-title { font-size: clamp(1.4rem, 8.5vw, 2.2rem); letter-spacing: 0px; }
+  .hero-title { letter-spacing: -0.02em; }
   .hero-tag { font-size: 0.6rem; letter-spacing: 1.5px; }
   .hero-sub { font-size: 0.9rem; }
   .hero-btns { gap: 10px; }
   .btn-primary, .btn-secondary { padding: 13px 22px; font-size: 0.88rem; }
 
-  .live-bar { padding: 14px 10px; gap: 10px 0; }
+  
   .live-value { font-size: 0.85rem; }
   .live-label { font-size: 0.58rem; }
 
@@ -1464,16 +1635,16 @@ section { padding: 100px 0; }
   .nav-logo { font-size: 0.8rem; }
   .btn-nav { padding: 7px 10px; font-size: 0.7rem; letter-spacing: 0.5px; }
 
-  .hero { padding: 80px 10px 0; }
+  .hero { padding: calc(var(--nav-h) + var(--s-5)) 0 0; }
   .hero-pfp-wrapper { width: 110px; height: 110px; }
   .pfp-circle { width: 96px; height: 96px; }
-  .hero-title { font-size: 7vw; letter-spacing: 0px; }
+  .hero-title { letter-spacing: -0.01em; }
   .hero-tag { font-size: 0.55rem; letter-spacing: 1px; }
   .hero-sub { font-size: 0.85rem; max-width: 100%; }
   .btn-primary, .btn-secondary { padding: 11px 16px; font-size: 0.82rem; width: 100%; text-align: center; }
   .hero-btns { flex-direction: column; width: 100%; }
 
-  .live-bar { grid-template-columns: repeat(2, 1fr); }
+  .live-bar { grid-template-columns: 1fr; }
   .live-value { font-size: 0.78rem; }
 
   .countdown-unit { padding: 12px 6px; }
@@ -1536,7 +1707,7 @@ section { padding: 100px 0; }
   margin-bottom: 10px;
 }
 .elive-v {
-  font-family: 'Cinzel', serif;
+  font-family: var(--f-mono);
   font-size: clamp(1.6rem, 4vw, 2.4rem);
   font-weight: 900;
   line-height: 1;
@@ -1604,7 +1775,7 @@ section { padding: 100px 0; }
   overflow: hidden;
 }
 .feed-head {
-  font-family: 'Cinzel', serif;
+  font-family: var(--f-display);
   font-weight: 700;
   color: #fff;
   padding: 16px 20px;
@@ -1658,7 +1829,7 @@ section { padding: 100px 0; }
 .feed-main { flex: 1; min-width: 0; }
 .feed-t { font-weight: 800; font-size: 0.92rem; color: #fff; }
 .feed-sub { font-size: 0.78rem; color: var(--muted); font-weight: 600; }
-.feed-amt { font-family: 'Cinzel', serif; font-weight: 700; text-align: right; white-space: nowrap; font-size: 0.95rem; }
+.feed-amt { font-family: var(--f-mono); font-weight: 700; text-align: right; white-space: nowrap; font-size: 0.95rem; }
 .feed-row.buyback .feed-amt { color: var(--cyan); }
 .feed-row.burn .feed-amt { color: var(--gold); }
 .feed-empty { padding: 24px 20px; text-align: center; color: var(--muted); font-weight: 600; }
@@ -1680,7 +1851,7 @@ section { padding: 100px 0; }
 }
 .engine-card-ico { font-size: 1.8rem; margin-bottom: 12px; }
 .engine-card h3 {
-  font-family: 'Cinzel', serif;
+  font-family: var(--f-display);
   font-size: 1.2rem;
   color: #fff;
   margin-bottom: 10px;
