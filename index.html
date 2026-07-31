@@ -841,17 +841,48 @@
     const enSeen = new Set();
     let EN_FEED = [];
     let EN_FILTER = 'all';
-    let enChecked = 0; // unix secs of the last live Helius check (drives the "Checked …" line)
+    let enChecked = 0; // unix secs of the last SUCCESSFUL live Helius check ("Checked …" line)
+    // Poll health — only ever set by enPoll(). 'ok' means we actually reached the chain.
+    let enState = 'idle';   // 'idle' | 'ok' | 'partial' | 'error'
+    let enStateMsg = '';    // human-readable detail for 'partial' / 'error'
 
     const enSetV = (id, val) => { const el = document.getElementById(id); if (el) { el.textContent = val; el.classList.remove('pending'); } };
     const enAgoIso = iso => timeAgo(Math.floor(new Date(iso).getTime() / 1000));
+    const enSleep = ms => new Promise(r => setTimeout(r, ms));
 
-    async function enRpc(method, params) {
-      const r = await fetch(ENGINE_RPC, { method: 'POST', headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ jsonrpc: '2.0', id: 1, method, params }) });
-      const j = await r.json();
-      if (j.error) throw new Error(j.error.message);
-      return j.result;
+    // Retries on 429 / 5xx with exponential backoff. The API key is public and shared
+    // with the holders + bonding-curve widgets on this page, so throttling is expected.
+    async function enRpc(method, params, tries = 4) {
+      let lastErr;
+      for (let i = 0; i < tries; i++) {
+        try {
+          const r = await fetch(ENGINE_RPC, { method: 'POST', headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ jsonrpc: '2.0', id: 1, method, params }) });
+          if (r.status === 429 || r.status >= 500) throw new Error('RPC ' + r.status);
+          const j = await r.json();
+          if (j.error) throw new Error(j.error.message);
+          return j.result;
+        } catch (e) {
+          lastErr = e;
+          if (i < tries - 1) await enSleep(400 * Math.pow(2, i) + Math.random() * 200);
+        }
+      }
+      throw lastErr;
+    }
+
+    // Bounded-concurrency map. Returns every result plus a count of failures so the
+    // caller can tell "nothing new" apart from "we failed to look".
+    async function enMapLimit(items, limit, fn) {
+      const out = new Array(items.length);
+      let next = 0, failed = 0;
+      const worker = async () => {
+        while (next < items.length) {
+          const i = next++;
+          try { out[i] = await fn(items[i]); } catch (e) { out[i] = null; failed++; }
+        }
+      };
+      await Promise.all(Array.from({ length: Math.min(limit, items.length) }, worker));
+      return { out, failed };
     }
     const enBaseNewest = () => (enBaseline?.feed || []).reduce((m, e) => Math.max(m, e.time || 0), 0);
 
@@ -883,7 +914,12 @@
       enRenderFeed();
       const u = document.getElementById('enUpdated');
       if (u) {
-        if (c.live) {
+        if (enState === 'error') {
+          u.textContent = "⚠️ Couldn't reach the chain — showing saved data"
+            + (enBaseline?.updatedAt ? ' from ' + enAgoIso(enBaseline.updatedAt) : '');
+        } else if (enState === 'partial') {
+          u.textContent = '⚠️ Partly checked — ' + enStateMsg;
+        } else if (c.live) {
           u.textContent = '🟢 ' + c.live + ' new event' + (c.live === 1 ? '' : 's') + ' since last check';
         } else if (enChecked) {
           const secs = Math.floor(Date.now() / 1000) - enChecked;
@@ -891,6 +927,8 @@
         } else {
           u.textContent = 'Updated ' + (enBaseline?.updatedAt ? enAgoIso(enBaseline.updatedAt) : 'just now');
         }
+        // the pulsing green dot means "live" — don't let it pulse over a failed check
+        u.closest('.engine-updated')?.classList.toggle('stale', enState === 'error' || enState === 'partial');
       }
     }
 
@@ -903,11 +941,12 @@
         enRenderAll();
       } catch (e) { const u = document.getElementById('enUpdated'); if (u && !enBaseline) u.textContent = 'Syncing on-chain data…'; }
     }
+    // Throws on RPC failure — the caller needs to tell "no new events" apart from
+    // "we never managed to look". Selection matches scripts/scan.mjs (first account).
     async function enResolveATA() {
-      try {
-        const d = await enRpc('getTokenAccountsByOwner', [DEV, { mint: CA }, { encoding: 'jsonParsed' }]);
-        DEV_ATA = d.value[0]?.pubkey || null;
-      } catch (e) {}
+      const d = await enRpc('getTokenAccountsByOwner', [DEV, { mint: CA }, { encoding: 'jsonParsed' }]);
+      DEV_ATA = d.value[0]?.pubkey || null;
+      return DEV_ATA;
     }
     const enOwnerBal = (list, o) => { const e = (list || []).find(b => b.owner === o && b.mint === CA); return e ? Number(e.uiTokenAmount.uiAmount || 0) : 0; };
     function enBurnAmt(tx) {
@@ -931,25 +970,52 @@
       if (dd > 0.0001 && sol < -0.0005) evs.push({ type: 'buyback', time, bull: Math.round(dd), sol: Number((-sol).toFixed(4)), sig });
       return evs;
     }
-    async function enPoll() {
-      if (!DEV_ATA) await enResolveATA();
-      if (!DEV_ATA) return;
-      const cut = enBaseNewest(), fresh = [];
-      try {
-        const sigs = await enRpc('getSignaturesForAddress', [DEV_ATA, { limit: 50 }]);
-        for (const s of sigs) { if (!s.err && s.blockTime && s.blockTime > cut && !enSeen.has(s.signature) && !fresh.includes(s.signature)) fresh.push(s.signature); }
-      } catch (e) {}
-      let changed = false;
-      for (const sig of fresh) {
-        enSeen.add(sig);
-        try {
-          const tx = await enRpc('getTransaction', [sig, { maxSupportedTransactionVersion: 0, encoding: 'jsonParsed' }]);
-          if (!tx || tx.meta?.err) continue;
-          const evs = enClassify(sig, tx);
-          if (evs.length) { enLive.push(...evs); changed = true; }
-        } catch (e) {}
+    // Walk signatures back to the committed baseline, paging as far as it takes, so
+    // events can never fall out of a fixed window. MAX_PAGES is a runaway guard: if we
+    // hit it we report `truncated` rather than silently under-reporting the totals.
+    async function enFreshSigs(cut) {
+      const PAGE = 100, MAX_PAGES = 12;
+      const fresh = [];
+      let before = null, truncated = false, done = false;
+      for (let page = 0; page < MAX_PAGES && !done; page++) {
+        const sigs = await enRpc('getSignaturesForAddress', [DEV_ATA, before ? { limit: PAGE, before } : { limit: PAGE }]);
+        if (!sigs.length) break;
+        for (const s of sigs) {
+          if (s.blockTime && s.blockTime <= cut) { done = true; break; }
+          if (!s.err && !enSeen.has(s.signature) && !fresh.includes(s.signature)) fresh.push(s.signature);
+        }
+        if (done) break;
+        if (sigs.length < PAGE) break;
+        before = sigs[sigs.length - 1].signature;
+        if (page === MAX_PAGES - 1) truncated = true;
       }
-      enChecked = Math.floor(Date.now() / 1000);
+      return { fresh, truncated };
+    }
+
+    async function enPoll() {
+      try {
+        if (!DEV_ATA) await enResolveATA();
+        if (!DEV_ATA) throw new Error('dev token account not found');
+        const { fresh, truncated } = await enFreshSigs(enBaseNewest());
+        const { out, failed } = await enMapLimit(fresh, 5, async sig => ({
+          sig, tx: await enRpc('getTransaction', [sig, { maxSupportedTransactionVersion: 0, encoding: 'jsonParsed' }]),
+        }));
+        for (const row of out) {
+          if (!row || !row.tx) continue;   // fetch failed — leave unseen so the next poll retries
+          enSeen.add(row.sig);
+          if (row.tx.meta?.err) continue;
+          const evs = enClassify(row.sig, row.tx);
+          if (evs.length) enLive.push(...evs);
+        }
+        enChecked = Math.floor(Date.now() / 1000); // only ever set after we truly reached the chain
+        enState = (failed || truncated) ? 'partial' : 'ok';
+        enStateMsg = truncated ? 'more history than one check can page'
+          : failed ? failed + ' event' + (failed === 1 ? '' : 's') + " couldn't be read"
+          : '';
+      } catch (e) {
+        enState = 'error';
+        enStateMsg = (e && e.message) || 'network error';
+      }
       enRenderAll();
     }
     const EN_META = {
@@ -985,7 +1051,10 @@
       if (btn && btn.disabled) return;
       if (btn) { btn.dataset.label = btn.dataset.label || btn.textContent; btn.disabled = true; btn.textContent = '⏳ Checking…'; }
       try { await enPoll(); await enLoadBaseline(); } catch (e) {}
-      if (btn) { btn.textContent = '✓ Up to date'; setTimeout(() => { btn.textContent = btn.dataset.label; btn.disabled = false; }, 6000); }
+      if (btn) {
+        btn.textContent = enState === 'ok' ? '✓ Up to date' : enState === 'partial' ? '⚠️ Partly checked' : '⚠️ Check failed';
+        setTimeout(() => { btn.textContent = btn.dataset.label; btn.disabled = false; }, 6000);
+      }
     }
     document.getElementById('enRefresh')?.addEventListener('click', enManualRefresh);
     // boot: paint the free baseline instantly, then ONE live Helius check on load

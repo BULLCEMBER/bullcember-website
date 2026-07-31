@@ -1567,6 +1567,14 @@ section { padding: 100px 0; }
   box-shadow: 0 0 0 0 rgba(58,208,122,0.6);
   animation: enginePulse 2s infinite;
 }
+/* live check failed or came back partial — stop implying a healthy live feed */
+.engine-updated.stale { color: var(--gold); }
+.engine-updated.stale .live-dot {
+  background: var(--gold);
+  box-shadow: none;
+  animation: none;
+  opacity: 0.7;
+}
 @keyframes enginePulse {
   0% { box-shadow: 0 0 0 0 rgba(58,208,122,0.6); }
   70% { box-shadow: 0 0 0 8px rgba(58,208,122,0); }
