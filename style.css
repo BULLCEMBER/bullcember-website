@@ -1864,15 +1864,3 @@ section { padding: var(--section-y) 0; }
 }
 
 /* ===== FULL-WIDTH BRAND BANNER ===== */
-.brand-banner {
-  width: 100%;
-  line-height: 0;
-  margin-top: 72px; /* clear the fixed navbar */
-  border-bottom: 1px solid var(--border);
-  box-shadow: 0 0 60px rgba(217, 162, 39, 0.12);
-}
-.brand-banner img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
