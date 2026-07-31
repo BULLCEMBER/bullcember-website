@@ -131,7 +131,7 @@ a { text-decoration: none; color: inherit; }
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  padding: 160px 24px 0;
+  padding: 56px 24px 0;
 }
 
 /* Radial glow background */
@@ -1386,7 +1386,7 @@ section { padding: 100px 0; }
     border-bottom: 1px solid var(--border);
   }
   .nav-links li:last-child a { border-bottom: none; }
-  .hero { padding: 100px 16px 0; }
+  .hero { padding: 40px 16px 0; }
   .hero-pfp-wrapper { width: 160px; height: 160px; }
   .pfp-circle { width: 140px; height: 140px; }
   .live-bar {
@@ -1696,7 +1696,7 @@ section { padding: 100px 0; }
 .brand-banner {
   width: 100%;
   line-height: 0;
-  border-top: 1px solid var(--border);
+  margin-top: 72px; /* clear the fixed navbar */
   border-bottom: 1px solid var(--border);
   box-shadow: 0 0 60px rgba(217, 162, 39, 0.12);
 }
