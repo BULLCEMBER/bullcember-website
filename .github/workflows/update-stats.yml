@@ -1,0 +1,49 @@
+name: Update engine stats
+
+# Regenerates data/stats.json (the baseline the Engine section paints on first frame)
+# and commits it when it changed. Without this the baseline goes stale and every
+# visitor sees old buyback/burn numbers until the client-side Helius poll catches up.
+
+on:
+  schedule:
+    # Offset from the top of the hour — */15 is a heavily contended slot on GitHub
+    # and scheduled runs get queued. Delivery is best-effort either way.
+    - cron: '7,22,37,52 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-stats
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Regenerate baseline from chain
+        env:
+          # Optional. Falls back to the public mainnet RPC, which is rate-limited —
+          # the scan retries with backoff, but set this secret to the Helius URL
+          # for reliability.
+          RPC_URL: ${{ secrets.RPC_URL }}
+        run: node scripts/update-stats.mjs
+
+      - name: Commit if changed
+        run: |
+          if [ -z "$(git status --porcelain data/)" ]; then
+            echo "No change — nothing to commit."
+            exit 0
+          fi
+          git config user.name  "bullcember-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/
+          git commit -m "Refresh engine buyback & burn baseline"
+          git push
