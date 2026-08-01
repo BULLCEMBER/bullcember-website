@@ -28,10 +28,25 @@ async function rpc(method, params, tries = 8) {
   }
 }
 
+// An associated token account address is derived from (owner, mint, token program),
+// so it is CONSTANT. The account at that address can be created and closed
+// repeatedly, but the address never changes and signatures stay indexed against it.
+//
+// On 2026-08-01 the dev burned its remaining balance and closed the account in one
+// transaction. getTokenAccountsByOwner then returned zero accounts, this function
+// returned null, and the caller's `if (devAcct)` guard silently scanned nothing —
+// so the scan reported "no new events" while a 1.7M burn sat unrecorded.
+// Must stay in agreement with DEV_ATA_ADDR in index.html.
+const DEV_ATA_ADDR = "4dTEzL1XdsWuzwFwXyzsxNKBUCqH8Nsac9CRGSfpgVGw";
+
 async function tokenAccount(owner) {
   // {mint} filter resolves the account whether it's legacy SPL or Token-2022.
-  const r = await rpc("getTokenAccountsByOwner", [owner, { mint: MINT }, { encoding: "jsonParsed" }]);
-  return r.value[0]?.pubkey || null;
+  try {
+    const r = await rpc("getTokenAccountsByOwner", [owner, { mint: MINT }, { encoding: "jsonParsed" }]);
+    return r.value[0]?.pubkey || DEV_ATA_ADDR;
+  } catch (e) {
+    return DEV_ATA_ADDR;
+  }
 }
 // Collect signatures newer than `sinceTime` (unix seconds). 0 = full history.
 async function allSigs(acct, sinceTime = 0) {

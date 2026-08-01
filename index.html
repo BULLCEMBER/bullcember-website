@@ -938,11 +938,23 @@
         enRenderAll();
       } catch (e) { const u = document.getElementById('enUpdated'); if (u && !enBaseline) u.textContent = 'Syncing on-chain data…'; }
     }
-    // Throws on RPC failure — the caller needs to tell "no new events" apart from
-    // "we never managed to look". Selection matches scripts/scan.mjs (first account).
+    // An associated token account address is derived from (owner, mint, token
+    // program), so it is CONSTANT — the account at that address can be created and
+    // closed repeatedly, but the address never changes and signatures stay indexed
+    // against it either way.
+    //
+    // On 2026-08-01 the dev burned its remaining balance and closed the account in
+    // a single transaction. getTokenAccountsByOwner then returned zero accounts, the
+    // lookup-only resolve produced null, and the engine went blind to its own burn.
+    // Treat the address as the constant it is and only use the lookup as a hint.
+    const DEV_ATA_ADDR = '4dTEzL1XdsWuzwFwXyzsxNKBUCqH8Nsac9CRGSfpgVGw';
     async function enResolveATA() {
-      const d = await enRpc('getTokenAccountsByOwner', [DEV, { mint: CA }, { encoding: 'jsonParsed' }]);
-      DEV_ATA = d.value[0]?.pubkey || null;
+      try {
+        const d = await enRpc('getTokenAccountsByOwner', [DEV, { mint: CA }, { encoding: 'jsonParsed' }]);
+        DEV_ATA = d.value[0]?.pubkey || DEV_ATA_ADDR;
+      } catch (e) {
+        DEV_ATA = DEV_ATA_ADDR;   // a lookup failure must not blind the poll
+      }
       return DEV_ATA;
     }
     const enOwnerBal = (list, o) => { const e = (list || []).find(b => b.owner === o && b.mint === CA); return e ? Number(e.uiTokenAmount.uiAmount || 0) : 0; };
