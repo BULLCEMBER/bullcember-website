@@ -650,6 +650,15 @@ section { padding: var(--section-y) 0; }
   color: var(--fg);
 }
 
+.toko-sub {
+  margin-top: var(--s-2);
+  font-family: var(--f-mono);
+  font-size: var(--t-2xs);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
 .toko-ca-row {
   display: flex;
   align-items: center;

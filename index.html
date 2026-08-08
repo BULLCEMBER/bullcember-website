@@ -268,11 +268,13 @@
         </div>
         <div class="toko-card">
           <div class="toko-label">DEX</div>
-          <div class="toko-value">pump.fun</div>
+          <div class="toko-value">PumpSwap</div>
+          <div class="toko-sub">bonded from pump.fun</div>
         </div>
         <div class="toko-card">
           <div class="toko-label">Total Supply</div>
-          <div class="toko-value">1,000,000,000</div>
+          <div class="toko-value" id="toko-supply">940,151,654</div>
+          <div class="toko-sub" id="toko-burned">59.85M burned of 1B · 5.98%</div>
         </div>
         <div class="toko-card toko-wide">
           <div class="toko-label">Timeline</div>
@@ -283,8 +285,8 @@
             </div>
             <div class="toko-timeline-arrow">→</div>
             <div class="toko-timeline-item">
-              <span class="toko-timeline-label">Graduating to PumpSwap</span>
-              <span class="toko-value">Soon</span>
+              <span class="toko-timeline-label">Bonded to PumpSwap</span>
+              <span class="toko-value">August 8, 2026</span>
             </div>
           </div>
         </div>
@@ -294,7 +296,7 @@
             <div class="grad-pct" id="grad-pct">0%</div>
           </div>
           <div class="grad-bar"><div class="grad-fill" id="grad-fill"></div></div>
-          <div class="grad-meta"><span id="grad-sol">0</span> SOL in the bonding curve, graduates to PumpSwap at 85 SOL</div>
+          <div class="grad-meta" id="grad-meta"><span id="grad-sol">0</span> SOL in the bonding curve, graduates to PumpSwap at 85 SOL</div>
         </div>
         <div class="toko-card toko-wide">
           <div class="toko-label">Contract Address</div>
@@ -365,9 +367,9 @@
         <a href="https://pump.fun/coin/DTRmPLZPfQRRRVwyZFuSxUhvnj9RHgDqFjQXx6vUpump" target="_blank" class="partner-card">
           <img src="https://pump.fun/favicon.ico" alt="pump.fun" class="partner-logo" loading="lazy" onerror="this.style.display='none'" />
           <span class="partner-name">pump.fun</span>
-          <span class="partner-sub">Where it all started</span>
+          <span class="partner-sub">Bonded &mdash; trades on PumpSwap</span>
         </a>
-        <a href="https://dexscreener.com/solana/DExz6gLccnrgCQRphPhCqT3TUZPEY33RerUhoAwvvbhg" target="_blank" class="partner-card">
+        <a href="https://dexscreener.com/solana/3LnLWicgYKDipE4nDUNS9BuLeXJZTB8jYqbGVcyhVHnr" target="_blank" class="partner-card">
           <img src="https://dexscreener.com/favicon.ico" alt="DexScreener" class="partner-logo" loading="lazy" onerror="this.style.display='none'" />
           <span class="partner-name">DexScreener</span>
           <span class="partner-sub">Live chart &amp; analytics</span>
@@ -520,11 +522,12 @@
   <script src="https://plugin.jup.ag/plugin-v1.js" data-preload defer></script>
   <script>
     const CA = 'DTRmPLZPfQRRRVwyZFuSxUhvnj9RHgDqFjQXx6vUpump';
-    // Pre-graduation PAIR is the bonding curve itself. After graduation to PumpSwap,
-    // update PAIR to the new PumpSwap pair address or DexScreener stats will go stale.
-    const PAIR = 'DExz6gLccnrgCQRphPhCqT3TUZPEY33RerUhoAwvvbhg';
+    // Bonded 2026-08-08. The curve is drained, so it reports no liquidity and no new
+    // trades — every live widget now has to read from the PumpSwap pool instead.
+    const PAIR = '3LnLWicgYKDipE4nDUNS9BuLeXJZTB8jYqbGVcyhVHnr';
     const HELIUS_KEY = 'c031e185-55ff-4b43-8e6b-63054ca1f2ee';
-    const BONDING_CURVE = 'DExz6gLccnrgCQRphPhCqT3TUZPEY33RerUhoAwvvbhg'; // pump.fun bonding curve PDA for this mint
+    const POOL = '3LnLWicgYKDipE4nDUNS9BuLeXJZTB8jYqbGVcyhVHnr'; // PumpSwap pool: BULLCEMBER leaving it is a buy
+    const BONDING_CURVE = 'DExz6gLccnrgCQRphPhCqT3TUZPEY33RerUhoAwvvbhg'; // pump.fun bonding curve PDA (closed at graduation)
     const INIT_REAL_TOKEN = 793100000000000; // initial real token reserves on the curve (793.1M * 1e6)
     function fmt(n, decimals = 2) {
       if (n === null || n === undefined) return '—';
@@ -575,8 +578,15 @@
     }
     function updateGraduation(pct, sol, complete) {
       document.getElementById('grad-fill').style.width = pct.toFixed(1) + '%';
-      document.getElementById('grad-pct').textContent = complete ? 'Graduated' : pct.toFixed(1) + '%';
-      document.getElementById('grad-sol').textContent = sol.toFixed(3);
+      document.getElementById('grad-pct').textContent = complete ? 'Bonded' : pct.toFixed(1) + '%';
+      // Post-bond the "x SOL in the curve, graduates at 85" line is meaningless — the
+      // curve is empty by definition — so retire the whole sentence, not just the number.
+      const meta = document.getElementById('grad-meta');
+      if (complete) {
+        if (meta) meta.innerHTML = 'Bonding curve complete — now trading on <span>PumpSwap</span>';
+      } else {
+        document.getElementById('grad-sol').textContent = sol.toFixed(3);
+      }
       // Pre-graduation there's no DexScreener liquidity, so estimate pool depth from the
       // curve's SOL reserve (both sides ≈ 2× the SOL value). Post-graduation fetchStats owns it.
       if (!complete && lastSolUsd) {
@@ -604,13 +614,13 @@
     }
     async function fetchBuys() {
       try {
-        const r = await fetch(`https://api.helius.xyz/v0/addresses/${BONDING_CURVE}/transactions?api-key=${HELIUS_KEY}&limit=40`);
+        const r = await fetch(`https://api.helius.xyz/v0/addresses/${POOL}/transactions?api-key=${HELIUS_KEY}&limit=40`);
         if (!r.ok) return;
         const txns = await r.json();
         if (!Array.isArray(txns)) return;
         const buys = [];
         for (const tx of txns) {
-          const tt = (tx.tokenTransfers || []).find(x => x.mint === CA && x.fromUserAccount === BONDING_CURVE);
+          const tt = (tx.tokenTransfers || []).find(x => x.mint === CA && x.fromUserAccount === POOL);
           if (!tt || !tt.tokenAmount) continue;
           buys.push({ sig: tx.signature, buyer: tt.toUserAccount, tokens: tt.tokenAmount, ts: tx.timestamp });
           if (buys.length >= 12) break;
@@ -646,7 +656,12 @@
       });
     }
     const TOKEN_DECIMALS = 1e6;
-    const TOTAL_SUPPLY = 1e9;
+    const LAUNCH_SUPPLY = 1e9;
+    // Mint authority is null and the engine only ever burns, so on-chain supply IS the
+    // circulating supply — and it keeps shrinking. Holder shares have to divide by the
+    // live number, not the 1B the token launched with, or every share reads low.
+    let TOTAL_SUPPLY = 940151654;
+    let lastBalances = null;
     const HERD_MILESTONES = [100, 250, 500, 1000, 2500, 5000, 10000, 25000, 50000, 100000];
     let herdTotal = 0, herdVisible = false, herdAnimated = false, herdRanked = [];
     function tierOf(tok) {
@@ -677,7 +692,20 @@
         animateCount(document.getElementById('herd-num'), herdTotal);
       }
     }
+    // Supply arrives from data/stats.json on its own clock — it can land before or after
+    // the holder fetch, so re-render the board if it already drew with a stale divisor.
+    function applySupply(supply) {
+      if (!supply || supply <= 0) return;
+      TOTAL_SUPPLY = supply;
+      const burned = LAUNCH_SUPPLY - supply;
+      const sEl = document.getElementById('toko-supply');
+      if (sEl) sEl.textContent = Math.floor(supply).toLocaleString();
+      const bEl = document.getElementById('toko-burned');
+      if (bEl) bEl.textContent = fmtTok(burned) + ' burned of 1B · ' + (burned / LAUNCH_SUPPLY * 100).toFixed(2) + '%';
+      if (lastBalances) renderHerd(lastBalances);
+    }
     function renderHerd(balances) {
+      lastBalances = balances;
       const entries = [...balances.entries()].map(([owner, raw]) => ({ owner, tok: raw / TOKEN_DECIMALS }));
       const counts = { calf: 0, bull: 0, stampede: 0, alpha: 0 };
       for (const e of entries) {
@@ -726,7 +754,11 @@
           }
           cursor = accounts.length === 1000 ? data?.result?.cursor : undefined;
         } while (cursor);
-        balances.delete(BONDING_CURVE); // exclude the curve's unsold reserve from the herd
+        // Neither the curve's unsold reserve nor the PumpSwap pool's LP side is a holder.
+        // The pool holds a large share of supply, so leaving it in would put it at #1 on
+        // the leaderboard and add a phantom bull to the herd count.
+        balances.delete(BONDING_CURVE);
+        balances.delete(POOL);
         const total = balances.size;
         if (total > 0) {
           herdTotal = total;
@@ -894,7 +926,9 @@
         burned:  { amount: (b.burned?.amount || 0) + sumF(burnL, 'bull'), count: (b.burned?.count || 0) + burnL.length },
         buyback: { bull: (b.buyback?.bull || 0) + sumF(of('buyback'), 'bull'), sol: (b.buyback?.sol || 0) + sumF(of('buyback'), 'sol'), count: (b.buyback?.count || 0) + of('buyback').length },
       };
-      const feed = [...live, ...(b.feed || [])].filter((e, i, a) => a.findIndex(x => x.sig === e.sig) === i).sort((a, b) => (b.time || 0) - (a.time || 0));
+      // Dedupe on type+sig: a pump.fun boost tx buys and burns under one signature, so
+      // both events are real and keying on sig alone would throw one of them away.
+      const feed = [...live, ...(b.feed || [])].filter((e, i, a) => a.findIndex(x => x.sig === e.sig && x.type === e.type) === i).sort((a, b) => (b.time || 0) - (a.time || 0));
       return { totals, feed, live: live.length };
     }
 
@@ -935,6 +969,7 @@
         if (!res.ok) return;
         enBaseline = await res.json();
         (enBaseline.feed || []).forEach(e => enSeen.add(e.sig));
+        applySupply(enBaseline.supply);
         enRenderAll();
       } catch (e) { const u = document.getElementById('enUpdated'); if (u && !enBaseline) u.textContent = 'Syncing on-chain data…'; }
     }

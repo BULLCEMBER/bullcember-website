@@ -10,6 +10,13 @@
 const RPC = process.env.RPC_URL || "https://api.mainnet-beta.solana.com";
 const MINT = "DTRmPLZPfQRRRVwyZFuSxUhvnj9RHgDqFjQXx6vUpump";
 const DEV = "BXrU6jcjtZnar27jfWCXXhr9EqQGcFvyfnpC9cRjYLmC"; // pump.fun creator / fee wallet
+// pump.fun "boost" vault. On graduation it takes a slice of the migration SOL and spends
+// it buying BULLCEMBER on PumpSwap, burning each buy inside the same transaction. The
+// tokens never touch the dev wallet, so a DEV-only scan is blind to every bit of it —
+// on 2026-08-08 that was 17.58 SOL and 39.09M BULLCEMBER the engine never saw.
+// The vault is shared across coins: most of its signatures are other coins' failed txs
+// (allSigs drops those) and burnAmount() filters whatever survives down to our mint.
+const BOOST = "BGVtkQcLUWtsm6FeZQrk12yXyDDYj9PhvmytYDKcDv5v";
 const DECIMALS = 6;
 const SOL_FEE_FLOOR = 0.0005; // ignore dust/fee-only SOL moves when tagging buybacks
 
@@ -64,10 +71,20 @@ async function allSigs(acct, sinceTime = 0) {
   return out;
 }
 
-const ownerBal = (list, owner) => {
-  const e = (list || []).find((b) => b.owner === owner && b.mint === MINT);
+const WSOL = "So11111111111111111111111111111111111111112";
+const ownerMintBal = (list, owner, mint) => {
+  const e = (list || []).find((b) => b.owner === owner && b.mint === mint);
   return e ? Number(e.uiTokenAmount.uiAmount || 0) : 0;
 };
+const ownerBal = (list, owner) => ownerMintBal(list, owner, MINT);
+
+// What the boost vault actually paid. It funds its buys from a wrapped-SOL account, so
+// its native lamport balance barely moves and solDelta() reads ~0 — the spend only shows
+// up as a drop in its WSOL token balance. Count both so either funding path is caught.
+function boostSpend(tx, pre, post) {
+  const wsol = ownerMintBal(post, BOOST, WSOL) - ownerMintBal(pre, BOOST, WSOL);
+  return -(wsol + solDelta(tx, BOOST));
+}
 function burnAmount(tx) {
   let burned = 0;
   const scan = (instrs) => (instrs || []).forEach((ix) => {
@@ -80,9 +97,9 @@ function burnAmount(tx) {
   (tx.meta?.innerInstructions || []).forEach((ii) => scan(ii.instructions));
   return burned;
 }
-function solDeltaDev(tx) {
+function solDelta(tx, who) {
   const keys = tx.transaction.message.accountKeys.map((k) => (typeof k === "string" ? k : k.pubkey));
-  const i = keys.indexOf(DEV);
+  const i = keys.indexOf(who);
   if (i < 0 || !tx.meta) return 0;
   return (tx.meta.postBalances[i] - tx.meta.preBalances[i]) / 1e9;
 }
@@ -93,6 +110,7 @@ export async function scan(sinceTime = 0) {
   const devAcct = await tokenAccount(DEV);
   const set = new Set();
   if (devAcct) (await allSigs(devAcct, sinceTime)).forEach((s) => set.add(s));
+  (await allSigs(BOOST, sinceTime).catch(() => [])).forEach((s) => set.add(s));
   const sigs = [...set];
 
   const rows = [];
@@ -116,7 +134,8 @@ export async function scan(sinceTime = 0) {
     const pre = tx.meta?.preTokenBalances, post = tx.meta?.postTokenBalances;
     const devDelta = ownerBal(post, DEV) - ownerBal(pre, DEV);
     const burned = burnAmount(tx);
-    const solD = solDeltaDev(tx);
+    const solD = solDelta(tx, DEV);
+    const boostSol = boostSpend(tx, pre, post);
 
     if (burned > 0.0001) {
       out.burn.bull += burned; out.burn.count += 1;
@@ -126,6 +145,13 @@ export async function scan(sinceTime = 0) {
     if (devDelta > 0.0001 && solD < -SOL_FEE_FLOOR) {
       out.buyback.bull += devDelta; out.buyback.count += 1; out.buyback.sol += -solD;
       out.feed.push({ type: "buyback", time, bull: Math.round(devDelta), sol: Number((-solD).toFixed(4)), sig });
+    } else if (burned > 0.0001 && boostSol > SOL_FEE_FLOOR) {
+      // A boost buy never lands in a balance — it is bought and burned atomically, so the
+      // token delta is zero everywhere and the burned amount IS the amount bought back.
+      // This emits a second event on a signature that also produced a burn above, which is
+      // why the feed has to be deduped on type+sig rather than sig alone.
+      out.buyback.bull += burned; out.buyback.count += 1; out.buyback.sol += boostSol;
+      out.feed.push({ type: "buyback", time, bull: Math.round(burned), sol: Number(boostSol.toFixed(4)), sig });
     }
     if (time > out.newestTime) { out.newestTime = time; out.newestSig = sig; }
   }

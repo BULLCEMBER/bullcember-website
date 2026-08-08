@@ -43,10 +43,13 @@ async function main() {
   // Only scan transactions newer than what we already have.
   const fresh = await scan(sinceTime).catch((e) => { console.error("scan failed:", e.message); return null; });
 
-  // Merge, dedupe by signature, keep newest first.
+  // Merge, dedupe, keep newest first. The key is type+sig, not sig: a pump.fun boost
+  // transaction buys and burns in one instruction set, so a single signature legitimately
+  // carries both a buyback and a burn. Keying on sig alone silently drops one of them.
   const bySig = new Map();
-  for (const e of prevEvents) bySig.set(e.sig, e);
-  if (fresh) for (const e of fresh.feed) bySig.set(e.sig, e);
+  const key = (e) => e.type + ":" + e.sig;
+  for (const e of prevEvents) bySig.set(key(e), e);
+  if (fresh) for (const e of fresh.feed) bySig.set(key(e), e);
   const events = [...bySig.values()].sort((a, b) => (b.time || 0) - (a.time || 0));
 
   // Totals derived from the full event log (never double-counted).

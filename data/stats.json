@@ -1,21 +1,398 @@
 {
-  "updatedAt": "2026-08-08T18:14:12.762Z",
-  "price": 0.00002764,
+  "updatedAt": "2026-08-08T17:55:01.156Z",
+  "price": 0.00002805,
   "supply": 940151654.646606,
   "burnedSince": 1782070621,
   "burned": {
-    "amount": 20749395,
-    "pct": 2.075,
-    "usd": 573.51,
-    "count": 2
+    "amount": 59841477,
+    "pct": 5.984,
+    "usd": 1678.55,
+    "count": 31
   },
   "buyback": {
-    "bull": 22461887,
-    "sol": 3.6696,
-    "usd": 620.85,
-    "count": 20
+    "bull": 61553969,
+    "sol": 21.2541,
+    "usd": 1726.59,
+    "count": 49
   },
   "feed": [
+    {
+      "type": "burn",
+      "time": 1786208686,
+      "bull": 2339935,
+      "sig": "PF3RupdSdrUcQdfnJ6FrCyRvkrFrFTcMYgGdTwBnzLUB6njyzeM1bRsvsnkAas1HrqFPUzVsPXhdkwAgSygAMH1"
+    },
+    {
+      "type": "buyback",
+      "time": 1786208686,
+      "bull": 2339935,
+      "sol": 1.0716,
+      "sig": "PF3RupdSdrUcQdfnJ6FrCyRvkrFrFTcMYgGdTwBnzLUB6njyzeM1bRsvsnkAas1HrqFPUzVsPXhdkwAgSygAMH1"
+    },
+    {
+      "type": "burn",
+      "time": 1786208675,
+      "bull": 1639181,
+      "sig": "3dpZMdWAYv7mrYtEu59E9QES6Vpb4temtWYrK86Gf88aKz8qdpPLkJGRpKjVbrYXtnu85ycGRdjiYDYoRAVCcvHD"
+    },
+    {
+      "type": "buyback",
+      "time": 1786208675,
+      "bull": 1639181,
+      "sol": 0.7555,
+      "sig": "3dpZMdWAYv7mrYtEu59E9QES6Vpb4temtWYrK86Gf88aKz8qdpPLkJGRpKjVbrYXtnu85ycGRdjiYDYoRAVCcvHD"
+    },
+    {
+      "type": "burn",
+      "time": 1786208663,
+      "bull": 1701723,
+      "sig": "2dMKgnuYp2GqquAGzvuX3NRMnZTgrdEm3xweMJYUnNoos1ePtQKBjdjgVfzFvVeswm2cWNqeHqEdztGJAnwvFW59"
+    },
+    {
+      "type": "buyback",
+      "time": 1786208663,
+      "bull": 1701723,
+      "sol": 0.7812,
+      "sig": "2dMKgnuYp2GqquAGzvuX3NRMnZTgrdEm3xweMJYUnNoos1ePtQKBjdjgVfzFvVeswm2cWNqeHqEdztGJAnwvFW59"
+    },
+    {
+      "type": "burn",
+      "time": 1786208650,
+      "bull": 1907511,
+      "sig": "3Ti9Ysd13tjzXgzw3Nt9KYSrkzfdMBijtkxkUEQPEYym1s3pxz33ybJaaAuv6kwYwBobjG4msm9dLNsETMPdZAto"
+    },
+    {
+      "type": "buyback",
+      "time": 1786208650,
+      "bull": 1907511,
+      "sol": 0.8671,
+      "sig": "3Ti9Ysd13tjzXgzw3Nt9KYSrkzfdMBijtkxkUEQPEYym1s3pxz33ybJaaAuv6kwYwBobjG4msm9dLNsETMPdZAto"
+    },
+    {
+      "type": "burn",
+      "time": 1786208639,
+      "bull": 1083058,
+      "sig": "qvkbsUpQGByveGbXAKk2tnKpGy3KNcDx8S3jAbnbyYn8waF8Kjn2wfmvA8Y4msEViPoZojnLsAv7qD8wouHrks6"
+    },
+    {
+      "type": "buyback",
+      "time": 1786208639,
+      "bull": 1083058,
+      "sol": 0.5088,
+      "sig": "qvkbsUpQGByveGbXAKk2tnKpGy3KNcDx8S3jAbnbyYn8waF8Kjn2wfmvA8Y4msEViPoZojnLsAv7qD8wouHrks6"
+    },
+    {
+      "type": "burn",
+      "time": 1786208627,
+      "bull": 1187932,
+      "sig": "2XHytxc9RBhagQvS3aJQHztqSvGWiWbK74vfGqyoQQMEGJDaVVvXVPsge4aJJyDpx2b1L7q7RUCfvnnHvbq69Zc3"
+    },
+    {
+      "type": "buyback",
+      "time": 1786208627,
+      "bull": 1187932,
+      "sol": 0.5526,
+      "sig": "2XHytxc9RBhagQvS3aJQHztqSvGWiWbK74vfGqyoQQMEGJDaVVvXVPsge4aJJyDpx2b1L7q7RUCfvnnHvbq69Zc3"
+    },
+    {
+      "type": "burn",
+      "time": 1786208616,
+      "bull": 1114636,
+      "sig": "4pS3AWCmY7RzXLTGviKoLA1wuAnbCRxq1gczDmcS7ShJ4c2bKd9pJ4h7kq8yiEUQuTA9gZ9zsHow6mVb9YQJ2RL2"
+    },
+    {
+      "type": "buyback",
+      "time": 1786208616,
+      "bull": 1114636,
+      "sol": 0.5103,
+      "sig": "4pS3AWCmY7RzXLTGviKoLA1wuAnbCRxq1gczDmcS7ShJ4c2bKd9pJ4h7kq8yiEUQuTA9gZ9zsHow6mVb9YQJ2RL2"
+    },
+    {
+      "type": "burn",
+      "time": 1786208605,
+      "bull": 1154934,
+      "sig": "5EmxCUnLhpDVtCSRvRBYqoa9YibHNDLBKJaehorcCgRJ8pAxCUhvtBzVu3vJX1GzNB7m6XoHdY2AhU5gmBY4Vd7p"
+    },
+    {
+      "type": "buyback",
+      "time": 1786208605,
+      "bull": 1154934,
+      "sol": 0.5224,
+      "sig": "5EmxCUnLhpDVtCSRvRBYqoa9YibHNDLBKJaehorcCgRJ8pAxCUhvtBzVu3vJX1GzNB7m6XoHdY2AhU5gmBY4Vd7p"
+    },
+    {
+      "type": "burn",
+      "time": 1786208593,
+      "bull": 1616647,
+      "sig": "35chCNT7spcKz2h7RfMhqda292LxHQhqzFiRrwws6URT9K1RzMAy2v98Tub1VGcSeC6J4yn8uGANXh9712EpKCZQ"
+    },
+    {
+      "type": "buyback",
+      "time": 1786208593,
+      "bull": 1616647,
+      "sol": 0.7387,
+      "sig": "35chCNT7spcKz2h7RfMhqda292LxHQhqzFiRrwws6URT9K1RzMAy2v98Tub1VGcSeC6J4yn8uGANXh9712EpKCZQ"
+    },
+    {
+      "type": "burn",
+      "time": 1786208581,
+      "bull": 1572076,
+      "sig": "3Pkt6WFhuK7yX7YsPcvkk1ctB15yXSR8Ld9gKegtUedwrCtXUqXatdZ4bxvAk7Ku9YkQPWnK5JSyeJwtinnGcGRm"
+    },
+    {
+      "type": "buyback",
+      "time": 1786208581,
+      "bull": 1572076,
+      "sol": 0.7142,
+      "sig": "3Pkt6WFhuK7yX7YsPcvkk1ctB15yXSR8Ld9gKegtUedwrCtXUqXatdZ4bxvAk7Ku9YkQPWnK5JSyeJwtinnGcGRm"
+    },
+    {
+      "type": "burn",
+      "time": 1786208570,
+      "bull": 1470188,
+      "sig": "31yuydwCWdvdGjoV7geAcdEmq5JYJByA2Kxdai5bKzLUBz7VRuAHr32schP748LXanZaMwXdEGpzAZooUYSmqcXo"
+    },
+    {
+      "type": "buyback",
+      "time": 1786208570,
+      "bull": 1470188,
+      "sol": 0.6717,
+      "sig": "31yuydwCWdvdGjoV7geAcdEmq5JYJByA2Kxdai5bKzLUBz7VRuAHr32schP748LXanZaMwXdEGpzAZooUYSmqcXo"
+    },
+    {
+      "type": "burn",
+      "time": 1786208558,
+      "bull": 857786,
+      "sig": "4LPCrY8LEDWENN567rpKJepJkpjmbGpiHTidKrLtv3Hvzj7u11JPeagMeJHwWnCtTojmKowSe7yfczKMQfcm6hm6"
+    },
+    {
+      "type": "buyback",
+      "time": 1786208558,
+      "bull": 857786,
+      "sol": 0.3871,
+      "sig": "4LPCrY8LEDWENN567rpKJepJkpjmbGpiHTidKrLtv3Hvzj7u11JPeagMeJHwWnCtTojmKowSe7yfczKMQfcm6hm6"
+    },
+    {
+      "type": "burn",
+      "time": 1786208547,
+      "bull": 881394,
+      "sig": "2yS5aHCSPAetGEebrSMvmV8YdiZ7kYnfGCuncGHHw16rioQrm1E2n31VooaFbSYmFn8zNJT6s4Zu7n9z2pS8ZMDn"
+    },
+    {
+      "type": "buyback",
+      "time": 1786208547,
+      "bull": 881394,
+      "sol": 0.3941,
+      "sig": "2yS5aHCSPAetGEebrSMvmV8YdiZ7kYnfGCuncGHHw16rioQrm1E2n31VooaFbSYmFn8zNJT6s4Zu7n9z2pS8ZMDn"
+    },
+    {
+      "type": "burn",
+      "time": 1786208531,
+      "bull": 933943,
+      "sig": "4tQoocFSVdW2dRjswu3pYGjSK4ajSFf4BN3w2W7uiBJzXCfbTYaShrfV6aVcQqSUHakQsjXgpUsgYdp9KfCUuLYa"
+    },
+    {
+      "type": "buyback",
+      "time": 1786208531,
+      "bull": 933943,
+      "sol": 0.4236,
+      "sig": "4tQoocFSVdW2dRjswu3pYGjSK4ajSFf4BN3w2W7uiBJzXCfbTYaShrfV6aVcQqSUHakQsjXgpUsgYdp9KfCUuLYa"
+    },
+    {
+      "type": "burn",
+      "time": 1786208519,
+      "bull": 1248896,
+      "sig": "BSVieXqXoM7gQM91YSUVhmjXN2LzJrFsdkjewtWVjJR4W9by5zSjDzgZDFSE96sXNauxbcYJ94cSYvFAJJihj9X"
+    },
+    {
+      "type": "buyback",
+      "time": 1786208519,
+      "bull": 1248896,
+      "sol": 0.561,
+      "sig": "BSVieXqXoM7gQM91YSUVhmjXN2LzJrFsdkjewtWVjJR4W9by5zSjDzgZDFSE96sXNauxbcYJ94cSYvFAJJihj9X"
+    },
+    {
+      "type": "burn",
+      "time": 1786208508,
+      "bull": 801461,
+      "sig": "3SnxZ43G9M2cq5i6JFYh6z17rv6ZJjdw14aicHGNoSYmff7gm4dQUBLe2otpALtzM6XYdHXmkkvtqWqVyP1FiCMr"
+    },
+    {
+      "type": "buyback",
+      "time": 1786208508,
+      "bull": 801461,
+      "sol": 0.3635,
+      "sig": "3SnxZ43G9M2cq5i6JFYh6z17rv6ZJjdw14aicHGNoSYmff7gm4dQUBLe2otpALtzM6XYdHXmkkvtqWqVyP1FiCMr"
+    },
+    {
+      "type": "burn",
+      "time": 1786208497,
+      "bull": 1647525,
+      "sig": "2TNgj6zAX2H1eZiymD8QH1zhLzVnFmDEx8pSTPk9vMzy57vNRWE13aT8U5s4qeprcicBK5vQAiKsfmdgKRLBMz72"
+    },
+    {
+      "type": "buyback",
+      "time": 1786208497,
+      "bull": 1647525,
+      "sol": 0.7224,
+      "sig": "2TNgj6zAX2H1eZiymD8QH1zhLzVnFmDEx8pSTPk9vMzy57vNRWE13aT8U5s4qeprcicBK5vQAiKsfmdgKRLBMz72"
+    },
+    {
+      "type": "burn",
+      "time": 1786208486,
+      "bull": 1382580,
+      "sig": "Nms23vq2MUb8LsXCksQzoG495jwWCU4rhh6MdsYr4W5yVRMi1W4trCavs5CAYszaKZW8sNDwKJuWo2Wc9o8UcrU"
+    },
+    {
+      "type": "buyback",
+      "time": 1786208486,
+      "bull": 1382580,
+      "sol": 0.6114,
+      "sig": "Nms23vq2MUb8LsXCksQzoG495jwWCU4rhh6MdsYr4W5yVRMi1W4trCavs5CAYszaKZW8sNDwKJuWo2Wc9o8UcrU"
+    },
+    {
+      "type": "burn",
+      "time": 1786208474,
+      "bull": 972590,
+      "sig": "8b5FyeusbjYTP9LXwgQMH8v4kHopCyfTyqoA6DZhWYRRisePvnYRdfm32pEAfRnFCXeRJLdLuFfYPz3EW4Gsmx4"
+    },
+    {
+      "type": "buyback",
+      "time": 1786208474,
+      "bull": 972590,
+      "sol": 0.4251,
+      "sig": "8b5FyeusbjYTP9LXwgQMH8v4kHopCyfTyqoA6DZhWYRRisePvnYRdfm32pEAfRnFCXeRJLdLuFfYPz3EW4Gsmx4"
+    },
+    {
+      "type": "burn",
+      "time": 1786208463,
+      "bull": 1809466,
+      "sig": "4cSgBFbkfghTPiVZQ64HhKrBSbDWLGtappjZjnxk8KgyhD2u1tp4p113xdKEEFy8jkY3X68CDkNmQyZJ7KHdpnjQ"
+    },
+    {
+      "type": "buyback",
+      "time": 1786208463,
+      "bull": 1809466,
+      "sol": 0.7642,
+      "sig": "4cSgBFbkfghTPiVZQ64HhKrBSbDWLGtappjZjnxk8KgyhD2u1tp4p113xdKEEFy8jkY3X68CDkNmQyZJ7KHdpnjQ"
+    },
+    {
+      "type": "burn",
+      "time": 1786208451,
+      "bull": 854064,
+      "sig": "4andc9MPLZa4TeAa5jmREohiS961LCsoNwUH9nFF77YPcjiwCgLWS9xCQjuwtgg2P1abGErkyCfHjx7VMZN4pgbu"
+    },
+    {
+      "type": "buyback",
+      "time": 1786208451,
+      "bull": 854064,
+      "sol": 0.3504,
+      "sig": "4andc9MPLZa4TeAa5jmREohiS961LCsoNwUH9nFF77YPcjiwCgLWS9xCQjuwtgg2P1abGErkyCfHjx7VMZN4pgbu"
+    },
+    {
+      "type": "burn",
+      "time": 1786208439,
+      "bull": 1492074,
+      "sig": "M4UWhe9c2YgBgLzu6XH5W9kRQArDJMu71EwdVJi9MKE5wdVNcdr4bLaFmmVYfbtXgB8NqBYnCtSZmdtAy6up1kM"
+    },
+    {
+      "type": "buyback",
+      "time": 1786208439,
+      "bull": 1492074,
+      "sol": 0.6795,
+      "sig": "M4UWhe9c2YgBgLzu6XH5W9kRQArDJMu71EwdVJi9MKE5wdVNcdr4bLaFmmVYfbtXgB8NqBYnCtSZmdtAy6up1kM"
+    },
+    {
+      "type": "burn",
+      "time": 1786208426,
+      "bull": 1357586,
+      "sig": "3DtZWTkQ3eZ7rcFoSFbhYcQRNrvZPpfiEwCzfyefp7HzMAvWPcDsJrm882adM5cwNwgriRJ2HLFhVWrf6wa5Qqfr"
+    },
+    {
+      "type": "buyback",
+      "time": 1786208426,
+      "bull": 1357586,
+      "sol": 0.5923,
+      "sig": "3DtZWTkQ3eZ7rcFoSFbhYcQRNrvZPpfiEwCzfyefp7HzMAvWPcDsJrm882adM5cwNwgriRJ2HLFhVWrf6wa5Qqfr"
+    },
+    {
+      "type": "burn",
+      "time": 1786208415,
+      "bull": 1309702,
+      "sig": "3xTJVsFv1Qv8569MuCtpgmcivSjsCCib7AYfrc268Ut3YZgb9sH45YFKcXu8TjTngC6gfPTBWdd2HtdKWBwDCNXF"
+    },
+    {
+      "type": "buyback",
+      "time": 1786208415,
+      "bull": 1309702,
+      "sol": 0.5367,
+      "sig": "3xTJVsFv1Qv8569MuCtpgmcivSjsCCib7AYfrc268Ut3YZgb9sH45YFKcXu8TjTngC6gfPTBWdd2HtdKWBwDCNXF"
+    },
+    {
+      "type": "burn",
+      "time": 1786208404,
+      "bull": 1597308,
+      "sig": "2PiNmSjLCLrUqnqWoo9FZt45ebRbPGrFL7z8YoCbuwVhrcW4HUFGJRjTiFSrmJbkVRipSGtf6F8sNvQhX9MeLKHX"
+    },
+    {
+      "type": "buyback",
+      "time": 1786208404,
+      "bull": 1597308,
+      "sol": 0.7362,
+      "sig": "2PiNmSjLCLrUqnqWoo9FZt45ebRbPGrFL7z8YoCbuwVhrcW4HUFGJRjTiFSrmJbkVRipSGtf6F8sNvQhX9MeLKHX"
+    },
+    {
+      "type": "burn",
+      "time": 1786208393,
+      "bull": 1592205,
+      "sig": "4uGXQWFZYd1CXc4Yjkw8uNviVN2DbehLGmjFx4a1iQvTcVqPP4ZBoKxpPJ12FWAWAFgeDZj36JrNtPekNbZoEBpG"
+    },
+    {
+      "type": "buyback",
+      "time": 1786208393,
+      "bull": 1592205,
+      "sol": 0.7466,
+      "sig": "4uGXQWFZYd1CXc4Yjkw8uNviVN2DbehLGmjFx4a1iQvTcVqPP4ZBoKxpPJ12FWAWAFgeDZj36JrNtPekNbZoEBpG"
+    },
+    {
+      "type": "burn",
+      "time": 1786208381,
+      "bull": 1242473,
+      "sig": "3K6oZpidv3B7JfdoTFoHGvVMmYPwd49zLLNJpF4GBTckoMF6uLTBfx2nXbdnJFaRTjmmeKNeALcLdruXPMJzpd2q"
+    },
+    {
+      "type": "buyback",
+      "time": 1786208381,
+      "bull": 1242473,
+      "sol": 0.573,
+      "sig": "3K6oZpidv3B7JfdoTFoHGvVMmYPwd49zLLNJpF4GBTckoMF6uLTBfx2nXbdnJFaRTjmmeKNeALcLdruXPMJzpd2q"
+    },
+    {
+      "type": "burn",
+      "time": 1786208370,
+      "bull": 1459381,
+      "sig": "cEdWN1FMdyKwBXcQKbnWky7ei4VYjMUKjQpTvZuWhtSRRsWDVFGA6aA4esPAxyGfA6CgawuMe3t5NREv58VJEgL"
+    },
+    {
+      "type": "buyback",
+      "time": 1786208370,
+      "bull": 1459381,
+      "sol": 0.647,
+      "sig": "cEdWN1FMdyKwBXcQKbnWky7ei4VYjMUKjQpTvZuWhtSRRsWDVFGA6aA4esPAxyGfA6CgawuMe3t5NREv58VJEgL"
+    },
+    {
+      "type": "burn",
+      "time": 1786208358,
+      "bull": 863827,
+      "sig": "4mzBfTt753kSnjcu5WXzaEAbXXcNSrs9xMBa6QwLqyXLiW7xsV34GgTdfNZdFdGjh3K2bPWEBWaDYpYBcGKseW3Y"
+    },
+    {
+      "type": "buyback",
+      "time": 1786208358,
+      "bull": 863827,
+      "sol": 0.3763,
+      "sig": "4mzBfTt753kSnjcu5WXzaEAbXXcNSrs9xMBa6QwLqyXLiW7xsV34GgTdfNZdFdGjh3K2bPWEBWaDYpYBcGKseW3Y"
+    },
     {
       "type": "buyback",
       "time": 1786207892,
