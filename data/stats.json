@@ -1,21 +1,28 @@
 {
-  "updatedAt": "2026-08-08T16:43:53.482Z",
-  "price": 0.00002852,
-  "supply": 979243740.170843,
+  "updatedAt": "2026-08-08T17:14:02.773Z",
+  "price": 0.00003258,
+  "supply": 940151654.646606,
   "burnedSince": 1782070621,
   "burned": {
     "amount": 20749395,
     "pct": 2.075,
-    "usd": 591.77,
+    "usd": 676.02,
     "count": 2
   },
   "buyback": {
-    "bull": 22317984,
-    "sol": 3.6082,
-    "usd": 636.51,
-    "count": 19
+    "bull": 22461887,
+    "sol": 3.6696,
+    "usd": 731.81,
+    "count": 20
   },
   "feed": [
+    {
+      "type": "buyback",
+      "time": 1786207892,
+      "bull": 143903,
+      "sol": 0.0614,
+      "sig": "5MZDd41NfVdnZa7qgmSFYn6TUzWZnwJQWx558uqFcN6agchiCb1Dp9LH2MjbzAcF2h8Gk2FtyKvYrU7MRBKJiJid"
+    },
     {
       "type": "buyback",
       "time": 1786207082,
