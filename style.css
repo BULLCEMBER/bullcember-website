@@ -379,14 +379,6 @@ a { text-decoration: none; color: inherit; }
   color: var(--signal);
   margin-bottom: var(--s-5);
 }
-/* leading rule — the eyebrow reads as a channel label, not a marketing kicker */
-.hero-tag::before {
-  content: '';
-  width: 24px;
-  height: 1px;
-  background: var(--signal);
-  flex: none;
-}
 
 /* Title */
 .hero-title {
@@ -552,14 +544,6 @@ section { padding: var(--section-y) 0; }
   color: var(--signal);
   margin-bottom: var(--s-3);
 }
-.section-tag::before {
-  content: '';
-  width: 24px;
-  height: 1px;
-  background: var(--signal);
-  flex: none;
-}
-
 .section-title {
   font-family: var(--f-display);
   font-size: var(--t-3xl);
@@ -1535,13 +1519,6 @@ section { padding: var(--section-y) 0; }
   letter-spacing: var(--ls-label);
   text-transform: uppercase;
   color: var(--signal);
-}
-.countdown-target::before {
-  content: '';
-  width: 24px;
-  height: 1px;
-  background: var(--signal);
-  flex: none;
 }
 
 /* ===== RESPONSIVE ===== */
