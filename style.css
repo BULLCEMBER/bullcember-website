@@ -1178,7 +1178,31 @@ section { padding: var(--section-y) 0; }
 
 .herd-tier:hover { border-color: var(--line-strong); }
 
-.herd-tier-emoji { font-size: var(--t-xl); line-height: 1; }
+/* The sprite is markup, not art on the page — keep it out of layout and out of the
+   accessibility tree without display:none, which would stop <use> resolving in Safari. */
+.svg-sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.herd-tier-ico {
+  display: block;
+  width: 34px;
+  height: 34px;
+  color: var(--fg);
+  transition: color var(--dur-1) var(--ease);
+}
+
+.herd-tier:hover .herd-tier-ico { color: var(--signal); }
+
+.rank-ico {
+  width: 20px;
+  height: 20px;
+  vertical-align: -0.3em;
+  color: var(--signal);
+}
 
 .herd-tier-name {
   font-family: var(--f-mono);

@@ -31,6 +31,61 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 </head>
 <body>
+<!-- Herd tier icons. These were emoji, which render at whatever quality the viewer's OS
+     font happens to ship and cannot be styled. 🐄 is also a dairy cow, which is the wrong
+     animal for a tier called Bull. Line art instead: one shared face, and the tier is read
+     off the horns (nubs -> full -> crowned). currentColor so they inherit tier styling. -->
+<svg class="svg-sprite" aria-hidden="true" focusable="false">
+  <defs>
+    <!-- Head plus horns as one solid silhouette. Eyes and nostrils are evenodd holes so
+         the card background shows through and the icon stays a single flat shape, which
+         survives 34px far better than hairline strokes did. -->
+    <!-- Broad forehead tapering into a muzzle, so the silhouette reads bovine and not oval. -->
+    <path id="bull-face" fill-rule="evenodd" d="M9.2 14.6c0-3 3-4.8 6.8-4.8s6.8 1.8 6.8 4.8c0 2-.6 3.4-2.2 4.2-.4.2-.6.6-.6 1.2 0 4.2-1.6 7.2-4 7.2s-4-3-4-7.2c0-.6-.2-1-.6-1.2-1.6-.8-2.2-2.2-2.2-4.2Zm2.4 0a1.6 1.6 0 1 0 3.2 0 1.6 1.6 0 1 0-3.2 0Zm5.6 0a1.6 1.6 0 1 0 3.2 0 1.6 1.6 0 1 0-3.2 0Zm-3.3 8a.9.9 0 1 0 1.8 0 .9.9 0 1 0-1.8 0Zm2.4 0a.9.9 0 1 0 1.8 0 .9.9 0 1 0-1.8 0Z"/>
+    <!-- Horns are thick where they meet the skull and overlap it, so head and horns read as
+         one mass. Drawn as spikes stuck on the sides they looked like ears. -->
+    <g id="bull-horns">
+      <path d="M12.4 13.4C10.2 12.8 7.4 11.4 5.2 9 4 7.7 3.2 6.4 2.8 5.2c-.2-.5.4-.9.8-.5 1.3 1.2 2.7 2.4 4.2 3.5 1.6 1.2 3.4 2 5.4 2.4Z"/>
+      <path d="M19.6 13.4c2.2-.6 5-2 7.2-4.4 1.2-1.3 2-2.6 2.4-3.8.2-.5-.4-.9-.8-.5-1.3 1.2-2.7 2.4-4.2 3.5-1.6 1.2-3.4 2-5.4 2.4Z"/>
+    </g>
+    <g id="calf-horns">
+      <path d="M12.3 12.9c-1.5-.5-2.8-1.6-3.7-3.1-.3-.5.3-1 .7-.6 1.2.9 2.2 1.9 3 3.1Z"/>
+      <path d="M19.7 12.9c1.5-.5 2.8-1.6 3.7-3.1.3-.5-.3-1-.7-.6-1.2.9-2.2 1.9-3 3.1Z"/>
+    </g>
+    <g id="alpha-horns">
+      <path d="M12.4 13.6C9.6 13 6.2 11.2 3.6 8.2 2.2 6.6 1.3 5 .9 3.5c-.2-.6.5-1 1-.5 1.6 1.5 3.4 3 5.3 4.4 2 1.5 4.2 2.5 6.2 3Z"/>
+      <path d="M19.6 13.6c2.8-.6 6.2-2.4 8.8-5.4 1.4-1.6 2.3-3.2 2.7-4.7.2-.6-.5-1-1-.5-1.6 1.5-3.4 3-5.3 4.4-2 1.5-4.2 2.5-6.2 3Z"/>
+    </g>
+    <g id="bull-head"><use href="#bull-face"/><use href="#bull-horns"/></g>
+    <g id="calf-head"><use href="#bull-face"/><use href="#calf-horns"/></g>
+    <g id="alpha-head"><use href="#bull-face"/><use href="#alpha-horns"/></g>
+  </defs>
+
+  <symbol id="ico-calf" viewBox="0 0 32 32" fill="currentColor">
+    <use href="#calf-head"/>
+  </symbol>
+
+  <symbol id="ico-bull" viewBox="0 0 32 32" fill="currentColor">
+    <use href="#bull-head"/>
+  </symbol>
+
+  <!-- Stampede was three heads side by side, which was legible at 132px and mush at 34px.
+       One full-size bull over motion streaks instead: it keeps the same visual weight as
+       the Bull tier above it rather than appearing to shrink. -->
+  <symbol id="ico-stampede" viewBox="0 0 32 32" fill="currentColor">
+    <use href="#bull-head" transform="translate(1.9 .2) scale(.88)"/>
+    <g opacity=".5">
+      <rect x="6.4" y="26.4" width="6.4" height="2" rx="1"/>
+      <rect x="14.2" y="26.4" width="7.6" height="2" rx="1"/>
+      <rect x="23.2" y="26.4" width="4.4" height="2" rx="1"/>
+    </g>
+  </symbol>
+
+  <symbol id="ico-alpha" viewBox="0 0 32 32" fill="currentColor">
+    <use href="#alpha-head" transform="translate(0 2.4) scale(.94)"/>
+    <path d="M11.9 8.3V3.1c0-.5.5-.7.9-.4l2.1 1.7 1.4-2.8 1.4 2.8 2.1-1.7c.4-.3.9 0 .9.4v5.2Z"/>
+  </symbol>
+</svg>
   <a class="skip-link" href="#main">Skip to content</a>
   <!-- NAVBAR -->
   <nav class="navbar">
@@ -440,25 +495,25 @@
       <div class="rank-result" id="rank-result"></div>
       <div class="herd-tiers">
         <div class="herd-tier">
-          <div class="herd-tier-emoji">🐮</div>
+          <svg class="herd-tier-ico" viewBox="0 0 32 32" role="img" aria-label="Calf"><use href="#ico-calf"/></svg>
           <div class="herd-tier-name">Calf</div>
           <div class="herd-tier-range">Up to 1M</div>
           <div class="herd-tier-count"><span id="tier-calf">—</span><small>bulls</small></div>
         </div>
         <div class="herd-tier">
-          <div class="herd-tier-emoji">🐄</div>
+          <svg class="herd-tier-ico" viewBox="0 0 32 32" role="img" aria-label="Bull"><use href="#ico-bull"/></svg>
           <div class="herd-tier-name">Bull</div>
           <div class="herd-tier-range">1M to 10M</div>
           <div class="herd-tier-count"><span id="tier-bull">—</span><small>bulls</small></div>
         </div>
         <div class="herd-tier">
-          <div class="herd-tier-emoji">🐃</div>
+          <svg class="herd-tier-ico" viewBox="0 0 32 32" role="img" aria-label="Stampede"><use href="#ico-stampede"/></svg>
           <div class="herd-tier-name">Stampede</div>
           <div class="herd-tier-range">10M to 50M</div>
           <div class="herd-tier-count"><span id="tier-stampede">—</span><small>bulls</small></div>
         </div>
         <div class="herd-tier">
-          <div class="herd-tier-emoji">🐂</div>
+          <svg class="herd-tier-ico" viewBox="0 0 32 32" role="img" aria-label="Alpha Bull"><use href="#ico-alpha"/></svg>
           <div class="herd-tier-name">Alpha Bull</div>
           <div class="herd-tier-range">50M+</div>
           <div class="herd-tier-count"><span id="tier-alpha">—</span><small>bulls</small></div>
@@ -661,11 +716,12 @@
     const HERD_MILESTONES = [100, 250, 500, 1000, 2500, 5000, 10000, 25000, 50000, 100000];
     let herdTotal = 0, herdVisible = false, herdAnimated = false, herdRanked = [];
     function tierOf(tok) {
-      if (tok >= 50e6) return { emoji: '🐂', name: 'Alpha Bull' };
-      if (tok >= 10e6) return { emoji: '🐃', name: 'Stampede' };
-      if (tok >= 1e6) return { emoji: '🐄', name: 'Bull' };
-      return { emoji: '🐮', name: 'Calf' };
+      if (tok >= 50e6) return { ico: 'alpha', name: 'Alpha Bull' };
+      if (tok >= 10e6) return { ico: 'stampede', name: 'Stampede' };
+      if (tok >= 1e6) return { ico: 'bull', name: 'Bull' };
+      return { ico: 'calf', name: 'Calf' };
     }
+    const tierIcon = (t) => `<svg class="rank-ico" viewBox="0 0 32 32" role="img" aria-label="${t.name}"><use href="#ico-${t.ico}"/></svg>`;
     function fmtTok(n) {
       if (n >= 1e9) return (n / 1e9).toFixed(2) + 'B';
       if (n >= 1e6) return (n / 1e6).toFixed(2) + 'M';
@@ -799,7 +855,7 @@
       const t = tierOf(e.tok);
       const pct = (e.tok / TOTAL_SUPPLY * 100).toFixed(2);
       out.className = 'rank-result show';
-      out.innerHTML = `${t.emoji} You're a <strong>${t.name}</strong> · rank <strong>#${idx + 1}</strong> of ${herdRanked.length} bulls · ${fmtTok(e.tok)} $BULLCEMBER (${pct}%)`;
+      out.innerHTML = `${tierIcon(t)} You're a <strong>${t.name}</strong> · rank <strong>#${idx + 1}</strong> of ${herdRanked.length} bulls · ${fmtTok(e.tok)} $BULLCEMBER (${pct}%)`;
     }
     (() => {
       const btn = document.getElementById('rank-btn');
