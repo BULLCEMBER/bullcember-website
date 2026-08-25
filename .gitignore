@@ -7,6 +7,7 @@
 gif-*.html
 *.gif
 capture-og.cjs
+brand-tokens.css
 *.local-backup.png
 bullcember-hero.png
 community-banner.png
