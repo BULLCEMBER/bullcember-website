@@ -875,9 +875,7 @@
     const enSeen = new Set();
     let EN_FEED = [];
     let EN_FILTER = 'all';
-    let enChecked = 0;             // unix secs of the last successful live check
-    let enState = 'idle';          // 'idle' | 'ok' | 'partial' | 'error'
-    let enStateMsg = '';
+    let enState = 'idle';          // 'idle' | 'ok' | 'error' — did the last snapshot fetch land?
 
     const enSetV = (id, val) => { const el = document.getElementById(id); if (el) { el.textContent = val; el.classList.remove('pending'); } };
     const enAgoIso = iso => timeAgo(Math.floor(new Date(iso).getTime() / 1000));
@@ -914,33 +912,34 @@
       enRenderFeed();
       const u = document.getElementById('enUpdated');
       if (u) {
+        // The age shown is the snapshot's own age. Re-fetching the same file in
+        // the browser does not make the numbers newer — only the Action's cron does.
         if (enState === 'error') {
-          u.textContent = "⚠️ Couldn't reach the chain, showing saved data"
+          u.textContent = "⚠️ Couldn't refresh, showing the last saved snapshot"
             + (enBaseline?.updatedAt ? ' from ' + enAgoIso(enBaseline.updatedAt) : '');
-        } else if (enState === 'partial') {
-          u.textContent = '⚠️ Partly checked: ' + enStateMsg;
-        } else if (c.live) {
-          u.textContent = '🟢 ' + c.live + ' new event' + (c.live === 1 ? '' : 's') + ' since last check';
-        } else if (enChecked) {
-          const secs = Math.floor(Date.now() / 1000) - enChecked;
-          u.textContent = 'Checked ' + (secs < 45 ? 'just now' : timeAgo(enChecked));
         } else {
           u.textContent = 'Updated ' + (enBaseline?.updatedAt ? enAgoIso(enBaseline.updatedAt) : 'just now');
         }
         // the pulsing green dot means "live" — don't let it pulse over a failed check
-        u.closest('.engine-updated')?.classList.toggle('stale', enState === 'error' || enState === 'partial');
+        u.closest('.engine-updated')?.classList.toggle('stale', enState === 'error');
       }
     }
 
     async function enLoadBaseline() {
       try {
         const res = await fetch('data/stats.json?t=' + Math.floor(Date.now() / 60000), { cache: 'no-store' });
-        if (!res.ok) return;
+        if (!res.ok) throw new Error('stats.json ' + res.status);
         enBaseline = await res.json();
         (enBaseline.feed || []).forEach(e => enSeen.add(e.sig));
         applySupply(enBaseline.supply);
+        enState = 'ok';
         enRenderAll();
-      } catch (e) { const u = document.getElementById('enUpdated'); if (u && !enBaseline) u.textContent = 'Syncing on-chain data…'; }
+      } catch (e) {
+        enState = 'error';
+        const u = document.getElementById('enUpdated');
+        if (enBaseline) enRenderAll();
+        else if (u) u.textContent = 'Syncing on-chain data…';
+      }
     }
     // The client-side Helius poll that used to live here is gone. It cost a
     // getSignaturesForAddress page plus one getTransaction per new signature on
@@ -983,7 +982,7 @@
       if (btn) { btn.dataset.label = btn.dataset.label || btn.textContent; btn.disabled = true; btn.textContent = '⏳ Checking…'; }
       try { await enLoadBaseline(); } catch (e) {}
       if (btn) {
-        btn.textContent = enState === 'ok' ? '✓ Up to date' : enState === 'partial' ? '⚠️ Partly checked' : '⚠️ Check failed';
+        btn.textContent = enState === 'ok' ? '✓ Up to date' : '⚠️ Check failed';
         setTimeout(() => { btn.textContent = btn.dataset.label; btn.disabled = false; }, 6000);
       }
     }
