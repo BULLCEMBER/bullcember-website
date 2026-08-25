@@ -578,7 +578,6 @@
     // Bonded 2026-08-08. The curve is drained, so it reports no liquidity and no new
     // trades — every live widget now has to read from the PumpSwap pool instead.
     const PAIR = '3LnLWicgYKDipE4nDUNS9BuLeXJZTB8jYqbGVcyhVHnr';
-    const HELIUS_KEY = 'c031e185-55ff-4b43-8e6b-63054ca1f2ee';
     const POOL = '3LnLWicgYKDipE4nDUNS9BuLeXJZTB8jYqbGVcyhVHnr'; // PumpSwap pool: BULLCEMBER leaving it is a buy
     const BONDING_CURVE = 'DExz6gLccnrgCQRphPhCqT3TUZPEY33RerUhoAwvvbhg'; // pump.fun bonding curve PDA (closed at graduation)
     const INIT_REAL_TOKEN = 793100000000000; // initial real token reserves on the curve (793.1M * 1e6)
@@ -667,39 +666,16 @@
     }
     async function fetchBuys() {
       try {
-        const r = await fetch(`https://api.helius.xyz/v0/addresses/${POOL}/transactions?api-key=${HELIUS_KEY}&limit=40`);
+        const r = await fetch('data/buys.json?t=' + Math.floor(Date.now() / 60000), { cache: 'no-store' });
         if (!r.ok) return;
-        const txns = await r.json();
-        if (!Array.isArray(txns)) return;
-        const buys = [];
-        for (const tx of txns) {
-          const tt = (tx.tokenTransfers || []).find(x => x.mint === CA && x.fromUserAccount === POOL);
-          if (!tt || !tt.tokenAmount) continue;
-          buys.push({ sig: tx.signature, buyer: tt.toUserAccount, tokens: tt.tokenAmount, ts: tx.timestamp });
-          if (buys.length >= 12) break;
-        }
-        if (buys.length) renderBuys(buys);
-      } catch (e) { console.error('Buy feed fetch failed:', e); }
+        const j = await r.json();
+        if (Array.isArray(j.buys) && j.buys.length) renderBuys(j.buys);
+      } catch (e) { console.error('Buy feed load failed:', e); }
     }
-    async function fetchBondingCurve() {
-      try {
-        const res = await fetch(`https://mainnet.helius-rpc.com/?api-key=${HELIUS_KEY}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ jsonrpc: '2.0', id: 'bc', method: 'getAccountInfo', params: [BONDING_CURVE, { encoding: 'base64' }] })
-        });
-        const val = (await res.json())?.result?.value;
-        if (!val) { updateGraduation(100, 85, true); return; }
-        const bin = atob(val.data[0]);
-        const bytes = new Uint8Array(bin.length);
-        for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-        const realTok = Number(readU64LE(bytes, 24));
-        const realSol = Number(readU64LE(bytes, 32)) / 1e9;
-        const complete = bytes[48] === 1;
-        const pct = complete ? 100 : Math.min(100, (1 - realTok / INIT_REAL_TOKEN) * 100);
-        updateGraduation(pct, realSol, complete);
-      } catch (e) { console.error('Bonding curve fetch failed:', e); }
-    }
+    // BULLCEMBER graduated to PumpSwap on 2026-08-08 and bonding is one-way, so
+    // this can never regress. The PDA is drained and closed, so reading it over
+    // RPC only ever returned null and resolved to exactly this call anyway.
+    function fetchBondingCurve() { updateGraduation(100, 85, true); }
     function copyCA() {
       navigator.clipboard.writeText(CA).then(() => {
         const btn = document.querySelector('.copy-btn');
@@ -790,40 +766,17 @@
     }
     async function fetchHolders() {
       try {
-        const balances = new Map();
-        let cursor = undefined;
-        do {
-          const params = { mint: CA, limit: 1000 };
-          if (cursor) params.cursor = cursor;
-          const res = await fetch(`https://mainnet.helius-rpc.com/?api-key=${HELIUS_KEY}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ jsonrpc: '2.0', id: 'holders', method: 'getTokenAccounts', params })
-          });
-          const data = await res.json();
-          const accounts = data?.result?.token_accounts || [];
-          for (const a of accounts) {
-            if (!a.owner) continue;
-            balances.set(a.owner, (balances.get(a.owner) || 0) + Number(a.amount || 0));
-          }
-          cursor = accounts.length === 1000 ? data?.result?.cursor : undefined;
-        } while (cursor);
-        // Neither the curve's unsold reserve nor the PumpSwap pool's LP side is a holder.
-        // The pool holds a large share of supply, so leaving it in would put it at #1 on
-        // the leaderboard and add a phantom bull to the herd count.
-        balances.delete(BONDING_CURVE);
-        balances.delete(POOL);
-        const total = balances.size;
-        if (total > 0) {
-          herdTotal = total;
-          document.getElementById('stat-holders').textContent = total.toLocaleString();
-          document.getElementById('community-holders').textContent = total.toLocaleString();
-          renderHerd(balances);
-          maybeAnimateHerd();
-        }
-      } catch (e) {
-        console.error('Holder fetch failed:', e);
-      }
+        const res = await fetch('data/herd.json?t=' + Math.floor(Date.now() / 60000), { cache: 'no-store' });
+        if (!res.ok) return;
+        const j = await res.json();
+        const balances = new Map(j.holders || []);
+        if (!balances.size) return;
+        herdTotal = j.total || balances.size;
+        document.getElementById('stat-holders').textContent = herdTotal.toLocaleString();
+        document.getElementById('community-holders').textContent = herdTotal.toLocaleString();
+        renderHerd(balances);
+        maybeAnimateHerd();
+      } catch (e) { console.error('Herd load failed:', e); }
     }
     (() => {
       const sec = document.getElementById('herd');
@@ -915,58 +868,20 @@
 
     // ===== THE BULLCEMBER ENGINE: buybacks + burns (no supply sent to anyone) =====
     const DEV = 'BXrU6jcjtZnar27jfWCXXhr9EqQGcFvyfnpC9cRjYLmC'; // pump.fun creator / fee wallet
-    const ENGINE_RPC = `https://mainnet.helius-rpc.com/?api-key=${HELIUS_KEY}`;
     const BURN_SINCE = 1782070621; // launch (pump.fun created_timestamp)
 
-    let enBaseline = null;         // latest data/stats.json
-    let enLive = [];               // events detected client-side (newer than baseline)
-    let DEV_ATA = null;
+    let enBaseline = null;         // latest data/stats.json, published by the Action
+    let enLive = [];               // kept for enCombined(); no client poll fills it now
     const enSeen = new Set();
     let EN_FEED = [];
     let EN_FILTER = 'all';
-    let enChecked = 0; // unix secs of the last SUCCESSFUL live Helius check ("Checked …" line)
-    // Poll health — only ever set by enPoll(). 'ok' means we actually reached the chain.
-    let enState = 'idle';   // 'idle' | 'ok' | 'partial' | 'error'
-    let enStateMsg = '';    // human-readable detail for 'partial' / 'error'
+    let enChecked = 0;             // unix secs of the last successful live check
+    let enState = 'idle';          // 'idle' | 'ok' | 'partial' | 'error'
+    let enStateMsg = '';
 
     const enSetV = (id, val) => { const el = document.getElementById(id); if (el) { el.textContent = val; el.classList.remove('pending'); } };
     const enAgoIso = iso => timeAgo(Math.floor(new Date(iso).getTime() / 1000));
-    const enSleep = ms => new Promise(r => setTimeout(r, ms));
 
-    // Retries on 429 / 5xx with exponential backoff. The API key is public and shared
-    // with the holders + bonding-curve widgets on this page, so throttling is expected.
-    async function enRpc(method, params, tries = 4) {
-      let lastErr;
-      for (let i = 0; i < tries; i++) {
-        try {
-          const r = await fetch(ENGINE_RPC, { method: 'POST', headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ jsonrpc: '2.0', id: 1, method, params }) });
-          if (r.status === 429 || r.status >= 500) throw new Error('RPC ' + r.status);
-          const j = await r.json();
-          if (j.error) throw new Error(j.error.message);
-          return j.result;
-        } catch (e) {
-          lastErr = e;
-          if (i < tries - 1) await enSleep(400 * Math.pow(2, i) + Math.random() * 200);
-        }
-      }
-      throw lastErr;
-    }
-
-    // Bounded-concurrency map. Returns every result plus a count of failures so the
-    // caller can tell "nothing new" apart from "we failed to look".
-    async function enMapLimit(items, limit, fn) {
-      const out = new Array(items.length);
-      let next = 0, failed = 0;
-      const worker = async () => {
-        while (next < items.length) {
-          const i = next++;
-          try { out[i] = await fn(items[i]); } catch (e) { out[i] = null; failed++; }
-        }
-      };
-      await Promise.all(Array.from({ length: Math.min(limit, items.length) }, worker));
-      return { out, failed };
-    }
     const enBaseNewest = () => (enBaseline?.feed || []).reduce((m, e) => Math.max(m, e.time || 0), 0);
 
     function enCombined() {
@@ -1027,95 +942,13 @@
         enRenderAll();
       } catch (e) { const u = document.getElementById('enUpdated'); if (u && !enBaseline) u.textContent = 'Syncing on-chain data…'; }
     }
-    // An associated token account address is derived from (owner, mint, token
-    // program), so it is CONSTANT — the account at that address can be created and
-    // closed repeatedly, but the address never changes and signatures stay indexed
-    // against it either way.
-    //
-    // On 2026-08-01 the dev burned its remaining balance and closed the account in
-    // a single transaction. getTokenAccountsByOwner then returned zero accounts, the
-    // lookup-only resolve produced null, and the engine went blind to its own burn.
-    // Treat the address as the constant it is and only use the lookup as a hint.
-    const DEV_ATA_ADDR = '4dTEzL1XdsWuzwFwXyzsxNKBUCqH8Nsac9CRGSfpgVGw';
-    async function enResolveATA() {
-      try {
-        const d = await enRpc('getTokenAccountsByOwner', [DEV, { mint: CA }, { encoding: 'jsonParsed' }]);
-        DEV_ATA = d.value[0]?.pubkey || DEV_ATA_ADDR;
-      } catch (e) {
-        DEV_ATA = DEV_ATA_ADDR;   // a lookup failure must not blind the poll
-      }
-      return DEV_ATA;
-    }
-    const enOwnerBal = (list, o) => { const e = (list || []).find(b => b.owner === o && b.mint === CA); return e ? Number(e.uiTokenAmount.uiAmount || 0) : 0; };
-    function enBurnAmt(tx) {
-      let t = 0;
-      const scan = ins => (ins || []).forEach(ix => { const p = ix.parsed; if (p && (p.type === 'burn' || p.type === 'burnChecked') && p.info && p.info.mint === CA) t += p.info.tokenAmount ? Number(p.info.tokenAmount.uiAmount) : Number(p.info.amount) / 1e6; });
-      scan(tx.transaction.message.instructions);
-      (tx.meta?.innerInstructions || []).forEach(ii => scan(ii.instructions));
-      return t;
-    }
-    function enDevSol(tx) {
-      const keys = tx.transaction.message.accountKeys.map(k => typeof k === 'string' ? k : k.pubkey);
-      const i = keys.indexOf(DEV);
-      if (i < 0 || !tx.meta) return 0;
-      return (tx.meta.postBalances[i] - tx.meta.preBalances[i]) / 1e9;
-    }
-    function enClassify(sig, tx) {
-      const time = tx.blockTime, pre = tx.meta?.preTokenBalances, post = tx.meta?.postTokenBalances;
-      const dd = enOwnerBal(post, DEV) - enOwnerBal(pre, DEV);
-      const burned = enBurnAmt(tx), sol = enDevSol(tx), evs = [];
-      if (burned > 0.0001 && time >= BURN_SINCE) evs.push({ type: 'burn', time, bull: Math.round(burned), sig });
-      if (dd > 0.0001 && sol < -0.0005) evs.push({ type: 'buyback', time, bull: Math.round(dd), sol: Number((-sol).toFixed(4)), sig });
-      return evs;
-    }
-    // Walk signatures back to the committed baseline, paging as far as it takes, so
-    // events can never fall out of a fixed window. MAX_PAGES is a runaway guard: if we
-    // hit it we report `truncated` rather than silently under-reporting the totals.
-    async function enFreshSigs(cut) {
-      const PAGE = 100, MAX_PAGES = 12;
-      const fresh = [];
-      let before = null, truncated = false, done = false;
-      for (let page = 0; page < MAX_PAGES && !done; page++) {
-        const sigs = await enRpc('getSignaturesForAddress', [DEV_ATA, before ? { limit: PAGE, before } : { limit: PAGE }]);
-        if (!sigs.length) break;
-        for (const s of sigs) {
-          if (s.blockTime && s.blockTime <= cut) { done = true; break; }
-          if (!s.err && !enSeen.has(s.signature) && !fresh.includes(s.signature)) fresh.push(s.signature);
-        }
-        if (done) break;
-        if (sigs.length < PAGE) break;
-        before = sigs[sigs.length - 1].signature;
-        if (page === MAX_PAGES - 1) truncated = true;
-      }
-      return { fresh, truncated };
-    }
-
-    async function enPoll() {
-      try {
-        if (!DEV_ATA) await enResolveATA();
-        if (!DEV_ATA) throw new Error('dev token account not found');
-        const { fresh, truncated } = await enFreshSigs(enBaseNewest());
-        const { out, failed } = await enMapLimit(fresh, 5, async sig => ({
-          sig, tx: await enRpc('getTransaction', [sig, { maxSupportedTransactionVersion: 0, encoding: 'jsonParsed' }]),
-        }));
-        for (const row of out) {
-          if (!row || !row.tx) continue;   // fetch failed — leave unseen so the next poll retries
-          enSeen.add(row.sig);
-          if (row.tx.meta?.err) continue;
-          const evs = enClassify(row.sig, row.tx);
-          if (evs.length) enLive.push(...evs);
-        }
-        enChecked = Math.floor(Date.now() / 1000); // only ever set after we truly reached the chain
-        enState = (failed || truncated) ? 'partial' : 'ok';
-        enStateMsg = truncated ? 'more history than one check can page'
-          : failed ? failed + ' event' + (failed === 1 ? '' : 's') + " couldn't be read"
-          : '';
-      } catch (e) {
-        enState = 'error';
-        enStateMsg = (e && e.message) || 'network error';
-      }
-      enRenderAll();
-    }
+    // The client-side Helius poll that used to live here is gone. It cost a
+    // getSignaturesForAddress page plus one getTransaction per new signature on
+    // EVERY page load, against a key hardcoded in this file — which is how the
+    // quota reached "max usage reached" on 2026-08-25 and took the live widgets
+    // down. The cron in .github/workflows/update-stats.yml now does that work
+    // once every 15 minutes with a secret key, and enLoadBaseline() below reads
+    // the result. Freshness is bounded by the cron interval instead of by credits.
     const EN_META = {
       buyback: { ic: '🐂', label: 'Buyback', cls: 'buyback', sign: '+' },
       burn:    { ic: '🔥', label: 'Burn',    cls: 'burn',    sign: '−' },
@@ -1148,15 +981,15 @@
       const btn = document.getElementById('enRefresh');
       if (btn && btn.disabled) return;
       if (btn) { btn.dataset.label = btn.dataset.label || btn.textContent; btn.disabled = true; btn.textContent = '⏳ Checking…'; }
-      try { await enPoll(); await enLoadBaseline(); } catch (e) {}
+      try { await enLoadBaseline(); } catch (e) {}
       if (btn) {
         btn.textContent = enState === 'ok' ? '✓ Up to date' : enState === 'partial' ? '⚠️ Partly checked' : '⚠️ Check failed';
         setTimeout(() => { btn.textContent = btn.dataset.label; btn.disabled = false; }, 6000);
       }
     }
     document.getElementById('enRefresh')?.addEventListener('click', enManualRefresh);
-    // boot: paint the free baseline instantly, then ONE live Helius check on load
-    (async () => { await enLoadBaseline(); try { await enPoll(); } catch (e) {} })();
+    // boot: paint the baseline the Action publishes; no chain call from the browser
+    (async () => { await enLoadBaseline(); })();
     setInterval(enLoadBaseline, 60000); // keep baseline current from the Action (free)
 
     // ===== JUPITER SWAP PLUGIN =====
