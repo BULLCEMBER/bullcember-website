@@ -1999,12 +1999,12 @@ body::after {
   font-size: clamp(3.2rem, 13vw, 9.5rem);
   line-height: 0.86;
   letter-spacing: -0.015em;
-  color: var(--bone);
   text-transform: uppercase;
   transform: rotate(-1.4deg);
   transform-origin: left center;
-  text-shadow: 5px 5px 0 var(--signal), 10px 10px 0 rgba(0,0,0,0.85);
   margin-bottom: var(--s-6);
+  color: var(--signal);
+  text-shadow: 6px 6px 0 #000, 12px 12px 0 rgba(0,0,0,0.55);
 }
 
 .hero-sub {
@@ -2185,7 +2185,7 @@ body::after {
   font-size: clamp(2.6rem, 7vw, 4.6rem);
   color: var(--bone);
   letter-spacing: 0;
-  text-shadow: 3px 3px 0 var(--signal);
+  text-shadow: 3px 3px 0 #000;
 }
 .countdown-label { color: var(--accent); font-weight: 700; }
 .countdown-target { color: var(--bone); }
@@ -2193,7 +2193,7 @@ body::after {
 /* ---- mobile: the chaos has to stop shoving things off screen ------------ */
 @media (max-width: 768px) {
   .hero { overflow-x: clip; }
-  .hero-title { font-size: clamp(2.6rem, 15vw, 4.4rem); text-shadow: 3px 3px 0 var(--signal), 6px 6px 0 rgba(0,0,0,0.85); }
+  .hero-title { font-size: clamp(2.6rem, 15vw, 4.4rem); text-shadow: 4px 4px 0 #000; }
   .hero-pfp-wrapper { width: 190px; height: 190px; align-self: center; justify-self: center; }
   .hero-pfp { transform: scale(1.75); }
   .live-bar, .ticker-scroll { transform: none; }
@@ -2300,12 +2300,12 @@ body::after {
   margin: var(--s-3) 0 var(--s-2);
 }
 .elive.burn .elive-v {
-  color: var(--bone);
-  text-shadow: 4px 4px 0 var(--burn);
+  color: var(--burn);
+  text-shadow: 4px 4px 0 #000;
 }
 .elive.buy .elive-v {
-  color: var(--bone);
-  text-shadow: 4px 4px 0 var(--signal);
+  color: var(--signal);
+  text-shadow: 4px 4px 0 #000;
 }
 .elive-sub {
   font-family: var(--f-mono);
@@ -2422,7 +2422,7 @@ body::after {
   font-size: clamp(3.4rem, 11vw, 7.5rem);
   line-height: 0.88;
   color: var(--bone);
-  text-shadow: 5px 5px 0 var(--signal);
+  text-shadow: 5px 5px 0 #000;
   letter-spacing: 0;
 }
 .herd-count-label {
@@ -2517,8 +2517,8 @@ body::after {
   .section-title, .final-cta-title { transform: none; }
   /* the 4px offset shadow was pushing the last glyph into the card border */
   .elive-v { font-size: clamp(2.4rem, 12.5vw, 3.6rem); }
-  .elive.burn .elive-v { text-shadow: 3px 3px 0 var(--burn); }
-  .elive.buy  .elive-v { text-shadow: 3px 3px 0 var(--signal); }
+  .elive.burn .elive-v { text-shadow: 3px 3px 0 #000; }
+  .elive.buy  .elive-v { text-shadow: 3px 3px 0 #000; }
   .herd-num { font-size: clamp(3rem, 18vw, 5rem); }
 }
 
