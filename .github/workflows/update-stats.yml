@@ -1,9 +1,12 @@
-name: Update engine stats
+name: Update site data
 
-# Regenerates data/stats.json (the baseline the Engine section paints on first frame)
-# and commits it when it changed. Without this the baseline goes stale and every
-# visitor sees old buyback/burn numbers until the client-side Helius poll catches up.
-
+# Regenerates the JSON the site paints on first frame and commits whatever changed:
+#   data/stats.json  - engine buyback & burn baseline
+#   data/herd.json   - holder census + leaderboard
+#   data/buys.json   - Live Buys feed
+# Without this they go stale and every visitor sees old numbers. Each script keeps
+# the previous file when a scan fails, so a rate-limited run publishes nothing
+# rather than blanking a section.
 on:
   schedule:
     # Offset from the top of the hour — */15 is a heavily contended slot on GitHub
@@ -31,10 +34,15 @@ jobs:
       - name: Regenerate baseline from chain
         env:
           # Optional. Falls back to the public mainnet RPC, which is rate-limited —
-          # the scan retries with backoff, but set this secret to the Helius URL
+          # the scans retry with backoff, but set this secret to the Helius URL
           # for reliability.
           RPC_URL: ${{ secrets.RPC_URL }}
-        run: node scripts/update-stats.mjs
+          # update-herd lifts the key off RPC_URL when this is unset; it is only
+          # needed if the Enhanced Transactions API key differs from the RPC one.
+          HELIUS_KEY: ${{ secrets.HELIUS_KEY }}
+        run: |
+          node scripts/update-stats.mjs
+          node scripts/update-herd.mjs
 
       - name: Commit if changed
         run: |
@@ -45,5 +53,5 @@ jobs:
           git config user.name  "bullcember-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/
-          git commit -m "Refresh engine buyback & burn baseline"
+          git commit -m "Refresh site data (engine, herd, buys)"
           git push
