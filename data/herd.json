@@ -1,9 +1,9 @@
 {
-  "updatedAt": "2026-09-01T10:22:32.724Z",
-  "total": 132,
+  "updatedAt": "2026-09-01T15:07:00.194Z",
+  "total": 131,
   "tiers": {
     "calf": 65,
-    "bull": 39,
+    "bull": 38,
     "stampede": 28,
     "alpha": 0
   },
@@ -65,12 +65,12 @@
       20000000000000
     ],
     [
-      "CzzRkobEcih22PtFmyq4kb6kYhKuUvVN9W67GVq9KKXP",
-      17555910789655
+      "DQUeoVMwKdP4ZbUUtRe5nTTvAPzwmziq5TSYErkHUF1e",
+      18742437369217
     ],
     [
-      "DQUeoVMwKdP4ZbUUtRe5nTTvAPzwmziq5TSYErkHUF1e",
-      16953236132572
+      "CzzRkobEcih22PtFmyq4kb6kYhKuUvVN9W67GVq9KKXP",
+      17555910789655
     ],
     [
       "8DgovYJwx8cq14vvFNuZbsD6B4QzH9SqPc2R1iAMTa9o",
@@ -173,10 +173,6 @@
       4314775539248
     ],
     [
-      "BJYYu8WJJ9RcdB2A1t2zSMRHqoK8VWpCk3K25jPeypFK",
-      4280827339742
-    ],
-    [
       "Epg638D52bpk6EWvHKEVKveS9iN2DQQ95CzXrNoDvqe",
       3941207861842
     ],
@@ -241,6 +237,10 @@
       2089382853901
     ],
     [
+      "4Ev5acvKT64Fnww9JKM1cEa4mhzQQa9toPQGEyxh2hMs",
+      1938935132723
+    ],
+    [
       "FtUgaJ3SgSTo3da17QWdd5kqXdrd54WtSzTDySt73ZFT",
       1918029364992
     ],
@@ -263,10 +263,6 @@
     [
       "5JoDAyqtcRkme2862pX2K4zACusQ5VURNELxuuTmPMFo",
       1296280393043
-    ],
-    [
-      "4Ev5acvKT64Fnww9JKM1cEa4mhzQQa9toPQGEyxh2hMs",
-      1212253422010
     ],
     [
       "7GPhFTQNKNca88QBUkGrAeE1cgz76rAruVHF47dthhkZ",
@@ -338,7 +334,7 @@
     ],
     [
       "CFxEwZ9vmHhk1Zt5R1wsAwC9C7qm1x7AtEwLS9zY3LNz",
-      414301534396
+      409598634974
     ],
     [
       "5KfWk8E5MfDYTpB43zDVRG7MV1L4tDwx6ozDhP5yS8uU",
@@ -351,6 +347,10 @@
     [
       "9oc83pXbXL4vdApvToagakdtsiAd2jo2rfa5ik4WhYBY",
       326437394754
+    ],
+    [
+      "3GqGCnkju9a77L9AbBVtJH3d5L1sh9pc8B6HJEj9k8gS",
+      325414401443
     ],
     [
       "GgycuP4HSWpxwPtL5wnpKDD8e2rcg6SxDu5t9fkSQ1ii",
@@ -405,10 +405,6 @@
       87258126054
     ],
     [
-      "GCj7vW9mcnkfcYDZnFMpWXTVXHUnWvRaV5zoiPZUGPmA",
-      66018217029
-    ],
-    [
       "69WHaMNE6rftnWU1sbRWAPjSzxFiwQGK312VjBND2MEw",
       60308630460
     ],
@@ -450,7 +446,7 @@
     ],
     [
       "8psNvWTrdNTiVRNzAgsou9kETXNJm2SXZyaKuJraVRtf",
-      5547319538
+      5587294183
     ],
     [
       "AXAfiVAXvhHvmuHG9pVt4hD5JCQd6HFgh58EJgmcvHJy",
