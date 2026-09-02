@@ -1,6 +1,24 @@
 {
-  "updatedAt": "2026-09-02T05:42:39.826Z",
+  "updatedAt": "2026-09-02T09:57:51.051Z",
   "buys": [
+    {
+      "sig": "2iCHcncJk1dmms4rABadhs1UF1nYjyvm129tm21qTJDqCbcfF1uGVPU9BAPjoAyWtSk4GG5poF3UqoJ6T26ukrfk",
+      "buyer": "DQUeoVMwKdP4ZbUUtRe5nTTvAPzwmziq5TSYErkHUF1e",
+      "tokens": 43050.787653,
+      "ts": 1788330684
+    },
+    {
+      "sig": "2S9ZCyGb7UnJe2pd2vV59DJ8eQf8M3oVSEjhY7NkCJVkvNrjPEKzp8Sgu7iDLkoMkWtRKswcYZJ9BPaqiTwtEKoS",
+      "buyer": "DQUeoVMwKdP4ZbUUtRe5nTTvAPzwmziq5TSYErkHUF1e",
+      "tokens": 45121.401802,
+      "ts": 1788330680
+    },
+    {
+      "sig": "2fRR4R1kNcnb2cxpWFRJVQdFnfgXMyCZ66aa77mAW1ib9gQi1hYCWcLQzZ18o7vFuf6rQkotbvGg91PU67ntrnju",
+      "buyer": "DQUeoVMwKdP4ZbUUtRe5nTTvAPzwmziq5TSYErkHUF1e",
+      "tokens": 57459.85324,
+      "ts": 1788330673
+    },
     {
       "sig": "5VeScTv9MtJe7e2X9pA8rFkiMZ8SYdGweCHMVaDmj2R45cC2534iHvHn2cbnZrsQBsK6KuKCeDtes8mTX2rGiq9y",
       "buyer": "DxeSfPisnRR3ZkS7iP4yG7fNqkxk8S6c88WMJzCVFj66",
@@ -30,30 +48,6 @@
       "buyer": "BGCj4ScjyiVgAeuk18RtBLmUBGHJpXph6Lq9zHwEhmLt",
       "tokens": 274084.218686,
       "ts": 1788298241
-    },
-    {
-      "sig": "4n2pjKURRyRHAv3jWTbzodjE5uVSjyj7VezmbLnjp3xNWyY8yb6FWxodwmkpkUk4UJg4TDGyBafZ1kT8LwncbXUE",
-      "buyer": "GVLQpBnjL4UUoJ8k6Sfd6ZSJZ5SumSfrHh2nHn9AoNEg",
-      "tokens": 264006.30472,
-      "ts": 1788297436
-    },
-    {
-      "sig": "4iVYWfPxAAY33PCpg2btJPW81KhM6ESM3NMTobFDjryLQsZeJn5XY37jvnzqSW9wsUXqfVroFw6qHgJz7csTobwz",
-      "buyer": "ASr6Hy8zvwwdeiNxNf7CgRH3JHXwYFGGx2C95DMNpRBo",
-      "tokens": 6364794.054426,
-      "ts": 1788297118
-    },
-    {
-      "sig": "2YHuoZ5Cj1WijqzvmhUzwgn7Twqoci4KkifUyQqmw9w5Cb2iC8MS4CRThzbPd35ni8RbFcH9WPZR1NmtiuNg8Ptv",
-      "buyer": "DH7YyaZ74XgXZnBuUD8cUYU9vPFMwvBzvsTekoVeLDTP",
-      "tokens": 1145728.076167,
-      "ts": 1788296765
-    },
-    {
-      "sig": "5xKiUrSLri8zh48QktcHmNAdt9aqdBuwP3HPzMG3SBD4oc8UhUGnDx3cntruneQqwyWpDfY7atXhPB4ugKHVTgMq",
-      "buyer": "Hj2v55HWqdyChiBdkMyMRMd79nui4WedfKRaXPQTZaNY",
-      "tokens": 47684.160861,
-      "ts": 1788294245
     }
   ]
 }
