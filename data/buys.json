@@ -1,6 +1,30 @@
 {
-  "updatedAt": "2026-09-01T23:21:30.261Z",
+  "updatedAt": "2026-09-02T05:42:39.826Z",
   "buys": [
+    {
+      "sig": "5VeScTv9MtJe7e2X9pA8rFkiMZ8SYdGweCHMVaDmj2R45cC2534iHvHn2cbnZrsQBsK6KuKCeDtes8mTX2rGiq9y",
+      "buyer": "DxeSfPisnRR3ZkS7iP4yG7fNqkxk8S6c88WMJzCVFj66",
+      "tokens": 204775.678914,
+      "ts": 1788327183
+    },
+    {
+      "sig": "3Bf4PPfYcGkmzNi1u97AsAeG9V3dvjuB5XBdxd2ddasmBeVeXp1kCU9hf6i6ExxyXfHDXTsup6ANRw3An2hxd2qr",
+      "buyer": "8KuF4RsqvXzr5obdoJSmuR5dyehwHuBRiwA63NRam34z",
+      "tokens": 102746.339341,
+      "ts": 1788325346
+    },
+    {
+      "sig": "3wuzZWJHdDXJY9LGnuHqzQDWjvG2Sqr5th7gDKTs4ZLqrncfj2TSo2dRYaNJBasoYED6irBQGghJPUQeTYbSCybd",
+      "buyer": "DQUeoVMwKdP4ZbUUtRe5nTTvAPzwmziq5TSYErkHUF1e",
+      "tokens": 3243224.630861,
+      "ts": 1788311987
+    },
+    {
+      "sig": "YpWBENJP1AM8dwWvQUBCCb6Bev8R4jEtfuCPDzNZkEWop5xctwGxJWsTM3h6AqgK7DHdn5qrFKS4PUFRHnYKt9p",
+      "buyer": "DQUeoVMwKdP4ZbUUtRe5nTTvAPzwmziq5TSYErkHUF1e",
+      "tokens": 5578394.788479,
+      "ts": 1788311578
+    },
     {
       "sig": "Xzea13LdFbFLfVK5dyU6nFn6BzPsbWKibiESKcUNVUAAEttznKaJ8Jww7AdRzyX7xtMm9TcVumPyMzn22rQyQn3",
       "buyer": "BGCj4ScjyiVgAeuk18RtBLmUBGHJpXph6Lq9zHwEhmLt",
@@ -30,24 +54,6 @@
       "buyer": "Hj2v55HWqdyChiBdkMyMRMd79nui4WedfKRaXPQTZaNY",
       "tokens": 47684.160861,
       "ts": 1788294245
-    },
-    {
-      "sig": "jT5t7zXhsA3mrxNGskoGWAjhbvHkiesZ67TVZhTnENeaFQdtVCw362YUb6GKChM6S1WUzgk5weAP6TtBYziZqBT",
-      "buyer": "3uJUDrrMaDpATUvVWMRzCBaTeedKghX1LEDK2u2z4Ffq",
-      "tokens": 5008994.595961,
-      "ts": 1788293213
-    },
-    {
-      "sig": "3YWPWmSHmFzrFKFCbTEhEcmx1Pr8s9H6Z5R2bXb6dbN9sgoZQedrdnvNyRHviyC1Wr3W3uw5Ed5vBS4NpdyiLy5y",
-      "buyer": "3uJUDrrMaDpATUvVWMRzCBaTeedKghX1LEDK2u2z4Ffq",
-      "tokens": 5254258.013305,
-      "ts": 1788293198
-    },
-    {
-      "sig": "2kySYpBoohHgcKhB1DyRgYaXc8HknnE6br6vsnAk61xvjU4HJua8T1NHKJQ5ZkWgDUaZviBk2VUTcpKxUbizCWmM",
-      "buyer": "AJRfAAtptVsNfsrr2ywGpB5o9rFhu5Yof12qJWL1QH6k",
-      "tokens": 50312.336867,
-      "ts": 1788289518
     }
   ]
 }
