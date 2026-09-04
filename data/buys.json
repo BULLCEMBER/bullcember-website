@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-04T19:55:02.074Z",
+  "updatedAt": "2026-09-04T22:19:19.159Z",
   "buys": [
     {
       "sig": "5jmmndLzYkLEEB62dvmwfh12HxmsGP3fF3uEBHgzvPo9LUwUysR5GkJcXchU2tdiW93UeutTJ3quuQEdPfRxNJLP",
@@ -24,54 +24,6 @@
       "buyer": "GEwAhTFNV37giRwv1kCUw8HW3Cf46gJhpkrRxhuBf8Je",
       "tokens": 3871551.55717,
       "ts": 1788534647
-    },
-    {
-      "sig": "2YgGD7R92sehdn2GnkZsPTRA79Npuhpb56oovhZF1MdXAAXsfGyqt5Bqc3YW1a67aBUs9tMMk1znGKirZN9HYNXq",
-      "buyer": "GEwAhTFNV37giRwv1kCUw8HW3Cf46gJhpkrRxhuBf8Je",
-      "tokens": 4028118.080609,
-      "ts": 1788534588
-    },
-    {
-      "sig": "2UkuYJJZujJYVmrAaxUfVg3966SHy3xAKyExypFqJHvWmRMe52zxEasWu6xPNvN9nbM49JvPdGtTMesF4QsEqFre",
-      "buyer": "EYXDyx8yihoRNW8L9GmWZ3Gds1PfmRtkNCnvGvdoE3xa",
-      "tokens": 2066030.33358,
-      "ts": 1788533146
-    },
-    {
-      "sig": "2HdthAGvtJqyqHTcV2bQ2pgtvu8eeJ2k1CTdf6GqWQUEeDeTPLwW3vfpZdrxWdcjkgBozvWVMBAPpBQk5PvbqPMk",
-      "buyer": "5KChNhUL8FgirNA5DzT9Cczp4T6ar9D6eyKqtLWBB2jK",
-      "tokens": 425679.557748,
-      "ts": 1788532054
-    },
-    {
-      "sig": "5RerowwMaLCg9PnRWbmogYTZBr4Y5x1ALifbSWh6Hjv3TdTKy4zPFgwfJHJUbHUV9eXey6nTAXwa7KQUK52vvNSm",
-      "buyer": "CJgZfoDbj9vJqodKSLvecRHwxF6iLebcT3P7BquePTvY",
-      "tokens": 4835.986164,
-      "ts": 1788529525
-    },
-    {
-      "sig": "4a8PeK5G4WSgfoCzEcmRXyeW2kc4emso7euHvmdBRNnQhu1uzrDjUxSY5U5X8rVhCLLbF6zd4wVV4cinX7cRGTr7",
-      "buyer": "6J1cEH7yCrAUCKmwKz5WsRP7mXxgbtUU5C2hAQoEuZT6",
-      "tokens": 5997436.812908,
-      "ts": 1788527145
-    },
-    {
-      "sig": "2XnHf9p5BTBKgd2gg4ZAEyeSkEny3RUGYSCoGgk2DyxPhU2StrSsHLnEN9V96YJdFBGppGetVNWm56Z1heMtrX23",
-      "buyer": "D7YoTjLm6vh4X314B7J7At4gEuEMn1UvCy5eTQXLFWSX",
-      "tokens": 751329.882012,
-      "ts": 1788526503
-    },
-    {
-      "sig": "2XvPdVndpbTsQx2Ro7nZohN43Yq6WZGN9VqLGs72AWq7orUdbdj3vGmT7rVteEgcvs1LjLsmbJUztLfaswSeGQv8",
-      "buyer": "BPqg5pBTBTDv5DQdPVaXMd1mdcqX4UhtW9kCFBsYfyoH",
-      "tokens": 319932.9495,
-      "ts": 1788525775
-    },
-    {
-      "sig": "2BakRUG6yJU1s9KbjXApMD76BS21Y8opqaLPVjC5nC9APteFEb65zDNLH7WnwnKge3pQhTaB8mNf51pimCQP3uDr",
-      "buyer": "DbEn1uWDQvB6qBJ99kfvRgSVFCWUr87vJQW5HWNudt52",
-      "tokens": 2190354.287715,
-      "ts": 1788525583
     }
   ]
 }
