@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-09-04T09:58:12.286Z",
-  "total": 141,
+  "updatedAt": "2026-09-04T14:10:24.822Z",
+  "total": 144,
   "tiers": {
-    "calf": 72,
-    "bull": 43,
-    "stampede": 26,
+    "calf": 74,
+    "bull": 45,
+    "stampede": 25,
     "alpha": 0
   },
   "holders": [
@@ -101,10 +101,6 @@
       10997289136911
     ],
     [
-      "6uezjfYdSpPZ9rLoTn7vy86oxGJQ6mdWKaf7wuqLStm",
-      10287081915728
-    ],
-    [
       "A8egciG8UsoHovCnJTAdYGefMW3MM79AbF1sdi8eU3vf",
       10222976722834
     ],
@@ -153,8 +149,16 @@
       6164159226653
     ],
     [
+      "6J1cEH7yCrAUCKmwKz5WsRP7mXxgbtUU5C2hAQoEuZT6",
+      5997436812908
+    ],
+    [
       "22ic5y14N2mZuAR7DgHZt4eq8P6p6XdrhX1M8YwnGmTY",
       5421551381902
+    ],
+    [
+      "D7YoTjLm6vh4X314B7J7At4gEuEMn1UvCy5eTQXLFWSX",
+      5333418543946
     ],
     [
       "HHNGqZkk6T3Q5FnSgDwoQcwmPdcBNzXPuuViFJWcZDoQ",
@@ -163,10 +167,6 @@
     [
       "4TpArgdoxD1RiMQDZYCjez3Kpi1CHaUbVmeYQe656xUD",
       5024463543210
-    ],
-    [
-      "D7YoTjLm6vh4X314B7J7At4gEuEMn1UvCy5eTQXLFWSX",
-      4582088661934
     ],
     [
       "BvDrHKFdtUBhuqdVEAHhVJEsjXNqotnN6mRP8dEB9RQv",
@@ -235,6 +235,10 @@
     [
       "326LMNKLbNidoXZzSn3XxTo7eZUvWqjhrL255X7FA41C",
       2500000000000
+    ],
+    [
+      "DbEn1uWDQvB6qBJ99kfvRgSVFCWUr87vJQW5HWNudt52",
+      2190354287715
     ],
     [
       "EVWJXJjXYSxmDag5qZcepL7fJTtkFpi5vLnjVEbCDHEe",
@@ -361,16 +365,16 @@
       323155141622
     ],
     [
+      "BPqg5pBTBTDv5DQdPVaXMd1mdcqX4UhtW9kCFBsYfyoH",
+      319932949500
+    ],
+    [
       "HmdHdoxwz5AUtX6d1tzwWv1d9XezQFDkBZ9t4SoABFjr",
       302524852259
     ],
     [
       "CFxEwZ9vmHhk1Zt5R1wsAwC9C7qm1x7AtEwLS9zY3LNz",
       300000034974
-    ],
-    [
-      "CJgZfoDbj9vJqodKSLvecRHwxF6iLebcT3P7BquePTvY",
-      293230202060
     ],
     [
       "HQd6KuZ1JjHDLkNmsX7dwdobHPZ4VkXHwRCjGenbwCzq",
@@ -385,8 +389,16 @@
       248308599499
     ],
     [
+      "43QmFc2QPPGyMrSNuPnhvfs8BFW1XVZYFdbwURtWoo9x",
+      220428003347
+    ],
+    [
       "DxeSfPisnRR3ZkS7iP4yG7fNqkxk8S6c88WMJzCVFj66",
       204775678914
+    ],
+    [
+      "CJgZfoDbj9vJqodKSLvecRHwxF6iLebcT3P7BquePTvY",
+      199296497414
     ],
     [
       "DXmUDYe2dByjqEaGtb6ERGkZRu2Yb7rt8zwjb5mgvC4k",
