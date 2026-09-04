@@ -1,6 +1,18 @@
 {
-  "updatedAt": "2026-09-04T05:44:10.236Z",
+  "updatedAt": "2026-09-04T09:59:11.455Z",
   "buys": [
+    {
+      "sig": "4dQe9EZdAmhkW675p1acdTfuNdKHQC1dN9JmCu1E6PyGscvTW53Ahr6fA6tohxMD8mh2HyqDTJx6VoDaLKwgXaeV",
+      "buyer": "3NoNpvSYFgHaNGTCYXEeTmudCeN5UEawERUkqThR82r6",
+      "tokens": 58035.49007,
+      "ts": 1788514576
+    },
+    {
+      "sig": "38p3kStDaBivSuQzNPEH1Mo47tJX4yv6aiwhuQT2poJAUnmuyBaoiNbsLjjXJjTqhpznpd4FWgZsdcfPSJ4XYBQH",
+      "buyer": "D7YoTjLm6vh4X314B7J7At4gEuEMn1UvCy5eTQXLFWSX",
+      "tokens": 499569.052123,
+      "ts": 1788502653
+    },
     {
       "sig": "3YMhJ6cL3Vbnhx1P3EsewL2fWnqEDJrZzddXqNzw8wwiG7TkA7YbJgEKLhUyHSXC5mtjqPtkWZNxBFpKBoL73PNY",
       "buyer": "iB1y9Td6PJpDNggYT4S2TqTyCymgmwqebUWkdodJrKK",
@@ -42,36 +54,6 @@
       "buyer": "D7YoTjLm6vh4X314B7J7At4gEuEMn1UvCy5eTQXLFWSX",
       "tokens": 4082519.609811,
       "ts": 1788473749
-    },
-    {
-      "sig": "3bHJ1MfWYg58oFrYWBCYtS4GQVqmqSPiMpSLZztc155tXqQYJGcaq8RWv9DjmFB51kfYKYtXUxfhYsJFy1xJjweJ",
-      "buyer": "BJYYu8WJJ9RcdB2A1t2zSMRHqoK8VWpCk3K25jPeypFK",
-      "tokens": 204240.199852,
-      "ts": 1788473643
-    },
-    {
-      "sig": "3Ztj97RSDG9HtotanTWE6dSPFXmWQrmRHZYzpPNzmtb8javDoHYUBTMhQRsy99imFDk2sLDZTzhikY9mDHjhcuRH",
-      "buyer": "CJgZfoDbj9vJqodKSLvecRHwxF6iLebcT3P7BquePTvY",
-      "tokens": 6873.972106,
-      "ts": 1788464962
-    },
-    {
-      "sig": "3Q1ygy7VyjBXiSRdR2HSbeCVgFKkdWxGs8zkMkVLQLqpQEg18n2iXmCNNPBRj6CEeycC5qVqRTL4uwC5gGn2kGWt",
-      "buyer": "BJYYu8WJJ9RcdB2A1t2zSMRHqoK8VWpCk3K25jPeypFK",
-      "tokens": 8917997.591677,
-      "ts": 1788464594
-    },
-    {
-      "sig": "2xkhDuuraUerykL1y4RAUSzcgDDVjfb46XgEtPh9bKyRAY3HuqtzuQqwpxg559sVDTNPnySbAuSnMctzvrzJgKut",
-      "buyer": "DQUeoVMwKdP4ZbUUtRe5nTTvAPzwmziq5TSYErkHUF1e",
-      "tokens": 3544.782239,
-      "ts": 1788464275
-    },
-    {
-      "sig": "svivw7tgXghVTHVGEb1uQ8fRmUqL5kJ3uuiiQ6jfsrpw3K2KdDRi8nC5BEWGhtJ2CQTVbmbs8j9zEhCsWzvfycR",
-      "buyer": "BMxwHViGQCx7GqLFxAMG3TuQjfkDv4YegcSZG7KvaRL6",
-      "tokens": 28102.188112,
-      "ts": 1788464119
     }
   ]
 }
