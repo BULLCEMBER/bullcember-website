@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-09-06T13:04:09.364Z",
-  "total": 147,
+  "updatedAt": "2026-09-06T16:09:18.548Z",
+  "total": 149,
   "tiers": {
-    "calf": 75,
+    "calf": 77,
     "bull": 46,
     "stampede": 26,
     "alpha": 0
@@ -153,6 +153,10 @@
       5997436812908
     ],
     [
+      "5U1JamvHTrWDkcL3Yw7TNoBMbReswth6RbGJYsCFYbw6",
+      5901393316061
+    ],
+    [
       "22ic5y14N2mZuAR7DgHZt4eq8P6p6XdrhX1M8YwnGmTY",
       5421551381902
     ],
@@ -245,16 +249,8 @@
       2089382853901
     ],
     [
-      "326LMNKLbNidoXZzSn3XxTo7eZUvWqjhrL255X7FA41C",
-      2000000000000
-    ],
-    [
       "4sQbbCKEZUZFeLZikvUTSvduWhi2URrnKdZR1qWWf1p2",
       1919983311301
-    ],
-    [
-      "FtUgaJ3SgSTo3da17QWdd5kqXdrd54WtSzTDySt73ZFT",
-      1918029364992
     ],
     [
       "2ecpq4MA2b9WEFZRGpNDwrP4dtSmabjC5MzjkK9LGT5d",
@@ -293,6 +289,10 @@
       1089758818976
     ],
     [
+      "FtUgaJ3SgSTo3da17QWdd5kqXdrd54WtSzTDySt73ZFT",
+      1018029364992
+    ],
+    [
       "GV6UUmNxz2RpKxmNAPadYKb7uQpszwqQAu3qLJxVdC52",
       1000000000000
     ],
@@ -329,6 +329,10 @@
       501495428866
     ],
     [
+      "326LMNKLbNidoXZzSn3XxTo7eZUvWqjhrL255X7FA41C",
+      500000000000
+    ],
+    [
       "6uvdK3obzgLsP7gHTipM7Ev3EHZkfMpxvJv2zkUPHKHz",
       500000000000
     ],
@@ -355,6 +359,10 @@
     [
       "BL5UNdH6mggBAUdc1sMYHLx4dRw78YqNvyumahC9GeDp",
       356139384828
+    ],
+    [
+      "3GqGCnkju9a77L9AbBVtJH3d5L1sh9pc8B6HJEj9k8gS",
+      343033980322
     ],
     [
       "9oc83pXbXL4vdApvToagakdtsiAd2jo2rfa5ik4WhYBY",
@@ -390,7 +398,7 @@
     ],
     [
       "CJgZfoDbj9vJqodKSLvecRHwxF6iLebcT3P7BquePTvY",
-      204356193742
+      197705989695
     ],
     [
       "DXmUDYe2dByjqEaGtb6ERGkZRu2Yb7rt8zwjb5mgvC4k",
@@ -439,6 +447,10 @@
     [
       "CpXirNS5o9NLRmfFHf4z7haak1HbPJNY7tkjJwDDKo2B",
       67794700268
+    ],
+    [
+      "J9nqceQNdSwE7yoXuF9Tzrk6BaCWtkpxTyoXHK7h84pR",
+      61767895166
     ],
     [
       "69WHaMNE6rftnWU1sbRWAPjSzxFiwQGK312VjBND2MEw",
@@ -586,10 +598,6 @@
     ],
     [
       "9yaypmTHqKz4D9SJmVqREzE8ewx2ZoW6UcsSGhkWTgKV",
-      1
-    ],
-    [
-      "J9nqceQNdSwE7yoXuF9Tzrk6BaCWtkpxTyoXHK7h84pR",
       1
     ],
     [
