@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-09-06T05:07:52.080Z",
-  "total": 147,
+  "updatedAt": "2026-09-06T09:28:26.959Z",
+  "total": 148,
   "tiers": {
-    "calf": 73,
+    "calf": 74,
     "bull": 48,
     "stampede": 26,
     "alpha": 0
@@ -169,10 +169,6 @@
       5024463543210
     ],
     [
-      "GEwAhTFNV37giRwv1kCUw8HW3Cf46gJhpkrRxhuBf8Je",
-      4590712389939
-    ],
-    [
       "BvDrHKFdtUBhuqdVEAHhVJEsjXNqotnN6mRP8dEB9RQv",
       4461396642219
     ],
@@ -263,6 +259,10 @@
     [
       "FtUgaJ3SgSTo3da17QWdd5kqXdrd54WtSzTDySt73ZFT",
       1918029364992
+    ],
+    [
+      "7GWfFXc5FgQyioqL5p1SeZ16p7mwV4h1DLNviS4w5giV",
+      1791363548999
     ],
     [
       "2ecpq4MA2b9WEFZRGpNDwrP4dtSmabjC5MzjkK9LGT5d",
@@ -381,6 +381,10 @@
       300000034974
     ],
     [
+      "GEwAhTFNV37giRwv1kCUw8HW3Cf46gJhpkrRxhuBf8Je",
+      286919524371
+    ],
+    [
       "HQd6KuZ1JjHDLkNmsX7dwdobHPZ4VkXHwRCjGenbwCzq",
       285726012090
     ],
@@ -397,16 +401,12 @@
       204775678914
     ],
     [
-      "BGCj4ScjyiVgAeuk18RtBLmUBGHJpXph6Lq9zHwEhmLt",
-      200997972527
-    ],
-    [
       "DXmUDYe2dByjqEaGtb6ERGkZRu2Yb7rt8zwjb5mgvC4k",
       189473342038
     ],
     [
       "CJgZfoDbj9vJqodKSLvecRHwxF6iLebcT3P7BquePTvY",
-      167820216758
+      185752986548
     ],
     [
       "nAjJUi8Rx5WnmtansVxDKYEyLpAW2UWjxDubNtoh9aS",
@@ -441,10 +441,6 @@
       102746339341
     ],
     [
-      "AXAfiVAXvhHvmuHG9pVt4hD5JCQd6HFgh58EJgmcvHJy",
-      90098696846
-    ],
-    [
       "5SFyDk8Et2g2DPSGhfXdGBnYGidV8o71WJ4gopxNqiE5",
       87258126054
     ],
@@ -467,6 +463,10 @@
     [
       "Hj2v55HWqdyChiBdkMyMRMd79nui4WedfKRaXPQTZaNY",
       47684160861
+    ],
+    [
+      "6CigR5rPFF1tk4rT3pMNDK2EpFTHEm61wiaKCzXwhMM1",
+      35868129595
     ],
     [
       "8BxZXJgD7Qf9o5x792RY43Jnmwgjpwq45diteXXuu5R2",
@@ -521,12 +521,12 @@
       4566588818
     ],
     [
-      "FByf9p7tqatzrhBxvx48ZKrYY87HWJbhvgu1CP2DmzgN",
-      2372479943
-    ],
-    [
       "CJgvfUbZp6cW99B2Lfq3kZhXj3k254cCuA7imhNdjQ5d",
       1070413473
+    ],
+    [
+      "AXAfiVAXvhHvmuHG9pVt4hD5JCQd6HFgh58EJgmcvHJy",
+      900986969
     ],
     [
       "FfA6X6nnEQTArAKAQPxj98HrLMhXvz3YMeW7LsDN8AHo",
@@ -551,6 +551,10 @@
     [
       "DSN3j1ykL3obAVNv7ZX49VsFCPe4LqzxHnmtLiPwY6xg",
       705559440
+    ],
+    [
+      "FByf9p7tqatzrhBxvx48ZKrYY87HWJbhvgu1CP2DmzgN",
+      543786856
     ],
     [
       "GP8StUXNYSZjPikyRsvkTbvRV1GBxMErb59cpeCJnDf1",
