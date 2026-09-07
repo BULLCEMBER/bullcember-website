@@ -1,9 +1,9 @@
 {
-  "updatedAt": "2026-09-07T19:12:15.501Z",
-  "total": 146,
+  "updatedAt": "2026-09-07T22:03:17.718Z",
+  "total": 143,
   "tiers": {
     "calf": 73,
-    "bull": 47,
+    "bull": 44,
     "stampede": 26,
     "alpha": 0
   },
@@ -201,6 +201,10 @@
       3129155426835
     ],
     [
+      "D7YoTjLm6vh4X314B7J7At4gEuEMn1UvCy5eTQXLFWSX",
+      3023296125098
+    ],
+    [
       "69sqjwuNDVc8x8u9pdAMoadq3FSQUD6TArYG3DQ5yNfz",
       2931840743789
     ],
@@ -217,20 +221,8 @@
       2726400218495
     ],
     [
-      "D7YoTjLm6vh4X314B7J7At4gEuEMn1UvCy5eTQXLFWSX",
-      2678634221708
-    ],
-    [
       "Amic9Pq8XCVBN3Z2tzygx228RaCrDiKHcEZHyDSEZP5q",
       2655259718648
-    ],
-    [
-      "4Ev5acvKT64Fnww9JKM1cEa4mhzQQa9toPQGEyxh2hMs",
-      2504717346223
-    ],
-    [
-      "GewJdeiyD7XnEPHyj3ibQAjk6cbN451fr7kKQp2MisUA",
-      2461272934315
     ],
     [
       "DbEn1uWDQvB6qBJ99kfvRgSVFCWUr87vJQW5HWNudt52",
@@ -247,10 +239,6 @@
     [
       "CT6qQsdeoQvBQB5MNamWV6fJhMMyrf2FHrRabzP7xVmK",
       2089382853901
-    ],
-    [
-      "4sQbbCKEZUZFeLZikvUTSvduWhi2URrnKdZR1qWWf1p2",
-      1919983311301
     ],
     [
       "2ecpq4MA2b9WEFZRGpNDwrP4dtSmabjC5MzjkK9LGT5d",
@@ -373,10 +361,6 @@
       302524852259
     ],
     [
-      "CFxEwZ9vmHhk1Zt5R1wsAwC9C7qm1x7AtEwLS9zY3LNz",
-      300000034974
-    ],
-    [
       "HQd6KuZ1JjHDLkNmsX7dwdobHPZ4VkXHwRCjGenbwCzq",
       285726012090
     ],
@@ -419,6 +403,10 @@
     [
       "8KuF4RsqvXzr5obdoJSmuR5dyehwHuBRiwA63NRam34z",
       102746339341
+    ],
+    [
+      "CFxEwZ9vmHhk1Zt5R1wsAwC9C7qm1x7AtEwLS9zY3LNz",
+      100000034974
     ],
     [
       "5SFyDk8Et2g2DPSGhfXdGBnYGidV8o71WJ4gopxNqiE5",
@@ -481,12 +469,12 @@
       18547884477
     ],
     [
-      "7HQgNVcxFMG7stLvHn329LQ2Kd1A7ifFiqtk73huND4X",
-      16742448355
+      "8psNvWTrdNTiVRNzAgsou9kETXNJm2SXZyaKuJraVRtf",
+      17645019667
     ],
     [
-      "8psNvWTrdNTiVRNzAgsou9kETXNJm2SXZyaKuJraVRtf",
-      15680405127
+      "7HQgNVcxFMG7stLvHn329LQ2Kd1A7ifFiqtk73huND4X",
+      16742448355
     ],
     [
       "nEadHGieX5QRytKLsastcFJktb1GkK1ZAPmQDg8v83d",
