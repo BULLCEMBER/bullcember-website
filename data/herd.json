@@ -1,9 +1,9 @@
 {
-  "updatedAt": "2026-09-07T22:03:17.718Z",
-  "total": 143,
+  "updatedAt": "2026-09-08T04:43:06.132Z",
+  "total": 147,
   "tiers": {
-    "calf": 73,
-    "bull": 44,
+    "calf": 75,
+    "bull": 46,
     "stampede": 26,
     "alpha": 0
   },
@@ -47,10 +47,6 @@
     [
       "8oQCeJPR8mwbSVrMWddbQfBxVMkgFdC2LeYdMLR6ZHmL",
       22176996744189
-    ],
-    [
-      "GdLs5TSE2vSJ1VyVEP6YUTU3a4GBSqYG6TQGKLQfpVLc",
-      22015941792845
     ],
     [
       "Ak652ZMgmhj3cAXP5fWRA81xegrp4rdus4KwRBHZbofk",
@@ -113,6 +109,10 @@
       10060352943186
     ],
     [
+      "Go94p6x7wWbffYszkcsw6pRAe34Ph7QzG2xhKqSz71mD",
+      10029704313545
+    ],
+    [
       "4zXKukimfcUAX1ACB9CCg7Ss5o7i4djc1FXRo2srmUJ6",
       9582669652953
     ],
@@ -157,6 +157,10 @@
       5997436812908
     ],
     [
+      "D7YoTjLm6vh4X314B7J7At4gEuEMn1UvCy5eTQXLFWSX",
+      5421755546036
+    ],
+    [
       "22ic5y14N2mZuAR7DgHZt4eq8P6p6XdrhX1M8YwnGmTY",
       5421551381902
     ],
@@ -177,6 +181,10 @@
       4314775539248
     ],
     [
+      "7GWfFXc5FgQyioqL5p1SeZ16p7mwV4h1DLNviS4w5giV",
+      4046891202281
+    ],
+    [
       "Epg638D52bpk6EWvHKEVKveS9iN2DQQ95CzXrNoDvqe",
       3941207861842
     ],
@@ -193,16 +201,16 @@
       3531453459962
     ],
     [
+      "HcLMmNx9pcSM2cDuNMEcWKuDpiknGEb8djqGRsTtM9yo",
+      3329495885077
+    ],
+    [
       "93NNxT2VPRnuoMaizSsMQAXA3RgiAeZLxGCjkctSgb4Z",
       3304165975522
     ],
     [
       "HN1Fa8yaxrhA3dQdH9TsEKkMJXTjJkJBtAVRXnqaZoTc",
       3129155426835
-    ],
-    [
-      "D7YoTjLm6vh4X314B7J7At4gEuEMn1UvCy5eTQXLFWSX",
-      3023296125098
     ],
     [
       "69sqjwuNDVc8x8u9pdAMoadq3FSQUD6TArYG3DQ5yNfz",
@@ -213,8 +221,8 @@
       2795432652822
     ],
     [
-      "7GWfFXc5FgQyioqL5p1SeZ16p7mwV4h1DLNviS4w5giV",
-      2766040428239
+      "4WSmtakHuUCVap774FgoQ3K3mbuo6pM7kE8hwWkpWbYk",
+      2764437047160
     ],
     [
       "AomWrraZzuUjEhGYz7Layekz3nhLPr87Wc7xn2YmEaj2",
@@ -453,6 +461,10 @@
       26956293522
     ],
     [
+      "H5h4uyRjMXwhCp95WM87zFxGsyv575B4wjiDKPBzbaZ5",
+      26653689742
+    ],
+    [
       "Caqt3T4uyiD1aUnwiGtRPzL2S4izePLdQaGH8mC3G41y",
       23726803342
     ],
@@ -479,6 +491,10 @@
     [
       "nEadHGieX5QRytKLsastcFJktb1GkK1ZAPmQDg8v83d",
       15441973792
+    ],
+    [
+      "Hxa3KKMZU6JHmbWQe1LFcWfJ4cpLKRQZVgV3GEToc7hH",
+      15084838140
     ],
     [
       "AQGzCZfh8Kyd1dZKuVbH7uvWokdkASxQmeULza4oP82i",
