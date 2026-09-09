@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-09-09T14:22:34.380Z",
-  "total": 142,
+  "updatedAt": "2026-09-09T17:56:09.526Z",
+  "total": 143,
   "tiers": {
     "calf": 73,
     "bull": 43,
-    "stampede": 26,
+    "stampede": 27,
     "alpha": 0
   },
   "holders": [
@@ -101,6 +101,10 @@
       10997289136911
     ],
     [
+      "8pojExh853XoHtaiUYUiz2xY1WrQWGXYd7spdkAFXx8D",
+      10352217188219
+    ],
+    [
       "A8egciG8UsoHovCnJTAdYGefMW3MM79AbF1sdi8eU3vf",
       10222976722834
     ],
@@ -169,6 +173,10 @@
       4314775539248
     ],
     [
+      "BHAgiUmkJSdjnFJXYsNwoMj1GfsX6jxCJFTW1Bqrvy8G",
+      4302706883163
+    ],
+    [
       "7GWfFXc5FgQyioqL5p1SeZ16p7mwV4h1DLNviS4w5giV",
       4046891202281
     ],
@@ -199,10 +207,6 @@
     [
       "HN1Fa8yaxrhA3dQdH9TsEKkMJXTjJkJBtAVRXnqaZoTc",
       3129155426835
-    ],
-    [
-      "BHAgiUmkJSdjnFJXYsNwoMj1GfsX6jxCJFTW1Bqrvy8G",
-      2795432652822
     ],
     [
       "HH95bire3T14Gv7LYWx55t9MKrACBK1YMAu8CC3rGFAD",
@@ -317,10 +321,6 @@
       570848568338
     ],
     [
-      "AnPiNxqAbcaMHisfGGUKASfKBLtH1vA27ZCnDSTx3Lua",
-      530938401304
-    ],
-    [
       "BGCj4ScjyiVgAeuk18RtBLmUBGHJpXph6Lq9zHwEhmLt",
       512696791390
     ],
@@ -343,6 +343,10 @@
     [
       "8RegWzMbpiAZXciDT3eeExCknE5bNkRd1dfMo9ngbyF1",
       415083704193
+    ],
+    [
+      "AnPiNxqAbcaMHisfGGUKASfKBLtH1vA27ZCnDSTx3Lua",
+      415006281701
     ],
     [
       "5KfWk8E5MfDYTpB43zDVRG7MV1L4tDwx6ozDhP5yS8uU",
@@ -437,10 +441,6 @@
       47684160861
     ],
     [
-      "CpXirNS5o9NLRmfFHf4z7haak1HbPJNY7tkjJwDDKo2B",
-      41943136735
-    ],
-    [
       "6CigR5rPFF1tk4rT3pMNDK2EpFTHEm61wiaKCzXwhMM1",
       35868129595
     ],
@@ -485,12 +485,12 @@
       16742448355
     ],
     [
-      "AQGzCZfh8Kyd1dZKuVbH7uvWokdkASxQmeULza4oP82i",
-      9938478316
+      "nEadHGieX5QRytKLsastcFJktb1GkK1ZAPmQDg8v83d",
+      15441973792
     ],
     [
-      "8pojExh853XoHtaiUYUiz2xY1WrQWGXYd7spdkAFXx8D",
-      9790567529
+      "AQGzCZfh8Kyd1dZKuVbH7uvWokdkASxQmeULza4oP82i",
+      9938478316
     ],
     [
       "5ebh3T7jwNYNnT7TxxtcqH6NZfKnxpg8KEACXkZ2pu65",
@@ -515,6 +515,10 @@
     [
       "CXGXMzYq5LfhEKnRDBk6JTRd4VQ2i3sK5rHpLHkiuNtZ",
       836512590
+    ],
+    [
+      "CpXirNS5o9NLRmfFHf4z7haak1HbPJNY7tkjJwDDKo2B",
+      828725617
     ],
     [
       "59ikFTKHpxMeosNhmRCNnsubWGjYwRWLFCUdbteBAH6R",
