@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-10T00:38:55.232Z",
+  "updatedAt": "2026-09-10T05:22:05.528Z",
   "buys": [
     {
       "sig": "DgLAgeVasye53qso6tgVyREAMHQCAfVtuz6fTtHFWegmeH9TUVmwyzhY9JoAxxGPr2q1kwjkWsMyjKAEoA973HL",
@@ -24,54 +24,6 @@
       "buyer": "FmLJT3hjrC3j1QK3RGgC1zKzCNyqeFGZRc42PyFK1LYW",
       "tokens": 123237.324797,
       "ts": 1788960904
-    },
-    {
-      "sig": "5aN6TzHncGek9KuUGzAhDx4pBxy1eJy2EeG4ctn8CDxSm2mg2b2UnYYrKxjbGDjNxHJ1DMDPEEBwkQojTEBwYz6h",
-      "buyer": "69sqjwuNDVc8x8u9pdAMoadq3FSQUD6TArYG3DQ5yNfz",
-      "tokens": 749964.46055,
-      "ts": 1788937634
-    },
-    {
-      "sig": "4aJkMFxrKaesDhQRuTUVACfPC5sHkeCvdXdMeAW6mnqjUsqD2eeQqYY7N1fVwa6rMk4LYZLw74e4pdyyAiwZDJdc",
-      "buyer": "D7YoTjLm6vh4X314B7J7At4gEuEMn1UvCy5eTQXLFWSX",
-      "tokens": 842550.246891,
-      "ts": 1788902805
-    },
-    {
-      "sig": "ueJ8VPF4fcANSctQDLySeURGp6Mt7LGAyypBmLs8Xui6ebdqrDqFQWz8TkgRvoyGGbn1p9BzMEQDH3hf2Ubjydv",
-      "buyer": "2zovipoX6TSZbbrn7yNYcUZiQ5DQLbUrtt7QUk1FkHEQ",
-      "tokens": 3374661.030129,
-      "ts": 1788902742
-    },
-    {
-      "sig": "2KiJV7tDKptg13JFGwmQMhPRe5wW42vfsy5pL8NjRnvUtxudnjKF45n3zYmJQ1XWj2wWbx55XQ5MS5jm6yhsYyti",
-      "buyer": "HH95bire3T14Gv7LYWx55t9MKrACBK1YMAu8CC3rGFAD",
-      "tokens": 2786759.714686,
-      "ts": 1788902010
-    },
-    {
-      "sig": "33oqmX7bsEdTVNdy25AeVLjRPL2NHsM3kiJe54eRkdSZ8VXnKHuLSTHkXftjQ1Jg8np14jufSVBm5LxT9XV54Ns6",
-      "buyer": "BXrU6jcjtZnar27jfWCXXhr9EqQGcFvyfnpC9cRjYLmC",
-      "tokens": 100000,
-      "ts": 1788899685
-    },
-    {
-      "sig": "3QidcHu6xvhcJGS4abSjctAuJKfg8a39PCTtBWktwVmKQG6aD7gh45bMJBDimPu5dBUedLbUQi975SDLiv5zZLRN",
-      "buyer": "AnPiNxqAbcaMHisfGGUKASfKBLtH1vA27ZCnDSTx3Lua",
-      "tokens": 115932.119603,
-      "ts": 1788883225
-    },
-    {
-      "sig": "41dBMviPComBNJCdanK2g2ocGcJduTZ5iCLwXKUQdq2y5HKfSXEKF1hGZBt3StDJrtyAW5UX3V9t4LFroXUWqzUu",
-      "buyer": "8pojExh853XoHtaiUYUiz2xY1WrQWGXYd7spdkAFXx8D",
-      "tokens": 353955.976118,
-      "ts": 1788862301
-    },
-    {
-      "sig": "2R6vkx9vny68vDdmWGuNZTiRoS2LU6yfcmQLvofQ9VTj2qVvQdDDaTbwRnRRDdU2Xoux55VE6GEfPSiyh4hWDqpj",
-      "buyer": "CpXirNS5o9NLRmfFHf4z7haak1HbPJNY7tkjJwDDKo2B",
-      "tokens": 41114.411118,
-      "ts": 1788857485
     }
   ]
 }
