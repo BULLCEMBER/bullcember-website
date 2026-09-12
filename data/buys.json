@@ -1,23 +1,47 @@
 {
-  "updatedAt": "2026-09-12T17:53:03.756Z",
+  "updatedAt": "2026-09-12T19:42:00.840Z",
   "buys": [
     {
-      "sig": "3gUoSt5zmLrAeyo3rXBQt1gLuhoBXdjg1WEwbUXLYwchehUGt65KszQGxifVXUYZJW7zEPdTRdGCiS5SJFRDgoWj",
-      "buyer": "69sqjwuNDVc8x8u9pdAMoadq3FSQUD6TArYG3DQ5yNfz",
-      "tokens": 407047.440291,
-      "ts": 1789215516
+      "sig": "TgipbU1QbdPqm3rfjfLh9Bk9TMnrVguVirtciZaZq9XaFNxJ2Bmmz2KYD65tM2ZadC7bnzjUTtcLRzr7Qd6qkuh",
+      "buyer": "BXrU6jcjtZnar27jfWCXXhr9EqQGcFvyfnpC9cRjYLmC",
+      "tokens": 272064.685747,
+      "ts": 1789238540
     },
     {
-      "sig": "47sSXckEhzmkj9M42wqsbWkWYKA6hwvaruxgNJGw3GPaYUhRSDE2eSAn7feJRuLhCXB9eN5a9p4R1cSD4RFs7ej7",
-      "buyer": "GZ1Vc1o8MeXuxaUES9Ree3LSsJRSLHhZFtCuzsBspzMH",
-      "tokens": 27197.425254,
-      "ts": 1789205298
+      "sig": "5CVx3ssTyRKAvt7ncLyFNaRYBHiyvcA2az2Ub7xDdqd8m3U8TjC9xyP7ZjPytphiPPcvrVRBikpNm1Q4GqK8ypoE",
+      "buyer": "Go94p6x7wWbffYszkcsw6pRAe34Ph7QzG2xhKqSz71mD",
+      "tokens": 954112.829252,
+      "ts": 1789237977
     },
     {
-      "sig": "29Gn7z9bNqqLYkZ4GefZJky9WZBESP8H8hfuC1QZ4ftZgBU4JCTijTeAZz7vsY2y7FSQYAQk4qYtY7ub7Lk7i1MM",
-      "buyer": "BGCj4ScjyiVgAeuk18RtBLmUBGHJpXph6Lq9zHwEhmLt",
-      "tokens": 2004.210825,
-      "ts": 1789152583
+      "sig": "3aeKUvJFTJXUcicR6De1QKL6AtYdhXwSUcNzUkhrjb5ehdy6v6KS499gQ8td2hi9NbUCXqz5UygWqwzcME8TAWQU",
+      "buyer": "Go94p6x7wWbffYszkcsw6pRAe34Ph7QzG2xhKqSz71mD",
+      "tokens": 719117.194535,
+      "ts": 1789237964
+    },
+    {
+      "sig": "3cwwsm9svivF5EBVTpPHKq6PzrSDsWZwDDXXa4CzHHP3LGR6wNHbqYkvwVZzSXZTm5sNaorcun8Cw77H43PKvHtF",
+      "buyer": "Go94p6x7wWbffYszkcsw6pRAe34Ph7QzG2xhKqSz71mD",
+      "tokens": 729661.931231,
+      "ts": 1789237763
+    },
+    {
+      "sig": "2qBrpinmSP9eRpiV5dx47D9277FmhVeHCgMFKwSbqKvqkEZEhkZb7xJf3XzMGTz7R5BSggpr33T4J4psYQ3NWdGw",
+      "buyer": "Go94p6x7wWbffYszkcsw6pRAe34Ph7QzG2xhKqSz71mD",
+      "tokens": 911863.714874,
+      "ts": 1789237737
+    },
+    {
+      "sig": "deidQKAeG3iivb4ky5VfPUjQWXuZmC5xz4QvRF1ML3nraTraiiXDzWGwFWrB2WriSkfnBuAbvDdQVUHUwMZUrVF",
+      "buyer": "Go94p6x7wWbffYszkcsw6pRAe34Ph7QzG2xhKqSz71mD",
+      "tokens": 6888590.949576,
+      "ts": 1789237723
+    },
+    {
+      "sig": "1cbEiEfjZrBvSBEDfCdpHQg72AqwCZLbTcgoQQ1PRENrtnvxWqoZmwzcAAy6nEHpBaskMmvv6QQo4JVbWnDoiTJ",
+      "buyer": "Go94p6x7wWbffYszkcsw6pRAe34Ph7QzG2xhKqSz71mD",
+      "tokens": 2580388.620647,
+      "ts": 1789237714
     }
   ]
 }
