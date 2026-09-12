@@ -1,6 +1,12 @@
 {
-  "updatedAt": "2026-09-12T21:42:06.830Z",
+  "updatedAt": "2026-09-12T23:26:44.861Z",
   "buys": [
+    {
+      "sig": "5httdd6Jq5XVoRnc161zkkdRNPZN6fFtPKJvw62p6JAV7XUa5orsdKW5fHLH2zJJe6jshUybPCjn85KS49sfFKUP",
+      "buyer": "D7YoTjLm6vh4X314B7J7At4gEuEMn1UvCy5eTQXLFWSX",
+      "tokens": 240868.916213,
+      "ts": 1789249802
+    },
     {
       "sig": "YhtVfSsMJk6JmPQkg55mWy1mHJPEU8bFX4DHFQP63ZW1feydcLT2AaEqxonMsLYnbDmZRD2qEMvPbCh7hGChmoS",
       "buyer": "3VW7GPsVsCWyYKYm7CF2zVpj5yf4GEesghwBX7BFcHPL",
@@ -26,16 +32,10 @@
       "ts": 1789238540
     },
     {
-      "sig": "5CVx3ssTyRKAvt7ncLyFNaRYBHiyvcA2az2Ub7xDdqd8m3U8TjC9xyP7ZjPytphiPPcvrVRBikpNm1Q4GqK8ypoE",
+      "sig": "deidQKAeG3iivb4ky5VfPUjQWXuZmC5xz4QvRF1ML3nraTraiiXDzWGwFWrB2WriSkfnBuAbvDdQVUHUwMZUrVF",
       "buyer": "Go94p6x7wWbffYszkcsw6pRAe34Ph7QzG2xhKqSz71mD",
-      "tokens": 954112.829252,
-      "ts": 1789237977
-    },
-    {
-      "sig": "3aeKUvJFTJXUcicR6De1QKL6AtYdhXwSUcNzUkhrjb5ehdy6v6KS499gQ8td2hi9NbUCXqz5UygWqwzcME8TAWQU",
-      "buyer": "Go94p6x7wWbffYszkcsw6pRAe34Ph7QzG2xhKqSz71mD",
-      "tokens": 719117.194535,
-      "ts": 1789237964
+      "tokens": 6888590.949576,
+      "ts": 1789237723
     },
     {
       "sig": "1cbEiEfjZrBvSBEDfCdpHQg72AqwCZLbTcgoQQ1PRENrtnvxWqoZmwzcAAy6nEHpBaskMmvv6QQo4JVbWnDoiTJ",
