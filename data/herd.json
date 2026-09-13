@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-09-12T23:26:06.465Z",
-  "total": 141,
+  "updatedAt": "2026-09-13T01:21:25.461Z",
+  "total": 143,
   "tiers": {
-    "calf": 71,
+    "calf": 73,
     "bull": 43,
     "stampede": 27,
     "alpha": 0
@@ -41,12 +41,12 @@
       29232429877486
     ],
     [
-      "583S1Jk6SpnSehRHNEeNcEmJettgTSgfwunftecJXHjD",
-      24770902852110
+      "7B6fnUh5Bw59qDdSRqmZTPDmTNz75Zyg5YFNWbDTYVrh",
+      29125005016058
     ],
     [
-      "Go94p6x7wWbffYszkcsw6pRAe34Ph7QzG2xhKqSz71mD",
-      24529566326195
+      "583S1Jk6SpnSehRHNEeNcEmJettgTSgfwunftecJXHjD",
+      24770902852110
     ],
     [
       "8oQCeJPR8mwbSVrMWddbQfBxVMkgFdC2LeYdMLR6ZHmL",
@@ -153,12 +153,12 @@
       5891849544901
     ],
     [
-      "D7YoTjLm6vh4X314B7J7At4gEuEMn1UvCy5eTQXLFWSX",
-      5503229683940
-    ],
-    [
       "22ic5y14N2mZuAR7DgHZt4eq8P6p6XdrhX1M8YwnGmTY",
       5421551381902
+    ],
+    [
+      "D7YoTjLm6vh4X314B7J7At4gEuEMn1UvCy5eTQXLFWSX",
+      5156830864085
     ],
     [
       "4TpArgdoxD1RiMQDZYCjez3Kpi1CHaUbVmeYQe656xUD",
@@ -373,12 +373,20 @@
       248308599499
     ],
     [
+      "DBHihmQJdDYguPYvkL3CWjtjzrZAaNiazzbSYewPiCDh",
+      225691494306
+    ],
+    [
       "DxeSfPisnRR3ZkS7iP4yG7fNqkxk8S6c88WMJzCVFj66",
       204775678914
     ],
     [
       "DXmUDYe2dByjqEaGtb6ERGkZRu2Yb7rt8zwjb5mgvC4k",
       189473342038
+    ],
+    [
+      "BGCj4ScjyiVgAeuk18RtBLmUBGHJpXph6Lq9zHwEhmLt",
+      172784728434
     ],
     [
       "nAjJUi8Rx5WnmtansVxDKYEyLpAW2UWjxDubNtoh9aS",
@@ -415,6 +423,10 @@
     [
       "ydwVQrApTGJXbraAsLqqYyv28ZAKuKoMZxnSZXZ7oPM",
       85344779837
+    ],
+    [
+      "J9nqceQNdSwE7yoXuF9Tzrk6BaCWtkpxTyoXHK7h84pR",
+      83734006247
     ],
     [
       "3VW7GPsVsCWyYKYm7CF2zVpj5yf4GEesghwBX7BFcHPL",
@@ -471,10 +483,6 @@
     [
       "7HQgNVcxFMG7stLvHn329LQ2Kd1A7ifFiqtk73huND4X",
       16742448355
-    ],
-    [
-      "J9nqceQNdSwE7yoXuF9Tzrk6BaCWtkpxTyoXHK7h84pR",
-      15441973792
     ],
     [
       "AQGzCZfh8Kyd1dZKuVbH7uvWokdkASxQmeULza4oP82i",
