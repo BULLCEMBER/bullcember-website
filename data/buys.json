@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-14T13:03:19.757Z",
+  "updatedAt": "2026-09-14T18:32:10.354Z",
   "buys": [
     {
       "sig": "Pb5s5igLirX9cdaThins4Zy4B3oSmJTuqwEBNbVCCy7tiMovHrbAfQsBkuT2U6K8h3xN17JiK6d3A2ukhXCv5Q6",
@@ -24,54 +24,6 @@
       "buyer": "6apUdHAeJfrdvWPPWoKjNvTR5xZeZA1xePFwEEwZr6cH",
       "tokens": 43673.726118,
       "ts": 1789310774
-    },
-    {
-      "sig": "5YNPvgW1hwfvQGJngQmK14JPEVfLqFosqMxCL6HpFUmcio7qpzYNGt3WeF57tYGjKc6vVyKFWqzwhVrXPoKf9ovj",
-      "buyer": "D7YoTjLm6vh4X314B7J7At4gEuEMn1UvCy5eTQXLFWSX",
-      "tokens": 226313.431084,
-      "ts": 1789262563
-    },
-    {
-      "sig": "4tstofSBkAuNEZV8JVLLTsoCkEWtT7UHX2AxkgUgzdxjxMm5ripiKh5wEiH9XesxhWJ2qr7ogt9equLj2UWRZqLQ",
-      "buyer": "BGCj4ScjyiVgAeuk18RtBLmUBGHJpXph6Lq9zHwEhmLt",
-      "tokens": 172784.728434,
-      "ts": 1789257660
-    },
-    {
-      "sig": "5JdvLn8mnq1bY5w8Kw3Hc8ekcc6FJ3hn1YetTxctPHQG992TeNVXA2fEnMceyGWBFctzWf8MCsctB9jLNqQXbtX3",
-      "buyer": "D7YoTjLm6vh4X314B7J7At4gEuEMn1UvCy5eTQXLFWSX",
-      "tokens": 226582.387265,
-      "ts": 1789256221
-    },
-    {
-      "sig": "3RvUymYffUpafPPkQLxx1Me2sCyK2pQsNYN3mvPfXpGjcmPUdfRFBHTtnTBpVPARuSBzAFP5vZDq8T5sKjMD3626",
-      "buyer": "7B6fnUh5Bw59qDdSRqmZTPDmTNz75Zyg5YFNWbDTYVrh",
-      "tokens": 2271336.012111,
-      "ts": 1789256044
-    },
-    {
-      "sig": "2gcN8FcGMLqY4YkAoixe4bSXmMtAb8mXsBffbc3RftENX7maQxew5sTG52fqXsWQMwr1nePSk3m9jT47DnVeuH3X",
-      "buyer": "7B6fnUh5Bw59qDdSRqmZTPDmTNz75Zyg5YFNWbDTYVrh",
-      "tokens": 2324102.677752,
-      "ts": 1789255817
-    },
-    {
-      "sig": "5httdd6Jq5XVoRnc161zkkdRNPZN6fFtPKJvw62p6JAV7XUa5orsdKW5fHLH2zJJe6jshUybPCjn85KS49sfFKUP",
-      "buyer": "D7YoTjLm6vh4X314B7J7At4gEuEMn1UvCy5eTQXLFWSX",
-      "tokens": 240868.916213,
-      "ts": 1789249802
-    },
-    {
-      "sig": "YhtVfSsMJk6JmPQkg55mWy1mHJPEU8bFX4DHFQP63ZW1feydcLT2AaEqxonMsLYnbDmZRD2qEMvPbCh7hGChmoS",
-      "buyer": "3VW7GPsVsCWyYKYm7CF2zVpj5yf4GEesghwBX7BFcHPL",
-      "tokens": 72370.252296,
-      "ts": 1789246173
-    },
-    {
-      "sig": "56ZeeCHRmKCfXttpUDoajHTpjbvpdFEZs9j4aqfLxkEMReoqT8WLrqaLb8BCynDjBusRuJRd6VGgf2uKVVrCJtqB",
-      "buyer": "Cw2EjGYkCQxbY5BQ9BToRvvFYtqEZ8KnQjsEaG8h8hgd",
-      "tokens": 4799208.110684,
-      "ts": 1789246082
     }
   ]
 }
