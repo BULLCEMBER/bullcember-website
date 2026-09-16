@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-09-16T18:22:18.363Z",
-  "total": 137,
+  "updatedAt": "2026-09-16T21:36:52.537Z",
+  "total": 136,
   "tiers": {
-    "calf": 67,
+    "calf": 66,
     "bull": 44,
     "stampede": 26,
     "alpha": 0
@@ -113,10 +113,6 @@
       10060352943186
     ],
     [
-      "Cw2EjGYkCQxbY5BQ9BToRvvFYtqEZ8KnQjsEaG8h8hgd",
-      9826479920291
-    ],
-    [
       "4zXKukimfcUAX1ACB9CCg7Ss5o7i4djc1FXRo2srmUJ6",
       9582669652953
     ],
@@ -133,12 +129,12 @@
       7273462406428
     ],
     [
-      "CzzRkobEcih22PtFmyq4kb6kYhKuUvVN9W67GVq9KKXP",
-      7121247591898
-    ],
-    [
       "36Hi9JHZZXZSKt3hhMMQrcZrxp3ExvNqo9UkdieQXnRK",
       6943524284141
+    ],
+    [
+      "CzzRkobEcih22PtFmyq4kb6kYhKuUvVN9W67GVq9KKXP",
+      6594895955897
     ],
     [
       "5ZLR5hoH2kUh3dTrK8iz7VRi9XiYzpTuj4vbNY5D3SzF",
@@ -151,6 +147,10 @@
     [
       "7WVmFAwkDREkbRhUmNJf4iU8RSfQzN9Z1QMHWRs5xLSS",
       5891849544901
+    ],
+    [
+      "Cw2EjGYkCQxbY5BQ9BToRvvFYtqEZ8KnQjsEaG8h8hgd",
+      4913239960145
     ],
     [
       "4TpArgdoxD1RiMQDZYCjez3Kpi1CHaUbVmeYQe656xUD",
@@ -189,12 +189,12 @@
       3544009638746
     ],
     [
-      "D7YoTjLm6vh4X314B7J7At4gEuEMn1UvCy5eTQXLFWSX",
-      3531880972062
-    ],
-    [
       "6D5ovnQeR5NHFYg2n1Jrcp1KTztvvnSEzWwbAU1JDD4G",
       3531453459962
+    ],
+    [
+      "D7YoTjLm6vh4X314B7J7At4gEuEMn1UvCy5eTQXLFWSX",
+      3371594993471
     ],
     [
       "93NNxT2VPRnuoMaizSsMQAXA3RgiAeZLxGCjkctSgb4Z",
@@ -317,8 +317,8 @@
       570848568338
     ],
     [
-      "2Q9KM9cAms3wBvdZkEcxDf5MaMQ4DbZu4Z2JCJYy4kaR",
-      515101774708
+      "AnPiNxqAbcaMHisfGGUKASfKBLtH1vA27ZCnDSTx3Lua",
+      530938401304
     ],
     [
       "GXWPvjzFoSPfFafsMdVjSXq3B9KhfKGqjtDBnEWVWxwM",
@@ -337,16 +337,8 @@
       415083704193
     ],
     [
-      "AnPiNxqAbcaMHisfGGUKASfKBLtH1vA27ZCnDSTx3Lua",
-      415006281701
-    ],
-    [
       "FmLJT3hjrC3j1QK3RGgC1zKzCNyqeFGZRc42PyFK1LYW",
       409799949992
-    ],
-    [
-      "5KfWk8E5MfDYTpB43zDVRG7MV1L4tDwx6ozDhP5yS8uU",
-      393542664634
     ],
     [
       "BL5UNdH6mggBAUdc1sMYHLx4dRw78YqNvyumahC9GeDp",
@@ -415,6 +407,10 @@
     [
       "ydwVQrApTGJXbraAsLqqYyv28ZAKuKoMZxnSZXZ7oPM",
       85344779837
+    ],
+    [
+      "3VW7GPsVsCWyYKYm7CF2zVpj5yf4GEesghwBX7BFcHPL",
+      72370252296
     ],
     [
       "GJh9daNEsGTXXekAaSxbiHYwNmGG8Bht1mdrvG3yL62U",
