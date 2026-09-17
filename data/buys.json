@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-17T12:10:43.840Z",
+  "updatedAt": "2026-09-17T17:04:51.063Z",
   "buys": [
     {
       "sig": "54DQv5p2U8wQP23pZ1681QypYP2KGTyAwCvrLms4tqbbQWBysF5nXRJtD6KbWGDc1ncdJsQskSc6KDLBCuFXzxnN",
@@ -24,6 +24,54 @@
       "buyer": "22ic5y14N2mZuAR7DgHZt4eq8P6p6XdrhX1M8YwnGmTY",
       "tokens": 4118795.674544,
       "ts": 1789567616
+    },
+    {
+      "sig": "KxcRELRUk5zBRktdde7U7QxhzXGSoBm7qUYmWqjS6rdLgKvR6V8aznDZ6yiJTn6cXaCuEKPQbE4j75NNDZB4BTf",
+      "buyer": "588xE2Gx8hcojVVTCumf78w8Piqv3Akq965udrrdD9yX",
+      "tokens": 4221611.288418,
+      "ts": 1789534775
+    },
+    {
+      "sig": "2NkBwrBiYRuPqusrTxzKHYXrL4dyfHtN8KBQZyN8yD1ie7sY6nwgCzsfxrgpfic81LFc2q3JgPmhubYEGys5aDAb",
+      "buyer": "D7YoTjLm6vh4X314B7J7At4gEuEMn1UvCy5eTQXLFWSX",
+      "tokens": 214335.68735,
+      "ts": 1789527003
+    },
+    {
+      "sig": "3yEtHiWkQJYJ7yJLyxpf4x1VM6oeguxAEPyxidtSnwfGhHsrg3giYkQ55HbkEvhTPE9aYmyHaxKE4fdGEfycXBN2",
+      "buyer": "2zeHdhPzvfKxR3fPXTzhEjJapmATrnAoor5XYKehJqTk",
+      "tokens": 12166473.099214,
+      "ts": 1789526968
+    },
+    {
+      "sig": "Pb5s5igLirX9cdaThins4Zy4B3oSmJTuqwEBNbVCCy7tiMovHrbAfQsBkuT2U6K8h3xN17JiK6d3A2ukhXCv5Q6",
+      "buyer": "FR44MxPiyfzw5o69XWDt1D7vm22Q652p8VjdpbkTjTr1",
+      "tokens": 3582038.071537,
+      "ts": 1789328377
+    },
+    {
+      "sig": "f9aRmbVFVHBbqH36dGW4XNqFyxqTGDMT7dSPytkAbDzys8pcrPNPW7xomUo5BZ4sizQbZiPnZZazBRReZfV37Dc",
+      "buyer": "8VGGZF6G5z7gBM67cdGnHJGMcSNDFLZZY4GTQVXjvTuk",
+      "tokens": 405877.598279,
+      "ts": 1789315292
+    },
+    {
+      "sig": "1wLiBJHMsAyzoUQdihC1arwButT4e1qmLkiK13JsFc2kufSTCBWtyb55TAR6NQQWffXgRXuEHjEogYyZZPK1jnJ",
+      "buyer": "6apUdHAeJfrdvWPPWoKjNvTR5xZeZA1xePFwEEwZr6cH",
+      "tokens": 190027.966112,
+      "ts": 1789310796
+    },
+    {
+      "sig": "3dp24fuuBRwAV2ky8JCuqCUDGLjyPJiB9wE83jqDJmf1AuSVo9MMEGPDXHnfjJ3CzGFTfEgVkLAouq4G9eB5RvTt",
+      "buyer": "6apUdHAeJfrdvWPPWoKjNvTR5xZeZA1xePFwEEwZr6cH",
+      "tokens": 43673.726118,
+      "ts": 1789310774
+    },
+    {
+      "sig": "3h4rvWj1oZiCQs6byqrN1cVcSLmYxKWNdxBMgmmRdGw1RZTYVprF67UFq1iyrLu1Lk8YBEKUjC2N6Lqr8QFnphnK",
+      "buyer": "6apUdHAeJfrdvWPPWoKjNvTR5xZeZA1xePFwEEwZr6cH",
+      "tokens": 43689.176079,
+      "ts": 1789310560
     }
   ]
 }
