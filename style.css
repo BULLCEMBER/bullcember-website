@@ -376,7 +376,7 @@ a { text-decoration: none; color: inherit; }
   font-weight: 500;
   letter-spacing: var(--ls-label);
   text-transform: uppercase;
-  color: var(--signal);
+  color: var(--signal-ink);
   margin-bottom: var(--s-5);
 }
 
@@ -492,7 +492,7 @@ a { text-decoration: none; color: inherit; }
 
 .btn-secondary:hover {
   border-color: var(--signal);
-  color: var(--signal);
+  color: var(--signal-ink);
 }
 
 /* ===== TICKER ===== */
@@ -541,7 +541,7 @@ section { padding: var(--section-y) 0; }
   font-weight: 500;
   letter-spacing: var(--ls-label);
   text-transform: uppercase;
-  color: var(--signal);
+  color: var(--signal-ink);
   margin-bottom: var(--s-3);
 }
 .section-title {
@@ -554,7 +554,7 @@ section { padding: var(--section-y) 0; }
   color: var(--fg);
 }
 
-.highlight { color: var(--signal); }
+.highlight { color: var(--signal-ink); }
 
 /* ===== ABOUT ===== */
 .about { background: var(--bg-2); }
@@ -583,7 +583,7 @@ section { padding: var(--section-y) 0; }
   font-family: var(--f-mono);
   font-size: var(--t-2xs);
   font-weight: 500;
-  color: var(--signal);
+  color: var(--signal-ink);
   margin-bottom: var(--s-3);
   text-transform: uppercase;
   letter-spacing: var(--ls-label);
@@ -709,7 +709,7 @@ section { padding: var(--section-y) 0; }
   font-family: var(--f-mono);
   font-size: var(--t-sm);
   font-weight: 500;
-  color: var(--signal);
+  color: var(--signal-ink);
   line-height: 1.6;
   min-width: 32px;
   letter-spacing: 0.08em;
@@ -772,7 +772,7 @@ section { padding: var(--section-y) 0; }
 
 .social-card:hover {
   border-color: var(--signal);
-  color: var(--signal);
+  color: var(--signal-ink);
 }
 
 .social-icon { font-size: var(--t-lg); line-height: 1; }
@@ -852,7 +852,7 @@ section { padding: var(--section-y) 0; }
 .mode-btn:hover, .tf-btn:hover { color: var(--fg); border-color: var(--line-strong); }
 
 .mode-btn.active, .tf-btn.active {
-  color: var(--signal);
+  color: var(--signal-ink);
   border-color: var(--signal);
   background: var(--signal-wash);
 }
@@ -920,7 +920,7 @@ section { padding: var(--section-y) 0; }
   transition: color var(--dur-1) var(--ease);
 }
 
-.trade-fallback:hover { color: var(--signal); }
+.trade-fallback:hover { color: var(--signal-ink); }
 
 /* ===== PARTNERS ===== */
 .partners { padding: var(--section-y) 0; background: var(--bg-2); border-block: 1px solid var(--line); }
@@ -998,7 +998,7 @@ section { padding: var(--section-y) 0; }
 
 .toko-timeline-arrow {
   font-size: var(--t-lg);
-  color: var(--signal);
+  color: var(--signal-ink);
 }
 
 /* ===== GRADUATION PROGRESS ===== */
@@ -1016,7 +1016,7 @@ section { padding: var(--section-y) 0; }
   font-size: var(--t-lg);
   font-weight: 700;
   letter-spacing: -0.02em;
-  color: var(--signal);
+  color: var(--signal-ink);
 }
 
 /* A meter, not a lozenge — square ends and a flat fill read as an instrument.
@@ -1108,7 +1108,7 @@ section { padding: var(--section-y) 0; }
   font-family: var(--f-mono);
   font-weight: 500;
   font-size: var(--t-sm);
-  color: var(--signal);
+  color: var(--signal-ink);
   transition: color var(--dur-1) var(--ease);
 }
 
@@ -1195,13 +1195,13 @@ section { padding: var(--section-y) 0; }
   transition: color var(--dur-1) var(--ease);
 }
 
-.herd-tier:hover .herd-tier-ico { color: var(--signal); }
+.herd-tier:hover .herd-tier-ico { color: var(--signal-ink); }
 
 .rank-ico {
   width: 20px;
   height: 20px;
   vertical-align: -0.3em;
-  color: var(--signal);
+  color: var(--signal-ink);
 }
 
 .herd-tier-name {
@@ -1210,7 +1210,7 @@ section { padding: var(--section-y) 0; }
   font-size: var(--t-2xs);
   letter-spacing: var(--ls-label);
   text-transform: uppercase;
-  color: var(--signal);
+  color: var(--signal-ink);
   margin: var(--s-3) 0 var(--s-1);
 }
 
@@ -1383,7 +1383,7 @@ section { padding: var(--section-y) 0; }
 }
 
 .rank-result.err { color: var(--muted); }
-.rank-result strong { color: var(--signal); }
+.rank-result strong { color: var(--signal-ink); }
 
 /* ===== POWERED BY SOLANA ===== */
 .powered-by {
@@ -1431,7 +1431,7 @@ section { padding: var(--section-y) 0; }
   font-weight: 500;
   letter-spacing: var(--ls-label);
   text-transform: uppercase;
-  color: var(--signal);
+  color: var(--signal-ink);
   margin-bottom: var(--s-4);
   position: relative;
 }
@@ -1465,7 +1465,7 @@ section { padding: var(--section-y) 0; }
   font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--signal);
+  color: var(--signal-ink);
   margin-left: auto;
   opacity: 0;
   transition: opacity var(--dur-1) var(--ease);
@@ -1542,7 +1542,7 @@ section { padding: var(--section-y) 0; }
   font-weight: 500;
   letter-spacing: var(--ls-label);
   text-transform: uppercase;
-  color: var(--signal);
+  color: var(--signal-ink);
 }
 
 /* ===== RESPONSIVE ===== */
@@ -1735,7 +1735,7 @@ section { padding: var(--section-y) 0; }
   color: var(--fg);
 }
 .elive.burn .elive-v { color: var(--burn); }
-.elive.buy  .elive-v { color: var(--signal); }
+.elive.buy  .elive-v { color: var(--signal-ink); }
 .elive-sub {
   margin-top: var(--s-3);
   font-family: var(--f-mono);
@@ -1795,7 +1795,7 @@ section { padding: var(--section-y) 0; }
   cursor: pointer;
   transition: color var(--dur-1) var(--ease), border-color var(--dur-1) var(--ease);
 }
-.refresh-btn:hover { color: var(--signal); border-color: var(--signal); }
+.refresh-btn:hover { color: var(--signal-ink); border-color: var(--signal); }
 .refresh-btn:disabled { opacity: 0.5; cursor: default; }
 
 /* activity feed */
@@ -1841,7 +1841,7 @@ section { padding: var(--section-y) 0; }
               background var(--dur-1) var(--ease);
 }
 .ftab:hover { color: var(--fg); border-color: var(--line-strong); }
-.ftab.active { background: var(--signal-wash); border-color: var(--signal); color: var(--signal); }
+.ftab.active { background: var(--signal-wash); border-color: var(--signal); color: var(--signal-ink); }
 .feed-list { max-height: 380px; overflow-y: auto; }
 .feed-row {
   display: flex;
@@ -1884,7 +1884,7 @@ section { padding: var(--section-y) 0; }
 }
 /* buyback and burn must never share a colour — under the old aliases both
    resolved to the same value, making the two event types indistinguishable */
-.feed-row.buyback .feed-amt { color: var(--signal); }
+.feed-row.buyback .feed-amt { color: var(--signal-ink); }
 .feed-row.burn    .feed-amt { color: var(--burn); }
 .feed-empty {
   padding: var(--s-6) var(--s-5);
@@ -1931,19 +1931,24 @@ section { padding: var(--section-y) 0; }
    ========================================================================= */
 
 :root {
-  /* December, not fintech. Red carries burn, blood and bullish candles at once. */
-  --signal:        #A8FF1A;
-  --signal-rgb:    168, 255, 26;
-  --signal-dim:    #7BC400;
+  /* Solana's own pair, purple leading. Purple is identity; green is action.
+     #9945FF is only 4.2:1 on --surface, so it carries fills, borders, rims and
+     display type — never small text. --signal-ink is the same hue lifted to
+     9.4:1 for anything the reader actually has to read. */
+  --signal:        #9945FF;   /* Solana purple — the lead */
+  --signal-rgb:    153, 69, 255;
+  --signal-ink:    #C9A6FF;   /* 9.4:1 on --surface (AAA) */
+  --signal-dim:    #7A2FD9;
   --signal-wash:   rgba(var(--signal-rgb), 0.10);
-  --on-signal:     #0B1400;
-  --accent:          #FFC61A;
+  --on-signal:     #FFFFFF;   /* 4.52:1 on a --signal fill — AA, no margin */
+  /* Solana green, demoted to accent. 14.4:1, so it needs no lifted variant. */
+  --accent:        #00FFA3;
+  --accent-ink:    #00FFA3;
+  --on-accent:     #0A0508;   /* ink on a green fill — 15.3:1 */
   --bone:          #F2EDE6;
   --bg:            #08070A;
   --bg-2:          #0C0A0D;
   --burn:          #FF3B1F;
-  /* acid green survives in exactly one job: price going up */
-  --up:            #22FF88;
 
   --f-slab:   'Anton', 'Space Grotesk', Impact, sans-serif;
   --f-scrawl: 'Permanent Marker', 'Comic Sans MS', cursive;
@@ -1967,7 +1972,7 @@ body::after {
   padding: 5px 12px 4px;
   border: 2px solid var(--signal);
   border-radius: 0;
-  color: var(--signal);
+  color: var(--signal-ink);
   font-family: var(--f-mono);
   font-weight: 700;
   font-size: var(--t-2xs);
@@ -1979,6 +1984,8 @@ body::after {
   margin-bottom: var(--s-5);
 }
 
+/* only ever wraps a section title — Anton at 28-44px is WCAG large text,
+   so it takes the full-strength purple rather than the lifted tint. */
 .highlight { color: var(--accent); }
 
 /* ---- hero --------------------------------------------------------------- */
@@ -2003,7 +2010,7 @@ body::after {
   transform: rotate(-1.4deg);
   transform-origin: left center;
   margin-bottom: var(--s-6);
-  color: var(--signal);
+  color: var(--signal);   /* display type — full strength, not the tint */
   text-shadow: 6px 6px 0 #000, 12px 12px 0 rgba(0,0,0,0.55);
 }
 
@@ -2062,7 +2069,7 @@ body::after {
   box-shadow: 4px 4px 0 rgba(242,237,230,0.18);
 }
 .btn-secondary:hover {
-  color: var(--accent);
+  color: var(--accent-ink);
   border-color: var(--accent);
   transform: translate(-2px, -2px) rotate(1deg);
 }
@@ -2070,7 +2077,7 @@ body::after {
 /* ---- hand annotation. the clash with the mono data is the whole joke ---- */
 .scrawl {
   font-family: var(--f-scrawl);
-  color: var(--accent);
+  color: var(--accent-ink);
   font-size: 1.05rem;
   line-height: 1.2;
   letter-spacing: 0.01em;
@@ -2116,7 +2123,9 @@ body::after {
 
 /* ---- ticker: red band, black type, no emoji ----------------------------- */
 .ticker-scroll {
-  background: var(--signal);
+  /* the band stays bright-with-dark-type; on purple that ink is only 4.48:1,
+     so the marquee is where green does its loudest work. */
+  background: var(--accent);
   border-top: 2px solid #000;
   border-bottom: 2px solid #000;
   padding: var(--s-3) 0;
@@ -2127,7 +2136,7 @@ body::after {
 }
 .ticker-inner {
   animation-duration: 28s;
-  color: #0A0508;
+  color: var(--on-accent);
   font-weight: 700;
   font-size: var(--t-xs);
   letter-spacing: 0.16em;
@@ -2135,7 +2144,7 @@ body::after {
 .tk-sep {
   display: inline-block;
   padding: 0 var(--s-4);
-  color: rgba(10,5,8,0.45);
+  color: rgba(10,5,8,0.65);
 }
 
 /* ---- countdown ---------------------------------------------------------- */
@@ -2187,7 +2196,7 @@ body::after {
   letter-spacing: 0;
   text-shadow: 3px 3px 0 #000;
 }
-.countdown-label { color: var(--accent); font-weight: 700; }
+.countdown-label { color: var(--accent-ink); font-weight: 700; }
 .countdown-target { color: var(--bone); }
 
 /* ---- mobile: the chaos has to stop shoving things off screen ------------ */
@@ -2212,9 +2221,9 @@ body::after {
    leaderboard) — that split is the whole reason the page still reads credible.
    ========================================================================= */
 
-/* green is the brand now, so a second, different green cannot also mean "up".
-   Up unifies with the signal; red-on-down becomes the only directional cue. */
-:root { --up: var(--signal); }
+/* purple is the brand now, so green is free to go back to meaning "up" — which
+   also lifts the % figures from purple's 4.2:1 to green's 14.4:1. */
+:root { --up: var(--accent); }
 
 /* ---- every section headline gets the slab ------------------------------- */
 .section-title,
@@ -2304,7 +2313,7 @@ body::after {
   text-shadow: 4px 4px 0 #000;
 }
 .elive.buy .elive-v {
-  color: var(--signal);
+  color: var(--signal);   /* 99px slab — display, full strength */
   text-shadow: 4px 4px 0 #000;
 }
 .elive-sub {
@@ -2316,7 +2325,7 @@ body::after {
 }
 
 .engine-lead { color: var(--fg-dim); }
-.engine-lead strong { color: var(--signal); font-weight: 700; }
+.engine-lead strong { color: var(--signal-ink); font-weight: 700; }
 
 .engine-updated {
   font-family: var(--f-mono);
@@ -2350,7 +2359,7 @@ body::after {
 }
 .ftab:hover, .refresh-btn:hover, .copy-btn:hover {
   border-color: var(--signal);
-  color: var(--signal);
+  color: var(--signal-ink);
 }
 .ftab.active {
   background: var(--signal);
@@ -2386,7 +2395,7 @@ body::after {
 .toko-value { color: var(--bone); font-weight: 700; }
 .toko-sub   { color: var(--muted); }
 .toko-ca-text { color: var(--fg-dim); }
-.toko-timeline-arrow { color: var(--signal); }
+.toko-timeline-arrow { color: var(--signal-ink); }
 
 .grad-bar { border-radius: 0; border: 1px solid var(--line-strong); background: rgba(8,7,10,0.9); }
 .grad-fill { border-radius: 0; background: var(--signal); }
@@ -2394,7 +2403,7 @@ body::after {
   font-family: var(--f-slab);
   font-weight: 400;
   font-size: 1.8rem;
-  color: var(--signal);
+  color: var(--signal);   /* 29px slab — display, full strength */
   letter-spacing: 0;
 }
 .grad-meta { color: var(--muted); }
@@ -2413,7 +2422,7 @@ body::after {
   letter-spacing: -0.02em;
 }
 .step-body p { color: var(--fg-dim); }
-.step-body strong { color: var(--accent); font-weight: 700; }
+.step-body strong { color: var(--accent-ink); font-weight: 700; }
 
 /* ---- HERD ---------------------------------------------------------------- */
 .herd-num {
@@ -2433,13 +2442,13 @@ body::after {
   color: var(--muted);
 }
 .herd-tier { padding: var(--s-6) var(--s-5); }
-.herd-tier-ico { color: var(--signal); }
+.herd-tier-ico { color: var(--signal-ink); }
 .herd-tier-name {
   font-family: var(--f-mono);
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--accent-ink);
 }
 .herd-tier-range { color: var(--muted); }
 .herd-tier-count span { font-family: var(--f-slab); font-size: 2.4rem; color: var(--bone); }
@@ -2464,9 +2473,9 @@ body::after {
   white-space: nowrap;
 }
 .partner-sub { color: var(--muted); }
-.social-cta { color: var(--signal); font-family: var(--f-mono); font-weight: 700; letter-spacing: 0.08em; }
+.social-cta { color: var(--signal-ink); font-family: var(--f-mono); font-weight: 700; letter-spacing: 0.08em; }
 .community-sub { color: var(--fg-dim); }
-.community-sub span { color: var(--signal); font-weight: 700; }
+.community-sub span { color: var(--signal-ink); font-weight: 700; }
 
 /* ---- FINAL CTA ---------------------------------------------------------- */
 .final-cta { border-top: 2px solid var(--line-strong); }
@@ -2474,7 +2483,7 @@ body::after {
   display: inline-flex;
   padding: 5px 12px 4px;
   border: 2px solid var(--signal);
-  color: var(--signal);
+  color: var(--signal-ink);
   font-family: var(--f-mono);
   font-weight: 700;
   font-size: var(--t-2xs);
@@ -2501,14 +2510,14 @@ body::after {
   transition: transform var(--dur-1) var(--ease), box-shadow var(--dur-1) var(--ease);
 }
 .btn-nav:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 #000; }
-.nav-links a:hover { color: var(--signal); }
+.nav-links a:hover { color: var(--signal-ink); }
 .nav-logo { font-family: var(--f-slab); font-weight: 400; letter-spacing: 0.01em; }
 
 /* ---- FOOTER ------------------------------------------------------------- */
 .footer { border-top: 2px solid var(--line-strong); }
 .footer-logo { font-family: var(--f-slab); font-weight: 400; color: var(--bone); letter-spacing: 0.01em; }
 .footer-disclaimer, .footer-copy { color: var(--muted); }
-.sol-badge { color: var(--signal); }
+.sol-badge { color: var(--signal-ink); }
 
 /* ---- mobile: flatten the tilts so nothing reads as a rendering bug ------ */
 @media (max-width: 768px) {
@@ -2531,3 +2540,177 @@ body::after {
 }
 
 html { overflow-x: clip; }
+
+/* ============================================================================
+   REWARDS LAYER — the fee switch (hot topic banner + holder payout tracker)
+   Leans on the existing .elive / .feed / .herd-board furniture so the tracker
+   reads as the same instrument panel as the Bullpen; only the pieces with no
+   existing equivalent are defined here.
+   ========================================================================= */
+
+/* ---- HOT TOPIC ---------------------------------------------------------- */
+/* Sits between hero and countdown. Green (--accent), not purple, so it reads as
+   a separate announcement rather than more hero furniture. */
+.hot-topic { padding: var(--s-6) 0 0; }
+.hot-inner {
+  display: flex;
+  align-items: center;
+  gap: var(--s-5);
+  padding: var(--s-5) var(--s-6);
+  background: var(--surface);
+  border: 2px solid var(--accent);
+  box-shadow: 4px 4px 0 #000;
+  transform: rotate(-0.35deg);
+  transition: transform var(--dur-1) var(--ease), box-shadow var(--dur-1) var(--ease);
+}
+.hot-inner:hover { transform: rotate(-0.35deg) translate(-2px, -2px); box-shadow: 6px 6px 0 #000; }
+.hot-stamp {
+  flex: none;
+  align-self: flex-start;
+  font-family: var(--f-mono);
+  font-size: var(--t-2xs);
+  font-weight: 700;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--on-accent);
+  background: var(--accent);
+  padding: var(--s-1) var(--s-2);
+  transform: rotate(-3deg);
+}
+.hot-body { flex: 1; min-width: 0; }
+.hot-head {
+  display: block;
+  font-family: var(--f-display);
+  font-size: var(--t-md);
+  font-weight: 700;
+  letter-spacing: var(--ls-display);
+  color: var(--bone);
+  line-height: var(--lh-snug);
+}
+.hot-sub {
+  display: block;
+  margin-top: var(--s-1);
+  font-family: var(--f-mono);
+  font-size: var(--t-xs);
+  color: var(--fg-dim);
+  line-height: var(--lh-snug);
+}
+.hot-num { color: var(--accent-ink); font-weight: 700; }
+.hot-cta {
+  flex: none;
+  font-family: var(--f-mono);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent-ink);
+  white-space: nowrap;
+}
+
+/* ---- SECTION ------------------------------------------------------------ */
+/* Engine and Partners are both --bg-2; --bg here keeps the band alternating. */
+.rewards { background: var(--bg); }
+.rewards code {
+  font-family: var(--f-mono);
+  font-size: 0.92em;
+  color: var(--accent-ink);
+  background: var(--surface-2);
+  padding: 1px var(--s-1);
+  border-radius: var(--r-xs);
+}
+
+/* ---- TILES -------------------------------------------------------------- */
+/* Four tiles instead of the engine's two: 4-up on desktop, 2x2 on tablet. */
+.rw-tiles { grid-template-columns: repeat(4, 1fr); }
+/* Four tiles occupy the width the engine gives two, and these numbers are long
+   (0.5952, not 69.4M), so the inherited display size overflows and clips the
+   last glyph. Size is stepped per column count, not per viewport alone. */
+.rw-tiles .elive-v { font-size: clamp(2rem, 4.4vw, 3.9rem); }
+.elive.rw  { border-top: 4px solid var(--accent); transform: rotate(-0.4deg); }
+.elive.dev { border-top: 4px solid var(--line-strong); transform: rotate(0.5deg); }
+.elive.rw .elive-v  { color: var(--accent-ink); text-shadow: 4px 4px 0 #000; }
+/* The zero is the point of the tile, so it gets the same weight as a real
+   number rather than being dimmed into looking like missing data. */
+.elive.dev .elive-v { color: var(--muted); text-shadow: 4px 4px 0 #000; }
+
+/* ---- DISTRIBUTOR ADDRESS ------------------------------------------------ */
+.rw-addr {
+  margin: var(--s-6) 0;
+  padding: var(--s-5) var(--s-6);
+  background: var(--surface);
+  border: 2px solid var(--line-strong);
+  box-shadow: 3px 3px 0 #000;
+}
+.rw-addr-row { display: flex; align-items: center; gap: var(--s-4); flex-wrap: wrap; }
+.rw-addr-k {
+  font-family: var(--f-mono);
+  font-size: var(--t-2xs);
+  font-weight: 600;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.rw-addr-v {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--f-mono);
+  font-size: var(--t-sm);
+  color: var(--accent-ink);
+  word-break: break-all;
+  transition: color var(--dur-1) var(--ease);
+}
+.rw-addr-v:hover { color: var(--bone); }
+.rw-copy {
+  flex: none;
+  font-family: var(--f-mono);
+  font-size: var(--t-2xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+  background: var(--bg-2);
+  border: 1px solid var(--line-strong);
+  padding: var(--s-2) var(--s-3);
+  cursor: pointer;
+  transition: color var(--dur-1) var(--ease), border-color var(--dur-1) var(--ease);
+}
+.rw-copy:hover { color: var(--accent-ink); border-color: var(--accent); }
+.rw-addr-note {
+  margin-top: var(--s-3);
+  font-family: var(--f-mono);
+  font-size: var(--t-2xs);
+  line-height: var(--lh-snug);
+  color: var(--muted);
+}
+.rw-pending { color: var(--fg-dim); }
+
+/* ---- PAYOUT FEED + BOARD ------------------------------------------------ */
+/* Payouts are SOL going out to holders — green, so it can never be mistaken
+   for the purple buyback rows or the red burn rows in the Bullpen feed. */
+.feed-row.reward .feed-amt { color: var(--accent-ink); }
+.rw-board-wrap { max-width: 720px; margin-top: var(--s-10); }
+.rw-board-wrap .herd-row:first-child { box-shadow: inset 2px 0 0 var(--accent); }
+.rw-cards { margin-top: var(--s-10); }
+
+@media (max-width: 900px) {
+  .rw-tiles { grid-template-columns: 1fr 1fr; }
+  .rw-tiles .elive-v { font-size: clamp(2rem, 7vw, 3.4rem); }
+}
+@media (max-width: 768px) {
+  .hot-inner {
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    transform: none;
+    padding: var(--s-4) var(--s-5);
+  }
+  .hot-inner:hover { transform: translate(-2px, -2px); }
+  .hot-head { font-size: var(--t-base); }
+  .elive.rw, .elive.dev { transform: none; }
+  .elive.rw .elive-v, .elive.dev .elive-v { text-shadow: 3px 3px 0 #000; }
+  .rw-addr-v { font-size: var(--t-2xs); }
+}
+@media (max-width: 480px) {
+  .rw-tiles { grid-template-columns: 1fr; }
+  /* back to one column, so the number has the full card again */
+  .rw-tiles .elive-v { font-size: clamp(2.4rem, 12.5vw, 3.6rem); }
+}

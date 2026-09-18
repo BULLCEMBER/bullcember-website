@@ -1,0 +1,137 @@
+{
+  "updatedAt": "2026-09-18T23:10:30.956Z",
+  "distributor": "7D2dJwtSH4dmM19MzJk1ms9kH5gmpbRbGaCXURmVdhQc",
+  "dev": "BXrU6jcjtZnar27jfWCXXhr9EqQGcFvyfnpC9cRjYLmC",
+  "devSol": 0,
+  "totalSol": 0.59516,
+  "totalUsd": 67.53,
+  "collectedSol": 0.603607,
+  "overheadSol": 0.000208,
+  "pendingSol": 0.00824,
+  "rounds": 3,
+  "wallets": 85,
+  "lastRound": 1789755894,
+  "biggestSol": 0.210581,
+  "top": [
+    [
+      "2zeHdhPzvfKxR3fPXTzhEjJapmATrnAoor5XYKehJqTk",
+      0.030473
+    ],
+    [
+      "4fbX9B8QkCymGe1ihb5Qcf4uQsBCAe2Hk884qT8FZ2rF",
+      0.029996
+    ],
+    [
+      "ASr6Hy8zvwwdeiNxNf7CgRH3JHXwYFGGx2C95DMNpRBo",
+      0.028533
+    ],
+    [
+      "7v2YQLGteDLa3JQkBm2HxzuDx8XB3g7pewPSg1PNHtfk",
+      0.027548
+    ],
+    [
+      "3dWaunQc21VmoHnPBpc5UBL2BoT5DdsKp7UnU9W1KQBi",
+      0.025906
+    ],
+    [
+      "De3Jt9TUQSEvJm2Eh9crRjSC3qEzrUnCMUap64dgwDrW",
+      0.024957
+    ],
+    [
+      "Ftza73zx8AzdVhFGoCnodoyrvEEyjZTMw3C9ysUtstv6",
+      0.024313
+    ],
+    [
+      "BvpujiYFk8XaGvZTdYJDeLEzLAQDWLs33ax9TRukCVG4",
+      0.024194
+    ],
+    [
+      "EYXDyx8yihoRNW8L9GmWZ3Gds1PfmRtkNCnvGvdoE3xa",
+      0.023542
+    ],
+    [
+      "7B6fnUh5Bw59qDdSRqmZTPDmTNz75Zyg5YFNWbDTYVrh",
+      0.023456
+    ],
+    [
+      "583S1Jk6SpnSehRHNEeNcEmJettgTSgfwunftecJXHjD",
+      0.019949
+    ],
+    [
+      "8oQCeJPR8mwbSVrMWddbQfBxVMkgFdC2LeYdMLR6ZHmL",
+      0.01786
+    ],
+    [
+      "9JoExVJx751pqS5ef9sACuAwTsZB5MQEjZMacyGsqsHs",
+      0.016107
+    ],
+    [
+      "8DgovYJwx8cq14vvFNuZbsD6B4QzH9SqPc2R1iAMTa9o",
+      0.015922
+    ],
+    [
+      "D8sj8c8AmKqNApgujCaLRuCpwN41bR92N6toGrpVZZEC",
+      0.014539
+    ],
+    [
+      "3hvSYRdnPNvAPFKKTkBpc2exAgJo72urjJMVxY55FUHv",
+      0.013903
+    ],
+    [
+      "994P1acnvtGuBd8BhzDUCnJAhpmfeeZX8pWGWp2rbdQS",
+      0.012513
+    ],
+    [
+      "DQUeoVMwKdP4ZbUUtRe5nTTvAPzwmziq5TSYErkHUF1e",
+      0.011212
+    ],
+    [
+      "Ak652ZMgmhj3cAXP5fWRA81xegrp4rdus4KwRBHZbofk",
+      0.010603
+    ],
+    [
+      "2zovipoX6TSZbbrn7yNYcUZiQ5DQLbUrtt7QUk1FkHEQ",
+      0.009751
+    ],
+    [
+      "4XS1eQoNawaRBKhbRMdnsJAtyURCmY3B7K3fHjoMQfNH",
+      0.009157
+    ],
+    [
+      "GTfJj1sHhw5fWvMxFxcdUBrF9KizQrwHCjW7yaNeT5Vm",
+      0.009011
+    ],
+    [
+      "G8b5aQwVymgDzuTR2BnPzMcKNCt3tkirvBdqXwxfeyo9",
+      0.008857
+    ],
+    [
+      "A8egciG8UsoHovCnJTAdYGefMW3MM79AbF1sdi8eU3vf",
+      0.008233
+    ],
+    [
+      "5ce1a8rjD4kWVgsLiKAVF1JrhGcTen9nsLurgiZQvAqN",
+      0.008102
+    ]
+  ],
+  "feed": [
+    {
+      "time": 1789755894,
+      "sol": 0.194815,
+      "wallets": 82,
+      "sig": "4dGPCraRsurTR19FbtNgoCdGpRxFRCQZKEBNv3SNtMGHMc4njP46BcPgbh1Fv7bKUFneEn8YyanLqPi6A9xpyRcq"
+    },
+    {
+      "time": 1789740286,
+      "sol": 0.189763,
+      "wallets": 82,
+      "sig": "5Ly4nR7xEKj1rtuV4da5WsXvXhyv9WE1CUfrQbxK1TgYMQHugEA8AyxwxgUCV4izKXkxRf9fekVHgPyMcZSonrYP"
+    },
+    {
+      "time": 1789624210,
+      "sol": 0.210581,
+      "wallets": 83,
+      "sig": "22iSiqzwBCpneHfKFUQcdniZyKafCyJgTdvVKx8osPEYqfqWFuceNkHvaVwEsUH3SfuWJGh93w4NXQkMe2cExqhw"
+    }
+  ]
+}
