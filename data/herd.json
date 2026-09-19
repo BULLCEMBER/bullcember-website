@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-09-19T09:21:51.780Z",
-  "total": 140,
+  "updatedAt": "2026-09-19T16:32:01.361Z",
+  "total": 143,
   "tiers": {
-    "calf": 71,
+    "calf": 74,
     "bull": 44,
     "stampede": 25,
     "alpha": 0
@@ -153,8 +153,8 @@
       4777147059534
     ],
     [
-      "7GWfFXc5FgQyioqL5p1SeZ16p7mwV4h1DLNviS4w5giV",
-      4537666034075
+      "6D5ovnQeR5NHFYg2n1Jrcp1KTztvvnSEzWwbAU1JDD4G",
+      4520086261222
     ],
     [
       "BvDrHKFdtUBhuqdVEAHhVJEsjXNqotnN6mRP8dEB9RQv",
@@ -181,10 +181,6 @@
       3544009638746
     ],
     [
-      "6D5ovnQeR5NHFYg2n1Jrcp1KTztvvnSEzWwbAU1JDD4G",
-      3531453459962
-    ],
-    [
       "93NNxT2VPRnuoMaizSsMQAXA3RgiAeZLxGCjkctSgb4Z",
       3304165975522
     ],
@@ -207,6 +203,10 @@
     [
       "AomWrraZzuUjEhGYz7Layekz3nhLPr87Wc7xn2YmEaj2",
       2726400218495
+    ],
+    [
+      "7GWfFXc5FgQyioqL5p1SeZ16p7mwV4h1DLNviS4w5giV",
+      2691309740199
     ],
     [
       "2zj9pBeqqieuwf2iWemA44yTvSNAiwsHTyevs43yiUDE",
@@ -321,6 +321,10 @@
       530938401304
     ],
     [
+      "2Q9KM9cAms3wBvdZkEcxDf5MaMQ4DbZu4Z2JCJYy4kaR",
+      515101774708
+    ],
+    [
       "GXWPvjzFoSPfFafsMdVjSXq3B9KhfKGqjtDBnEWVWxwM",
       501495428866
     ],
@@ -339,6 +343,10 @@
     [
       "FmLJT3hjrC3j1QK3RGgC1zKzCNyqeFGZRc42PyFK1LYW",
       409799949992
+    ],
+    [
+      "5KfWk8E5MfDYTpB43zDVRG7MV1L4tDwx6ozDhP5yS8uU",
+      393542664634
     ],
     [
       "BL5UNdH6mggBAUdc1sMYHLx4dRw78YqNvyumahC9GeDp",
@@ -369,6 +377,10 @@
       248308599499
     ],
     [
+      "DxeSfPisnRR3ZkS7iP4yG7fNqkxk8S6c88WMJzCVFj66",
+      204775678914
+    ],
+    [
       "DXmUDYe2dByjqEaGtb6ERGkZRu2Yb7rt8zwjb5mgvC4k",
       189473342038
     ],
@@ -389,6 +401,10 @@
       123233522594
     ],
     [
+      "7nfLcx6bLukwjDtKEddSg5cdJgimoMWRbqJZ4HtweSDZ",
+      121520312661
+    ],
+    [
       "2wqEi31N7Bjuxvdj5RS4vA5qZU1XkftHiBTKtS5uCa4b",
       115343107129
     ],
@@ -407,10 +423,6 @@
     [
       "ydwVQrApTGJXbraAsLqqYyv28ZAKuKoMZxnSZXZ7oPM",
       85344779837
-    ],
-    [
-      "3VW7GPsVsCWyYKYm7CF2zVpj5yf4GEesghwBX7BFcHPL",
-      72370252296
     ],
     [
       "GJh9daNEsGTXXekAaSxbiHYwNmGG8Bht1mdrvG3yL62U",
