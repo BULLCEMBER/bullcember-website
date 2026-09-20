@@ -1,120 +1,126 @@
 {
-  "updatedAt": "2026-09-18T23:10:30.956Z",
+  "updatedAt": "2026-09-20T21:24:52.073Z",
   "distributor": "7D2dJwtSH4dmM19MzJk1ms9kH5gmpbRbGaCXURmVdhQc",
   "dev": "BXrU6jcjtZnar27jfWCXXhr9EqQGcFvyfnpC9cRjYLmC",
   "devSol": 0,
-  "totalSol": 0.59516,
-  "totalUsd": 67.53,
-  "collectedSol": 0.603607,
-  "overheadSol": 0.000208,
-  "pendingSol": 0.00824,
-  "rounds": 3,
-  "wallets": 85,
-  "lastRound": 1789755894,
-  "biggestSol": 0.210581,
+  "totalSol": 0.828149,
+  "totalUsd": 91.27,
+  "collectedSol": 0.836842,
+  "overheadSol": 0.000277,
+  "pendingSol": 0.008416,
+  "rounds": 4,
+  "wallets": 87,
+  "lastRound": 1789896256,
+  "biggestSol": 0.232989,
   "top": [
     [
       "2zeHdhPzvfKxR3fPXTzhEjJapmATrnAoor5XYKehJqTk",
-      0.030473
+      0.048108
     ],
     [
       "4fbX9B8QkCymGe1ihb5Qcf4uQsBCAe2Hk884qT8FZ2rF",
-      0.029996
+      0.042281
+    ],
+    [
+      "7v2YQLGteDLa3JQkBm2HxzuDx8XB3g7pewPSg1PNHtfk",
+      0.03883
+    ],
+    [
+      "3dWaunQc21VmoHnPBpc5UBL2BoT5DdsKp7UnU9W1KQBi",
+      0.036516
+    ],
+    [
+      "De3Jt9TUQSEvJm2Eh9crRjSC3qEzrUnCMUap64dgwDrW",
+      0.035178
+    ],
+    [
+      "Ftza73zx8AzdVhFGoCnodoyrvEEyjZTMw3C9ysUtstv6",
+      0.034271
+    ],
+    [
+      "BvpujiYFk8XaGvZTdYJDeLEzLAQDWLs33ax9TRukCVG4",
+      0.034102
+    ],
+    [
+      "EYXDyx8yihoRNW8L9GmWZ3Gds1PfmRtkNCnvGvdoE3xa",
+      0.033184
+    ],
+    [
+      "7B6fnUh5Bw59qDdSRqmZTPDmTNz75Zyg5YFNWbDTYVrh",
+      0.033062
     ],
     [
       "ASr6Hy8zvwwdeiNxNf7CgRH3JHXwYFGGx2C95DMNpRBo",
       0.028533
     ],
     [
-      "7v2YQLGteDLa3JQkBm2HxzuDx8XB3g7pewPSg1PNHtfk",
-      0.027548
-    ],
-    [
-      "3dWaunQc21VmoHnPBpc5UBL2BoT5DdsKp7UnU9W1KQBi",
-      0.025906
-    ],
-    [
-      "De3Jt9TUQSEvJm2Eh9crRjSC3qEzrUnCMUap64dgwDrW",
-      0.024957
-    ],
-    [
-      "Ftza73zx8AzdVhFGoCnodoyrvEEyjZTMw3C9ysUtstv6",
-      0.024313
-    ],
-    [
-      "BvpujiYFk8XaGvZTdYJDeLEzLAQDWLs33ax9TRukCVG4",
-      0.024194
-    ],
-    [
-      "EYXDyx8yihoRNW8L9GmWZ3Gds1PfmRtkNCnvGvdoE3xa",
-      0.023542
-    ],
-    [
-      "7B6fnUh5Bw59qDdSRqmZTPDmTNz75Zyg5YFNWbDTYVrh",
-      0.023456
-    ],
-    [
       "583S1Jk6SpnSehRHNEeNcEmJettgTSgfwunftecJXHjD",
-      0.019949
+      0.02812
     ],
     [
       "8oQCeJPR8mwbSVrMWddbQfBxVMkgFdC2LeYdMLR6ZHmL",
-      0.01786
-    ],
-    [
-      "9JoExVJx751pqS5ef9sACuAwTsZB5MQEjZMacyGsqsHs",
-      0.016107
+      0.025175
     ],
     [
       "8DgovYJwx8cq14vvFNuZbsD6B4QzH9SqPc2R1iAMTa9o",
-      0.015922
+      0.023074
+    ],
+    [
+      "9JoExVJx751pqS5ef9sACuAwTsZB5MQEjZMacyGsqsHs",
+      0.022704
     ],
     [
       "D8sj8c8AmKqNApgujCaLRuCpwN41bR92N6toGrpVZZEC",
-      0.014539
+      0.020494
     ],
     [
       "3hvSYRdnPNvAPFKKTkBpc2exAgJo72urjJMVxY55FUHv",
-      0.013903
+      0.019311
     ],
     [
       "994P1acnvtGuBd8BhzDUCnJAhpmfeeZX8pWGWp2rbdQS",
-      0.012513
+      0.017637
     ],
     [
       "DQUeoVMwKdP4ZbUUtRe5nTTvAPzwmziq5TSYErkHUF1e",
-      0.011212
+      0.014605
     ],
     [
-      "Ak652ZMgmhj3cAXP5fWRA81xegrp4rdus4KwRBHZbofk",
-      0.010603
+      "915iUA3bCDCL6j8KQcEpC2NVNQ21HycEeEGCgt9miFoY",
+      0.013886
     ],
     [
       "2zovipoX6TSZbbrn7yNYcUZiQ5DQLbUrtt7QUk1FkHEQ",
-      0.009751
+      0.013745
+    ],
+    [
+      "Ak652ZMgmhj3cAXP5fWRA81xegrp4rdus4KwRBHZbofk",
+      0.013201
     ],
     [
       "4XS1eQoNawaRBKhbRMdnsJAtyURCmY3B7K3fHjoMQfNH",
-      0.009157
+      0.012908
     ],
     [
       "GTfJj1sHhw5fWvMxFxcdUBrF9KizQrwHCjW7yaNeT5Vm",
-      0.009011
+      0.012702
     ],
     [
       "G8b5aQwVymgDzuTR2BnPzMcKNCt3tkirvBdqXwxfeyo9",
-      0.008857
+      0.012484
     ],
     [
       "A8egciG8UsoHovCnJTAdYGefMW3MM79AbF1sdi8eU3vf",
-      0.008233
-    ],
-    [
-      "5ce1a8rjD4kWVgsLiKAVF1JrhGcTen9nsLurgiZQvAqN",
-      0.008102
+      0.011605
     ]
   ],
   "feed": [
+    {
+      "time": 1789896256,
+      "sol": 0.232989,
+      "wallets": 80,
+      "sig": "34mq4b3qMWy7o5gxW7eGeAb6etQ6BzE3jNwdo3EqYZCURWENHUWNiQWQ4hZ75L3YupXQgF1r2bnbsVZYcbGrjx2D"
+    },
     {
       "time": 1789755894,
       "sol": 0.194815,
