@@ -16,3 +16,8 @@ twitter-pfp.png
 x-banner.png
 december-clock/
 graphics/
+
+# wrangler local state — caches the Cloudflare account id and email, and is
+# regenerated on every deploy. Never belongs in a public repo.
+worker/.wrangler/
+worker/node_modules/
