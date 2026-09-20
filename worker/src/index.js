@@ -33,11 +33,15 @@ const SOL_FEE_FLOOR = 0.0005;
 const ROUND_GAP = 600;
 const WANT_BUYS = 12;
 
+// 4321 is the port in .claude/launch.json, so the local preview can exercise the
+// real Worker before anything is pushed. An origin that is not on this list still
+// gets a response, just stamped with the canonical origin — so the browser blocks
+// it. That is the intent: this proxy is for bullcember.net, not for anyone's page.
 const ALLOWED_ORIGINS = [
   "https://bullcember.net",
   "https://www.bullcember.net",
-  "http://localhost:8000",
-  "http://127.0.0.1:8000",
+  "http://localhost:4321",
+  "http://127.0.0.1:4321",
 ];
 
 // Per-route edge TTL. Buys move constantly; the engine and payout rounds move a few
@@ -212,7 +216,21 @@ async function getRewards(env, since) {
     // pump.fun's flat per-round fee ships alone in its own transaction; holder
     // payouts always arrive as a fan-out batch. Splitting on batch size keeps the
     // headline "paid to holders" figure honest without hardcoding an address.
-    if (outs.length === 1) { overhead += outs[0].amount; continue; }
+    if (outs.length === 1) {
+      // ...but that fee lands a few seconds AFTER the round it pays for, while
+      // `since` is the round's own timestamp. So the trailing fee of the round the
+      // caller already has sits just past the cutoff and would be handed back as a
+      // delta the baseline has already counted — double-billing the overhead and
+      // under-reporting pending by the same amount.
+      //
+      // Transactions are walked oldest-first, so a fee arriving before any new round
+      // has been bucketed must belong to the round at `since`. Once a new round IS
+      // open, the fee pays for THAT round and has to count — which is why this tests
+      // rounds.length rather than the timestamp alone.
+      if (rounds.length === 0 && since && tx.timestamp - since <= ROUND_GAP) continue;
+      overhead += outs[0].amount;
+      continue;
+    }
 
     const last = rounds[rounds.length - 1];
     const bucket =

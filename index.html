@@ -968,7 +968,7 @@
     //
     // Leave this empty and every top-up below turns into a no-op: baseline only,
     // exactly the previous behaviour. That is the fallback, not a degraded mode.
-    const LIVE_API = '';
+    const LIVE_API = 'https://bullcember-live.bullcember.workers.dev';
 
     async function liveGet(route, since = 0) {
       if (!LIVE_API) return null;

@@ -145,6 +145,20 @@ ok("rewards: pre-`since` round excluded", !JSON.stringify(rw.rounds).includes("A
 ok("rewards: collected = paid + overhead (no dust here)",
    Math.abs(rw.collectedSol - (rw.rounds[0].sol + rw.overheadSol)) < 1e-9);
 
+// Regression: the flat fee lands ~9s AFTER the round it pays for, so when `since`
+// is that round's timestamp the fee sits just past the cutoff. Returning it would
+// double-bill overhead against a baseline that already counted it.
+store.clear();
+// since = T+50, the bucket's MAX timestamp — which is what update-rewards.mjs
+// publishes as lastRound (bucket.time = Math.max(bucket.time, tx.timestamp)).
+const trailing = await (await call(`/rewards?since=${T + 50}`)).json();
+ok("rewards: trailing fee of an already-counted round is NOT re-reported",
+   trailing.overheadSol === 0, `got ${trailing.overheadSol}`);
+// A fee far enough past `since` is a genuinely new round's fee and must still count.
+store.clear();
+const older = await (await call(`/rewards?since=${T - 600}`)).json();
+ok("rewards: a fee beyond ROUND_GAP still counts as overhead", older.overheadSol === 0.000069);
+
 // ---- cache -------------------------------------------------------------------
 store.clear();
 upstreamCalls = 0;
