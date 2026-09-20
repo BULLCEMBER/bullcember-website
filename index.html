@@ -771,6 +771,10 @@
         const j = await r.json();
         if (Array.isArray(j.buys) && j.buys.length) renderBuys(j.buys);
       } catch (e) { console.error('Buy feed load failed:', e); }
+      // Then the live list on top, in sequence. These must NOT be two independent
+      // pollers: on separate intervals the baseline lands second often enough to
+      // overwrite fresher chain data with a file that can be hours old.
+      await fetchBuysLive();
     }
     // BULLCEMBER graduated to PumpSwap on 2026-08-08 and bonding is one-way, so
     // this can never regress. The PDA is drained and closed, so reading it over
@@ -990,15 +994,13 @@
     fetchStats();
     fetchHolders();
     fetchBondingCurve();
-    setTimeout(fetchBuys, 1200);
-    setTimeout(fetchBuysLive, 1600);
+    setTimeout(fetchBuys, 1200); // paints the baseline, then tops up from chain
     setTimeout(fetchTotalVolume, 3000);
     scheduleDailyVolume();
     setInterval(fetchStats, 30000);
     setInterval(fetchHolders, 60000);
     setInterval(fetchBondingCurve, 30000);
-    setInterval(fetchBuys, 25000);
-    setInterval(fetchBuysLive, 20000);
+    setInterval(fetchBuys, 20000); // baseline + live top-up, in that order
 
     // ===== THE BULLCEMBER ENGINE: buybacks + burns (no supply sent to anyone) =====
     const DEV = 'BXrU6jcjtZnar27jfWCXXhr9EqQGcFvyfnpC9cRjYLmC'; // pump.fun creator / fee wallet
