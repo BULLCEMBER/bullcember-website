@@ -101,6 +101,7 @@
       <li><a href="#how-to-buy">Buy</a></li>
       <li><a href="#bullpen">Bullpen</a></li>
       <li><a href="#rewards">Rewards</a></li>
+      <li><a href="#series">Series</a></li>
       <li><a href="#herd">Herd</a></li>
       <li><a href="#community">Community</a></li>
     </ul>
@@ -511,6 +512,77 @@
     </div>
   </section>
 
+  <!-- THE Q4 SERIES — sister token, same dev wallet.
+       Placed straight after Rewards on purpose: that section explains where the
+       fees go, and this one is the other half of that answer. -->
+  <section class="series" id="series">
+    <div class="container">
+      <div class="section-tag">THE Q4 SERIES</div>
+      <h2 class="section-title">$BULLTOBER is <span class="highlight">Live</span></h2>
+      <p class="engine-lead">First of the Q4 bull series: <strong>Bulltober</strong>, <strong>Bullvember</strong>, <strong>Bullcember</strong>. Fees fund $BULLCEMBER buybacks, burns, and development of the series. <strong>Every burn posted on-chain.</strong></p>
+
+      <!-- Three months, one story. Bullcember is flagged as "you are here" so the
+           series reads as context for this site rather than a competing pitch. -->
+      <ol class="bt-rail">
+        <li class="bt-step is-live">
+          <span class="bt-when">October</span>
+          <span class="bt-name">$BULLTOBER</span>
+          <span class="bt-state"><span class="live-dot"></span>Live now</span>
+        </li>
+        <li class="bt-step is-next">
+          <span class="bt-when">November</span>
+          <span class="bt-name">$BULLVEMBER</span>
+          <span class="bt-state">Next up</span>
+        </li>
+        <li class="bt-step is-here">
+          <span class="bt-when">December</span>
+          <span class="bt-name">$BULLCEMBER</span>
+          <span class="bt-state">You are here</span>
+        </li>
+      </ol>
+
+      <div class="bt-grid">
+        <div class="bt-panel">
+          <div class="toko-label">Bulltober Contract</div>
+          <div class="toko-ca-row">
+            <span class="toko-ca-text" id="btCa">C7ENRugupe8oVXdBtkgq9oShxNB7Ejn2nqFyRVccpump</span>
+            <button class="copy-btn" type="button" onclick="copyText(this, document.getElementById('btCa').textContent)">Copy</button>
+          </div>
+          <!-- Live from Dexscreener, same public endpoint the header stats use.
+               Hidden entirely if the fetch fails — a dash where a price should be
+               reads worse than no row at all. -->
+          <div class="bt-stats" id="btStats" hidden>
+            <div class="bt-stat"><span class="bt-k">Price</span><span class="bt-v" id="btPrice">&mdash;</span></div>
+            <div class="bt-stat"><span class="bt-k">24h</span><span class="bt-v" id="btChange">&mdash;</span></div>
+            <div class="bt-stat"><span class="bt-k">Market Cap</span><span class="bt-v" id="btMcap">&mdash;</span></div>
+          </div>
+          <div class="partner-list bt-links">
+            <a href="https://pump.fun/coin/C7ENRugupe8oVXdBtkgq9oShxNB7Ejn2nqFyRVccpump" target="_blank" rel="noopener" class="partner-card">
+              <img src="https://pump.fun/favicon.ico" alt="" class="partner-logo" loading="lazy" onerror="this.style.display='none'" />
+              <span class="partner-name">pump.fun</span>
+              <span class="partner-sub">Buy $BULLTOBER</span>
+            </a>
+            <a href="https://dexscreener.com/solana/56GfgZsFfKAU2oPtdLTow4AzjQfAmqB7qLviszd112cw" target="_blank" rel="noopener" class="partner-card">
+              <img src="https://dexscreener.com/favicon.ico" alt="" class="partner-logo" loading="lazy" onerror="this.style.display='none'" />
+              <span class="partner-name">DexScreener</span>
+              <span class="partner-sub">Live chart</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Same "check it yourself" posture the Engine and Rewards sections take:
+             the link between the two coins is a claim, so point at the proof. -->
+        <div class="bt-panel bt-proof">
+          <div class="bt-panel-ico">🔗</div>
+          <h3>Same hands, same rules</h3>
+          <p>Bulltober was launched from the same wallet that runs this coin's engine. You do not have to take that on trust &mdash; the bonding curve account stores its <code>creator</code>, and it is the address below.</p>
+          <a class="bt-wallet" href="https://solscan.io/account/BXrU6jcjtZnar27jfWCXXhr9EqQGcFvyfnpC9cRjYLmC" target="_blank" rel="noopener">BXrU6jcjtZnar27jfWCXXhr9EqQGcFvyfnpC9cRjYLmC</a>
+          <p class="bt-note">Still on the pump.fun bonding curve &mdash; it has not graduated yet.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- LISTED ON -->
   <section class="partners" id="partners">
     <div class="container">
@@ -788,6 +860,44 @@
         setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
       });
     }
+    // copyCA() above resolves .copy-btn by querySelector, which only ever finds the
+    // first one on the page. This takes the button it was fired from, so any number
+    // of copy buttons can coexist without stealing each other's feedback.
+    function copyText(btn, text) {
+      navigator.clipboard.writeText(text).then(() => {
+        const was = btn.textContent;
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = was; btn.classList.remove('copied'); }, 2000);
+      }).catch(() => { /* clipboard blocked — the address is selectable in the page */ });
+    }
+
+    // ===== BULLTOBER — sister coin, live price off the public Dexscreener API =====
+    // No key, no Worker call: this is one public endpoint and the same one the header
+    // stats already hit. Bulltober is still on the bonding curve, so Dexscreener
+    // reports liquidity as 0 — market cap and price are the meaningful figures.
+    const BT_CA = 'C7ENRugupe8oVXdBtkgq9oShxNB7Ejn2nqFyRVccpump';
+    async function fetchBulltober() {
+      try {
+        const r = await fetch(`https://api.dexscreener.com/latest/dex/tokens/${BT_CA}`);
+        const p = (await r.json())?.pairs?.[0];
+        const price = Number(p?.priceUsd);
+        if (!price) return;
+        const ch = Number(p?.priceChange?.h24);
+        document.getElementById('btPrice').textContent = '$' + price.toPrecision(3);
+        document.getElementById('btMcap').textContent = fmt(Number(p?.marketCap) || 0);
+        const el = document.getElementById('btChange');
+        if (Number.isFinite(ch)) {
+          el.textContent = (ch >= 0 ? '+' : '') + ch.toFixed(1) + '%';
+          el.classList.toggle('up', ch >= 0);
+          el.classList.toggle('down', ch < 0);
+        }
+        document.getElementById('btStats').hidden = false;
+      } catch (e) { /* leave the row hidden — no price beats a broken one */ }
+    }
+    setTimeout(fetchBulltober, 2200);
+    setInterval(fetchBulltober, 60000);
+
     const TOKEN_DECIMALS = 1e6;
     const LAUNCH_SUPPLY = 1e9;
     // Mint authority is null and the engine only ever burns, so on-chain supply IS the
