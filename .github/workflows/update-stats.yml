@@ -42,11 +42,18 @@ jobs:
           # needed if the Enhanced Transactions API key differs from the RPC one.
           HELIUS_KEY: ${{ secrets.HELIUS_KEY }}
         run: |
+          # pipefail, or the `| tee` below would swallow a hard crash in
+          # update-rewards and report the step as successful.
+          set -o pipefail
           node scripts/update-stats.mjs
           node scripts/update-herd.mjs
-          node scripts/update-rewards.mjs
+          node scripts/update-rewards.mjs 2>&1 | tee rewards.log
 
+      # always(), because each script keeps its previous file on failure and writes
+      # independently — so whatever DID refresh should still ship even if a later
+      # script died. One broken dataset must not hold the other three hostage.
       - name: Commit if changed
+        if: always()
         run: |
           if [ -z "$(git status --porcelain data/)" ]; then
             echo "No change — nothing to commit."
@@ -57,3 +64,21 @@ jobs:
           git add data/
           git commit -m "Refresh site data (engine, herd, buys, rewards)"
           git push
+
+      # Runs AFTER the commit on purpose. update-rewards catches its own errors and
+      # keeps the previous file — right for the site, but it made this job green while
+      # the payout tracker sat frozen from 2026-09-18 to 2026-09-20: the RPC_URL /
+      # HELIUS_KEY secret was never set, so every run logged "no Helius key", kept the
+      # stale file and exited 0. Nothing surfaced it for two days.
+      #
+      # Failing here still lets the engine/herd/buys refresh land, so one broken
+      # dataset never blocks the other three — it just turns the run red so it is
+      # visible instead of silent.
+      - name: Flag a stale rewards tracker
+        if: always()
+        run: |
+          if [ -f rewards.log ] && grep -q "rewards failed" rewards.log; then
+            echo "::error::Holder-rewards tracker did not update — data/rewards.json is stale."
+            echo "::error::Set the RPC_URL secret to your Helius RPC URL (or HELIUS_KEY to the key)."
+            exit 1
+          fi

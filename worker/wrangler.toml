@@ -1,0 +1,17 @@
+name = "bullcember-live"
+main = "src/index.js"
+compatibility_date = "2026-09-01"
+
+# The Helius key is NOT in this file and must never be. Set it as a secret:
+#   npx wrangler secret put HELIUS_KEY
+# Secrets live in Cloudflare, are write-only after being set, and are never
+# served to a browser — which is the whole reason this Worker exists.
+
+# Optional: serve from your own domain instead of *.workers.dev. If you enable
+# this, add the origin to ALLOWED_ORIGINS in src/index.js as well.
+# [[routes]]
+# pattern = "live.bullcember.net/*"
+# custom_domain = true
+
+[observability]
+enabled = true

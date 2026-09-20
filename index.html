@@ -955,27 +955,62 @@
       const msUntilMidnight = nextMidnightUTC - now;
       setTimeout(() => { fetchTotalVolume(); setInterval(fetchTotalVolume, 86400000); }, msUntilMidnight);
     }
+    // ===== LIVE TOP-UP =====
+    // data/*.json is the baseline: it paints on the first frame, costs nothing, and
+    // is what the site falls back to. But it is only as fresh as the cron that
+    // writes it, and GitHub delivers ~7% of the scheduled runs (median gap ~3.5h),
+    // so on its own the "live" sections are routinely hours behind chain.
+    //
+    // LIVE_API is the Worker in worker/ — it holds the Helius key as a secret and
+    // caches at the edge, so the browser gets current chain data without the key
+    // ever shipping to a client and without credit burn scaling with traffic. Both
+    // of those are what broke on 2026-08-25, when the key was hardcoded right here.
+    //
+    // Leave this empty and every top-up below turns into a no-op: baseline only,
+    // exactly the previous behaviour. That is the fallback, not a degraded mode.
+    const LIVE_API = '';
+
+    async function liveGet(route, since = 0) {
+      if (!LIVE_API) return null;
+      try {
+        const u = `${LIVE_API}/${route}` + (since ? `?since=${since}` : '');
+        const r = await fetch(u, { cache: 'no-store' });
+        if (!r.ok) return null;
+        return await r.json();
+      } catch (e) { return null; }
+    }
+
+    // Live buys fully replace the baseline list — unlike the engine and rewards
+    // sections there is no cumulative total to preserve, so the newer list simply wins.
+    async function fetchBuysLive() {
+      const j = await liveGet('buys');
+      if (j && Array.isArray(j.buys) && j.buys.length) renderBuys(j.buys);
+    }
+
     fetchStats();
     fetchHolders();
     fetchBondingCurve();
     setTimeout(fetchBuys, 1200);
+    setTimeout(fetchBuysLive, 1600);
     setTimeout(fetchTotalVolume, 3000);
     scheduleDailyVolume();
     setInterval(fetchStats, 30000);
     setInterval(fetchHolders, 60000);
     setInterval(fetchBondingCurve, 30000);
     setInterval(fetchBuys, 25000);
+    setInterval(fetchBuysLive, 20000);
 
     // ===== THE BULLCEMBER ENGINE: buybacks + burns (no supply sent to anyone) =====
     const DEV = 'BXrU6jcjtZnar27jfWCXXhr9EqQGcFvyfnpC9cRjYLmC'; // pump.fun creator / fee wallet
     const BURN_SINCE = 1782070621; // launch (pump.fun created_timestamp)
 
     let enBaseline = null;         // latest data/stats.json, published by the Action
-    let enLive = [];               // kept for enCombined(); no client poll fills it now
+    let enLive = [];               // events newer than the baseline, from the LIVE_API Worker
     const enSeen = new Set();
     let EN_FEED = [];
     let EN_FILTER = 'all';
     let enState = 'idle';          // 'idle' | 'ok' | 'error' — did the last snapshot fetch land?
+    let enLiveAt = 0;              // unix secs of the last successful chain top-up; 0 = baseline only
 
     const enSetV = (id, val) => { const el = document.getElementById(id); if (el) { el.textContent = val; el.classList.remove('pending'); } };
     const enAgoIso = iso => timeAgo(Math.floor(new Date(iso).getTime() / 1000));
@@ -1012,11 +1047,15 @@
       enRenderFeed();
       const u = document.getElementById('enUpdated');
       if (u) {
-        // The age shown is the snapshot's own age. Re-fetching the same file in
-        // the browser does not make the numbers newer — only the Action's cron does.
+        // Say which clock the number is actually on. Without LIVE_API the age shown
+        // is the snapshot's own age — re-fetching the same file in the browser does
+        // not make it newer, only the Action's cron does, and claiming "live" over a
+        // 3-hour-old file is the lie this section used to tell.
         if (enState === 'error') {
           u.textContent = "⚠️ Couldn't refresh, showing the last saved snapshot"
             + (enBaseline?.updatedAt ? ' from ' + enAgoIso(enBaseline.updatedAt) : '');
+        } else if (enLiveAt) {
+          u.textContent = 'Live from chain · checked ' + timeAgo(enLiveAt);
         } else {
           u.textContent = 'Updated ' + (enBaseline?.updatedAt ? enAgoIso(enBaseline.updatedAt) : 'just now');
         }
@@ -1045,9 +1084,26 @@
     // getSignaturesForAddress page plus one getTransaction per new signature on
     // EVERY page load, against a key hardcoded in this file — which is how the
     // quota reached "max usage reached" on 2026-08-25 and took the live widgets
-    // down. The cron in .github/workflows/update-stats.yml now does that work
-    // once every 15 minutes with a secret key, and enLoadBaseline() below reads
-    // the result. Freshness is bounded by the cron interval instead of by credits.
+    // down.
+    //
+    // enLoadLive() below brings live reads back WITHOUT either of those properties:
+    // the key sits in the Worker as a secret, and the Worker's edge cache means the
+    // upstream call count is a function of time, not of how many people are looking.
+    // It also asks only for events newer than the baseline, so the steady-state
+    // answer is an empty array.
+    async function enLoadLive() {
+      const j = await liveGet('engine', enBaseNewest());
+      if (!j || !Array.isArray(j.events)) return;
+      // enCombined() re-filters against the baseline cut every render, so stale
+      // entries here are harmless — but dropping them keeps the array from growing
+      // on a page left open for hours.
+      const cut = enBaseNewest();
+      const merged = [...enLive, ...j.events].filter(e => e.time > cut);
+      enLive = merged.filter((e, i, a) => a.findIndex(x => x.sig === e.sig && x.type === e.type) === i);
+      enLiveAt = Math.floor(Date.now() / 1000);
+      enRenderAll();
+    }
+
     const EN_META = {
       buyback: { ic: '🐂', label: 'Buyback', cls: 'buyback', sign: '+' },
       burn:    { ic: '🔥', label: 'Burn',    cls: 'burn',    sign: '−' },
@@ -1080,22 +1136,30 @@
       const btn = document.getElementById('enRefresh');
       if (btn && btn.disabled) return;
       if (btn) { btn.dataset.label = btn.dataset.label || btn.textContent; btn.disabled = true; btn.textContent = '⏳ Checking…'; }
-      try { await enLoadBaseline(); } catch (e) {}
+      // Baseline first so enBaseNewest() is current, then the live delta on top of it.
+      try { await enLoadBaseline(); await enLoadLive(); } catch (e) {}
       if (btn) {
         btn.textContent = enState === 'ok' ? '✓ Up to date' : '⚠️ Check failed';
         setTimeout(() => { btn.textContent = btn.dataset.label; btn.disabled = false; }, 6000);
       }
     }
     document.getElementById('enRefresh')?.addEventListener('click', enManualRefresh);
-    // boot: paint the baseline the Action publishes; no chain call from the browser
-    (async () => { await enLoadBaseline(); })();
+    // boot: paint the Action's baseline first (instant, free, always available),
+    // then top it up from chain. Order matters — the live call asks for events newer
+    // than the baseline, so it needs the baseline loaded to know where to start.
+    (async () => { await enLoadBaseline(); await enLoadLive(); })();
     setInterval(enLoadBaseline, 60000); // keep baseline current from the Action (free)
+    setInterval(enLoadLive, 30000);     // and top it up from chain in between
 
     // ===== HOLDER REWARDS =====
-    // Reads data/rewards.json, published by scripts/update-rewards.mjs on the same
-    // cron as the engine. Deliberately no chain call from the browser: a client-side
-    // poll is what exhausted the Helius quota on 2026-08-25 and took the live
-    // widgets down. Freshness is bounded by the cron, not by credits.
+    // Reads data/rewards.json (published by scripts/update-rewards.mjs) for the
+    // cumulative totals, then tops up with rounds newer than lastRound via LIVE_API.
+    //
+    // The browser still never holds a Helius key — that is what exhausted the quota
+    // on 2026-08-25. It talks to the Worker in worker/, which holds the key and
+    // caches at the edge, so this poll costs the same whether 1 or 10,000 people
+    // have the page open. This section is the reason the top-up exists: when the
+    // cron lost its key it silently froze for days while still looking live.
     const RW_ADDR = '7D2dJwtSH4dmM19MzJk1ms9kH5gmpbRbGaCXURmVdhQc';
     // SOL amounts here are small and the difference between 0.19 and 0.21 SOL is
     // the whole story, so hold 4 decimals until the totals are big enough not to need them.
@@ -1165,12 +1229,54 @@
       document.querySelector('#rewards .engine-updated')?.classList.remove('stale');
     }
 
+    // Merge live payout rounds onto the published cumulative totals.
+    //
+    // Only the fields a new round can move are adjusted. `wallets` and `top` are
+    // all-time uniques over every payee ever, and data/rewards.json only publishes
+    // the top 25 — so there is no honest way to recompute them from a delta here.
+    // They stay on the baseline and the cron corrects them. Showing a slightly
+    // stale wallet count beats inventing one.
+    function rwMerge(base, live) {
+      if (!live || !Array.isArray(live.rounds) || !live.rounds.length) return base;
+      const fresh = live.rounds.filter(r => r.time > (base.lastRound || 0));
+      if (!fresh.length) return base;
+
+      const addSol = fresh.reduce((s, r) => s + (r.sol || 0), 0);
+      const totalSol = +((base.totalSol || 0) + addSol).toFixed(6);
+      const solUsd = base.totalSol > 0 && base.totalUsd > 0 ? base.totalUsd / base.totalSol : 0;
+
+      return {
+        ...base,
+        totalSol,
+        totalUsd: solUsd ? +(totalSol * solUsd).toFixed(2) : base.totalUsd,
+        rounds: (base.rounds || 0) + fresh.length,
+        lastRound: Math.max(base.lastRound || 0, ...fresh.map(r => r.time)),
+        biggestSol: +Math.max(base.biggestSol || 0, ...fresh.map(r => r.sol || 0)).toFixed(6),
+        // Pending is what was pulled from the vault but not yet paid out. The Worker
+        // reports collected/overhead over the same window as these rounds, so the
+        // three move together and the "nothing is skimmed" arithmetic still balances.
+        pendingSol: +Math.max(0,
+          (base.pendingSol || 0) + (live.collectedSol || 0) - addSol - (live.overheadSol || 0)
+        ).toFixed(6),
+        overheadSol: +((base.overheadSol || 0) + (live.overheadSol || 0)).toFixed(6),
+        collectedSol: +((base.collectedSol || 0) + (live.collectedSol || 0)).toFixed(6),
+        feed: [...fresh, ...(base.feed || [])]
+          .filter((r, i, a) => a.findIndex(x => x.sig === r.sig) === i)
+          .sort((a, b) => b.time - a.time),
+      };
+    }
+
     async function rwLoad() {
       try {
         const res = await fetch('data/rewards.json?t=' + Math.floor(Date.now() / 60000), { cache: 'no-store' });
         if (!res.ok) throw new Error('rewards.json ' + res.status);
-        rwRender(await res.json());
+        const base = await res.json();
+        // Paint the baseline immediately, then top up — a visitor should never wait
+        // on a chain read to see the section.
+        rwRender(base);
         rwState = 'ok';
+        const live = await liveGet('rewards', base.lastRound || 0);
+        if (live) rwRender(rwMerge(base, live));
       } catch (e) {
         rwState = 'err';
         const u = document.getElementById('rwUpdated');
