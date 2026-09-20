@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-09-20T05:59:50.437Z",
-  "total": 140,
+  "updatedAt": "2026-09-20T11:08:59.676Z",
+  "total": 144,
   "tiers": {
-    "calf": 71,
-    "bull": 44,
-    "stampede": 24,
+    "calf": 73,
+    "bull": 47,
+    "stampede": 23,
     "alpha": 1
   },
   "holders": [
@@ -15,10 +15,6 @@
     [
       "4fbX9B8QkCymGe1ihb5Qcf4uQsBCAe2Hk884qT8FZ2rF",
       37245939643650
-    ],
-    [
-      "ASr6Hy8zvwwdeiNxNf7CgRH3JHXwYFGGx2C95DMNpRBo",
-      35429395727954
     ],
     [
       "7v2YQLGteDLa3JQkBm2HxzuDx8XB3g7pewPSg1PNHtfk",
@@ -153,6 +149,10 @@
       4777147059534
     ],
     [
+      "3uJUDrrMaDpATUvVWMRzCBaTeedKghX1LEDK2u2z4Ffq",
+      4697820165286
+    ],
+    [
       "6D5ovnQeR5NHFYg2n1Jrcp1KTztvvnSEzWwbAU1JDD4G",
       4520086261222
     ],
@@ -190,7 +190,7 @@
     ],
     [
       "69sqjwuNDVc8x8u9pdAMoadq3FSQUD6TArYG3DQ5yNfz",
-      2838852644630
+      2862220395852
     ],
     [
       "HH95bire3T14Gv7LYWx55t9MKrACBK1YMAu8CC3rGFAD",
@@ -265,8 +265,16 @@
       1254795550111
     ],
     [
+      "4wncaMtsKxfnGK4PC6EMfZGQ6YQtLMt61dAsMRaXrte9",
+      1238944574156
+    ],
+    [
       "BFpMcMCRQibK65PR3V6jyy3RDjgEKdfwHNBGaBA9EzVX",
       1221524628480
+    ],
+    [
+      "8znd3ascuSJ7XY7urvLQJBEAKS6y8vYG7RsjMGz3qxsA",
+      1159362873509
     ],
     [
       "7GPhFTQNKNca88QBUkGrAeE1cgz76rAruVHF47dthhkZ",
@@ -295,6 +303,10 @@
     [
       "9yaypmTHqKz4D9SJmVqREzE8ewx2ZoW6UcsSGhkWTgKV",
       809071964618
+    ],
+    [
+      "76WoCZAGzoVSinUrsdbjJzki9z8qVs7ixbLfW2gTrMmv",
+      764096846486
     ],
     [
       "4Ev5acvKT64Fnww9JKM1cEa4mhzQQa9toPQGEyxh2hMs",
@@ -381,6 +393,10 @@
       143705198835
     ],
     [
+      "2qnHs8fZZLUJFVCkTCEXXZnEZTgfu7HFVBFmbUmXiYiW",
+      127942114572
+    ],
+    [
       "6gyw9czzFeSdDyedEf6EKrBYfNAVkoHJoAjc8gRP2dwh",
       126990874323
     ],
@@ -427,10 +443,6 @@
     [
       "E1AGGLjBXKSQEyoaBmPebpvNVrsBQo5aeR4ap6hvKpdU",
       50205326928
-    ],
-    [
-      "8psNvWTrdNTiVRNzAgsou9kETXNJm2SXZyaKuJraVRtf",
-      48857343275
     ],
     [
       "Hj2v55HWqdyChiBdkMyMRMd79nui4WedfKRaXPQTZaNY",
@@ -499,6 +511,10 @@
     [
       "BELtFQqunn2FnmAG2VSDPqxV1FuNKQPDe48YPRYfNX54",
       4239778995
+    ],
+    [
+      "FMKGkwJ8oa7vsoyhpUTNrMsaWB7CGcARWCGcAsxNHQod",
+      2743341621
     ],
     [
       "GP8StUXNYSZjPikyRsvkTbvRV1GBxMErb59cpeCJnDf1",
