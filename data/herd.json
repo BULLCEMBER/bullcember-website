@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-09-20T11:08:59.676Z",
-  "total": 144,
+  "updatedAt": "2026-09-20T14:42:48.170Z",
+  "total": 143,
   "tiers": {
-    "calf": 73,
+    "calf": 72,
     "bull": 47,
     "stampede": 23,
     "alpha": 1
@@ -141,6 +141,10 @@
       5997436812908
     ],
     [
+      "3deAcCdB4rDtQs3erXC1V75QwE9AW5PBqUtxMyiDY2xn",
+      5904374206680
+    ],
+    [
       "7WVmFAwkDREkbRhUmNJf4iU8RSfQzN9Z1QMHWRs5xLSS",
       5901901489536
     ],
@@ -265,10 +269,6 @@
       1254795550111
     ],
     [
-      "4wncaMtsKxfnGK4PC6EMfZGQ6YQtLMt61dAsMRaXrte9",
-      1238944574156
-    ],
-    [
       "BFpMcMCRQibK65PR3V6jyy3RDjgEKdfwHNBGaBA9EzVX",
       1221524628480
     ],
@@ -297,16 +297,12 @@
       932125476408
     ],
     [
+      "9yaypmTHqKz4D9SJmVqREzE8ewx2ZoW6UcsSGhkWTgKV",
+      854398060072
+    ],
+    [
       "AU92oNrLgwCaoYJFNfgKrKPXJQAWBqpmnfEQ38gYXxaF",
       829666077449
-    ],
-    [
-      "9yaypmTHqKz4D9SJmVqREzE8ewx2ZoW6UcsSGhkWTgKV",
-      809071964618
-    ],
-    [
-      "76WoCZAGzoVSinUrsdbjJzki9z8qVs7ixbLfW2gTrMmv",
-      764096846486
     ],
     [
       "4Ev5acvKT64Fnww9JKM1cEa4mhzQQa9toPQGEyxh2hMs",
@@ -343,6 +339,10 @@
     [
       "6uvdK3obzgLsP7gHTipM7Ev3EHZkfMpxvJv2zkUPHKHz",
       500000000000
+    ],
+    [
+      "2Q9KM9cAms3wBvdZkEcxDf5MaMQ4DbZu4Z2JCJYy4kaR",
+      473565560222
     ],
     [
       "8RegWzMbpiAZXciDT3eeExCknE5bNkRd1dfMo9ngbyF1",
@@ -391,10 +391,6 @@
     [
       "nAjJUi8Rx5WnmtansVxDKYEyLpAW2UWjxDubNtoh9aS",
       143705198835
-    ],
-    [
-      "2qnHs8fZZLUJFVCkTCEXXZnEZTgfu7HFVBFmbUmXiYiW",
-      127942114572
     ],
     [
       "6gyw9czzFeSdDyedEf6EKrBYfNAVkoHJoAjc8gRP2dwh",
@@ -513,10 +509,6 @@
       4239778995
     ],
     [
-      "FMKGkwJ8oa7vsoyhpUTNrMsaWB7CGcARWCGcAsxNHQod",
-      2743341621
-    ],
-    [
       "GP8StUXNYSZjPikyRsvkTbvRV1GBxMErb59cpeCJnDf1",
       1744177464
     ],
@@ -551,6 +543,10 @@
     [
       "DSN3j1ykL3obAVNv7ZX49VsFCPe4LqzxHnmtLiPwY6xg",
       705559440
+    ],
+    [
+      "8psNvWTrdNTiVRNzAgsou9kETXNJm2SXZyaKuJraVRtf",
+      248485577
     ],
     [
       "G1jBWztHhA3FVGJXJc8UNA5zunfZiCwM2o5hTaAPnGMi",
