@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-09-21T16:29:20.947Z",
+  "updatedAt": "2026-09-21T20:30:39.374Z",
   "total": 144,
   "tiers": {
     "calf": 74,
     "bull": 45,
-    "stampede": 24,
-    "alpha": 1
+    "stampede": 25,
+    "alpha": 0
   },
   "holders": [
     [
       "2zeHdhPzvfKxR3fPXTzhEjJapmATrnAoor5XYKehJqTk",
-      53464021397411
+      40098016048058
     ],
     [
       "4fbX9B8QkCymGe1ihb5Qcf4uQsBCAe2Hk884qT8FZ2rF",
@@ -150,7 +150,7 @@
     ],
     [
       "3deAcCdB4rDtQs3erXC1V75QwE9AW5PBqUtxMyiDY2xn",
-      5151234596576
+      5836880468651
     ],
     [
       "4TpArgdoxD1RiMQDZYCjez3Kpi1CHaUbVmeYQe656xUD",
@@ -381,12 +381,20 @@
       244291280644
     ],
     [
+      "AXAfiVAXvhHvmuHG9pVt4hD5JCQd6HFgh58EJgmcvHJy",
+      228444648255
+    ],
+    [
       "DXmUDYe2dByjqEaGtb6ERGkZRu2Yb7rt8zwjb5mgvC4k",
       189473342038
     ],
     [
       "G6gRYsMTJCFRFsb316P4QxbpgZSKSnSpgG5JPSAoShj1",
       174053452235
+    ],
+    [
+      "7nfLcx6bLukwjDtKEddSg5cdJgimoMWRbqJZ4HtweSDZ",
+      153173175633
     ],
     [
       "nAjJUi8Rx5WnmtansVxDKYEyLpAW2UWjxDubNtoh9aS",
@@ -399,10 +407,6 @@
     [
       "AfdhaXMkzXxYGn2nRnWtit3zot7qnZtVL2PkFjQfUeF8",
       123233522594
-    ],
-    [
-      "7nfLcx6bLukwjDtKEddSg5cdJgimoMWRbqJZ4HtweSDZ",
-      121520312661
     ],
     [
       "2wqEi31N7Bjuxvdj5RS4vA5qZU1XkftHiBTKtS5uCa4b",
@@ -419,10 +423,6 @@
     [
       "5SFyDk8Et2g2DPSGhfXdGBnYGidV8o71WJ4gopxNqiE5",
       87258126054
-    ],
-    [
-      "BXrU6jcjtZnar27jfWCXXhr9EqQGcFvyfnpC9cRjYLmC",
-      85974546987
     ],
     [
       "ydwVQrApTGJXbraAsLqqYyv28ZAKuKoMZxnSZXZ7oPM",
@@ -467,6 +467,10 @@
     [
       "HU23r7UoZbqTUuh3vA7emAGztFtqwTeVips789vqxxBw",
       22975261618
+    ],
+    [
+      "BXrU6jcjtZnar27jfWCXXhr9EqQGcFvyfnpC9cRjYLmC",
+      21276431303
     ],
     [
       "Cg62LzDzUwvvo9hvwoLYrashc8BjMso84VtxFa2ZpRx1",
@@ -523,10 +527,6 @@
     [
       "CJgvfUbZp6cW99B2Lfq3kZhXj3k254cCuA7imhNdjQ5d",
       1070413473
-    ],
-    [
-      "AXAfiVAXvhHvmuHG9pVt4hD5JCQd6HFgh58EJgmcvHJy",
-      900986969
     ],
     [
       "FfA6X6nnEQTArAKAQPxj98HrLMhXvz3YMeW7LsDN8AHo",
