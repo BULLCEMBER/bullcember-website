@@ -1957,7 +1957,10 @@ body::after {
   transform: rotate(-1.4deg);
   transform-origin: left center;
   margin-bottom: var(--s-6);
-  color: var(--signal);   /* display type — full strength, not the tint */
+  /* Ochre, not the rust lead. Also lands the wordmark on the same colour as
+     .highlight, so the hero and every section title now agree. And it is
+     7.3:1 against --bg where the rust was 3.6:1 — double the contrast. */
+  color: var(--accent);
   text-shadow: 6px 6px 0 #000, 12px 12px 0 rgba(0,0,0,0.55);
 }
 
@@ -2203,7 +2206,9 @@ body::after {
   overflow: hidden;
 }
 .elive.burn   { border-top: 4px solid var(--burn);   transform: rotate(-0.8deg); }
-.elive.buy    { border-top: 4px solid var(--signal); transform: rotate(0.6deg); }
+/* Stripe follows its own number, the way .elive.burn does — an ochre value
+   under a rust stripe made one tile disagree with itself. */
+.elive.buy    { border-top: 4px solid var(--accent); transform: rotate(0.6deg); }
 
 /* the emoji stops competing with the number */
 .elive-ico { font-size: 1.1rem; opacity: 0.75; margin-bottom: var(--s-2); }
@@ -2228,8 +2233,13 @@ body::after {
   color: var(--burn);
   text-shadow: 4px 4px 0 #000;
 }
+/* Ochre rather than rust, and this one is not only cosmetic: it sits directly
+   beside .elive.burn, and --burn (#FF3B1F, hue 8deg) against the old rust
+   (hue 18deg) were only 10deg apart — the measured soft spot of this palette.
+   Ochre is at 39deg, so "burned forever" and "bought back" are now 31deg apart
+   and read as two different things at a glance. */
 .elive.buy .elive-v {
-  color: var(--signal);   /* 99px slab — display, full strength */
+  color: var(--accent);   /* 99px slab — display, full strength */
   text-shadow: 4px 4px 0 #000;
 }
 .elive-sub {
@@ -2319,7 +2329,7 @@ body::after {
   font-family: var(--f-slab);
   font-weight: 400;
   font-size: 1.8rem;
-  color: var(--signal);   /* 29px slab — display, full strength */
+  color: var(--accent);   /* 29px slab — display, full strength */
   letter-spacing: 0;
 }
 .grad-meta { color: var(--muted); }
