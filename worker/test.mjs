@@ -84,6 +84,14 @@ globalThis.fetch = async (url, opts) => {
         { fromUserAccount: DIST, toUserAccount: "w8", amount: 777 }] },
     ]));
   }
+  // --- birdeye OHLCV, for /volume. 1000*0.5 + 2000*0.25 = 1000 -----------------
+  if (u.includes("birdeye")) {
+    upstreamCalls++;
+    return new Response(JSON.stringify({ data: { items: [
+      { unixTime: T,       v: 1000, c: 0.5  },
+      { unixTime: T + 864, v: 2000, c: 0.25 },
+    ] } }));
+  }
   throw new Error("unexpected upstream " + u);
 };
 
@@ -109,6 +117,21 @@ const opt = await worker.fetch(new Request("https://live.example.com/buys", { me
 ok("OPTIONS preflight allowed", opt.headers.get("access-control-allow-origin") === ORIGIN);
 const post = await worker.fetch(new Request("https://live.example.com/buys", { method: "POST" }), { HELIUS_KEY: "s" }, ctx);
 ok("POST rejected -> 405", post.status === 405);
+
+// ---- /volume and the per-route key gate --------------------------------------
+// The gate is per route on purpose: /volume fronts Birdeye, the other three front
+// Helius, and one missing secret must not take out the others. Both directions are
+// checked, because a single shared gate would still pass the first assertion.
+const volNoKey = await call("/volume", { HELIUS_KEY: "stub" });
+ok("volume without BIRDEYE_KEY -> 503", volNoKey.status === 503);
+ok("503 names the missing secret", (await volNoKey.text()).includes("BIRDEYE_KEY"));
+ok("buys with only BIRDEYE_KEY -> 503", (await call("/buys", { BIRDEYE_KEY: "b" })).status === 503);
+
+const volRes = await call("/volume", { BIRDEYE_KEY: "b" });   // no HELIUS_KEY at all
+ok("volume works with BIRDEYE_KEY alone", volRes.status === 200);
+const vol = await volRes.json();
+ok("volume sums v*c across candles", vol.totalUsd === 1000, JSON.stringify(vol.totalUsd));
+ok("volume gets the 1h edge TTL", (volRes.headers.get("cache-control") || "").includes("s-maxage=3600"));
 
 // ---- buys --------------------------------------------------------------------
 const buys = await (await call("/buys")).json();

@@ -45,8 +45,11 @@ const ALLOWED_ORIGINS = [
 ];
 
 // Per-route edge TTL. Buys move constantly; the engine and payout rounds move a few
-// times a week, so they can sit longer and cost almost nothing.
-const TTL = { buys: 15, engine: 45, rewards: 45 };
+// times a week, so they can sit longer and cost almost nothing. Total volume is a
+// lifetime cumulative figure that the page only ever refreshes once a day, so an
+// hour at the edge is generous — and it caps Birdeye at 24 calls a day for the
+// entire internet, which is the whole point of putting it behind here.
+const TTL = { buys: 15, engine: 45, rewards: 45, volume: 3600 };
 
 const cors = (origin) => ({
   "access-control-allow-origin": ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0],
@@ -257,6 +260,41 @@ async function getRewards(env, since) {
 }
 
 // ------------------------------------------------------------------ router ---
+// Lifetime traded volume, summed across the full daily OHLCV history.
+//
+// The only route here that does not touch Helius. It fronts Birdeye, whose key sat
+// in index.html where anyone could lift it — the same mistake that took the site
+// down on 2026-08-25 with the Helius key. Worse, the page summed the history by
+// paging the endpoint several times back to back on every load, which is precisely
+// the shape that trips a free-tier rate limit: a 429 left a dash on screen until
+// the next UTC midnight.
+//
+// Behind here the key is a secret binding and the 1h TTL above means traffic cannot
+// drive the call count at all.
+async function getVolume(env) {
+  let total = 0;
+  let from = 1782000000;               // a little before launch; same floor the page used
+  const now = Math.floor(Date.now() / 1000);
+  // Birdeye returns at most 1000 daily candles per page, so this is one page in
+  // practice. The page cap exists only so a malformed response cannot spin forever.
+  for (let page = 0; page < 8 && from < now; page++) {
+    const r = await fetch(
+      `https://public-api.birdeye.so/defi/ohlcv?address=${MINT}&type=1D&time_from=${from}&time_to=${now}`,
+      { headers: { "X-API-KEY": env.BIRDEYE_KEY, "x-chain": "solana" } },
+    );
+    // Must throw rather than fall through: the old client code treated a 429 as
+    // "no items", which silently produced a zero and never retried.
+    if (!r.ok) throw new Error(`birdeye ${r.status}`);
+    const items = (await r.json())?.data?.items || [];
+    if (!items.length) break;
+    for (const it of items) total += (Number(it.v) || 0) * (Number(it.c) || 0);
+    if (items.length < 1000) break;
+    from = Math.max(...items.map((i) => i.unixTime)) + 1;
+  }
+  if (!(total > 0)) throw new Error("birdeye returned no volume");
+  return { updatedAt: new Date().toISOString(), totalUsd: total };
+}
+
 export default {
   async fetch(request, env, ctx) {
     const origin = request.headers.get("Origin") || "";
@@ -266,7 +304,13 @@ export default {
     const url = new URL(request.url);
     const route = url.pathname.replace(/\/+$/, "").split("/").pop();
     if (!TTL[route]) return new Response("not found", { status: 404, headers: cors(origin) });
-    if (!env.HELIUS_KEY) return new Response("worker not configured", { status: 503, headers: cors(origin) });
+    // /volume fronts Birdeye, everything else fronts Helius. Gate per route, so a
+    // missing Birdeye secret cannot take down buys/engine/rewards — and so adding
+    // /volume before its secret exists degrades to exactly one dead route.
+    const needs = route === "volume" ? "BIRDEYE_KEY" : "HELIUS_KEY";
+    if (!env[needs]) {
+      return new Response(`worker not configured: ${needs}`, { status: 503, headers: cors(origin) });
+    }
 
     // `since` is clamped, not trusted: it comes from the visitor's baseline file and
     // a bogus value would otherwise widen the upstream fan-out.
@@ -289,6 +333,7 @@ export default {
       const body =
         route === "buys" ? await getBuys(env)
         : route === "engine" ? await getEngine(env, since)
+        : route === "volume" ? await getVolume(env)
         : await getRewards(env, since);
 
       const res = json(body, origin, TTL[route]);

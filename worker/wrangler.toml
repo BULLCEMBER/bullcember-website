@@ -2,8 +2,9 @@ name = "bullcember-live"
 main = "src/index.js"
 compatibility_date = "2026-09-01"
 
-# The Helius key is NOT in this file and must never be. Set it as a secret:
-#   npx wrangler secret put HELIUS_KEY
+# Neither key is in this file and neither ever should be. Set them as secrets:
+#   npx wrangler secret put HELIUS_KEY    # buys / engine / rewards
+#   npx wrangler secret put BIRDEYE_KEY   # /volume only
 # Secrets live in Cloudflare, are write-only after being set, and are never
 # served to a browser — which is the whole reason this Worker exists.
 

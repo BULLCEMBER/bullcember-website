@@ -28,6 +28,7 @@ This Worker keeps the live reads but removes both failure modes:
 | `GET /buys` | 12 most recent buys off the PumpSwap pool | 15s |
 | `GET /engine?since=<unix>` | classified buyback/burn events newer than `since` | 45s |
 | `GET /rewards?since=<unix>` | payout rounds newer than `since`, plus collected/overhead | 45s |
+| `GET /volume` | `{ totalUsd }` — lifetime traded volume, summed from daily OHLCV | 1h |
 
 `since` is the newest timestamp the caller already has from its baseline JSON, so in
 steady state these return an empty delta and cost almost nothing. It is clamped
@@ -37,12 +38,23 @@ server-side — a bogus value cannot widen the upstream fan-out.
 rules in one, change them in the other**, or the live delta will disagree with the
 published totals it gets added to.
 
+`/volume` is the odd one out: it fronts **Birdeye**, not Helius, and needs its own
+`BIRDEYE_KEY` secret. The key gate is per route, so a missing Birdeye secret takes
+out `/volume` alone (503) and leaves the other three working. It ignores `since`.
+
+Why it exists: the page used to sum that history in the browser, paging Birdeye
+several times per load with the key hardcoded in `index.html`. That is the same
+exposure that killed the site on 2026-08-25, and the burst of calls tripped the
+free tier, which left a dash on the Total Volume tile. At a 1h TTL the whole
+internet costs Birdeye **24 calls a day**.
+
 ## Deploy
 
 ```bash
 cd worker
 npx wrangler login
-npx wrangler secret put HELIUS_KEY   # paste the Helius key, not the full RPC URL
+npx wrangler secret put HELIUS_KEY    # paste the Helius key, not the full RPC URL
+npx wrangler secret put BIRDEYE_KEY   # only /volume needs this
 npx wrangler deploy
 ```
 
@@ -79,7 +91,13 @@ rules as `scripts/scan.mjs`, including the pump.fun boost transaction that must 
 
 ```bash
 curl -s "https://<your-worker-url>/buys" | head -c 300
+curl -s "https://<your-worker-url>/volume"          # {"updatedAt":...,"totalUsd":179081.xx}
 curl -sI "https://<your-worker-url>/buys" | grep -i "x-bull-cache\|cache-control"
 ```
+
+Until `BIRDEYE_KEY` is set, `/volume` answers `503 worker not configured: BIRDEYE_KEY`
+and the page silently falls back to calling Birdeye directly — so nothing breaks, it
+just keeps using the in-page key. Once the secret is set and this route answers 200,
+the `BIRDEYE_KEY` constant in `index.html` is dead and should be deleted.
 
 A second call within the TTL should report `x-bull-cache: HIT`.

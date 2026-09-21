@@ -949,29 +949,84 @@
       });
       links.querySelectorAll('a').forEach(a => a.addEventListener('click', close));
     })();
+    // ===== TOTAL VOLUME =====
+    // Lifetime figure, summed across the whole daily OHLCV history. Two upstreams,
+    // in order of preference:
+    //
+    //   1. the Worker's /volume route — key hidden, 1h edge cache, so the whole
+    //      internet costs Birdeye at most 24 calls a day
+    //   2. Birdeye directly, with the key that is still in this file
+    //
+    // Order matters: once the Worker has its BIRDEYE_KEY secret, path 2 stops being
+    // reached and the key here can be deleted. Until then this keeps working.
+    //
+    // The old version had a quiet failure that produced the dash on the stat tile: it
+    // paged Birdeye several times back to back (which trips the free-tier rate limit),
+    // read a 429 body as `items = []`, treated that as "no more pages", broke out with
+    // total still 0, and skipped the update WITHOUT throwing — so even the catch never
+    // fired. Then it did not try again until the next UTC midnight. A transient rate
+    // limit therefore cost up to a full day of showing nothing.
+    const TVOL_BACKOFF = [30e3, 120e3, 600e3];   // 30s, 2m, 10m, then hold at 10m
+    let tvolFails = 0, tvolTimer = null;
+
+    async function volumeFromWorker() {
+      const j = await liveGet('volume');
+      const t = j && Number(j.totalUsd);
+      return Number.isFinite(t) && t > 0 ? t : null;
+    }
+
+    async function volumeFromBirdeye() {
+      let total = 0, timeFrom = 1782000000; // updated launch
+      const now = Math.floor(Date.now() / 1000);
+      while (timeFrom < now) {
+        const res = await fetch(
+          `${BIRDEYE_URL}?address=${CA}&type=1D&time_from=${timeFrom}&time_to=${now}`,
+          { headers: BIRDEYE_HDR }
+        );
+        // Throw, do not fall through. This is the line whose absence made a 429
+        // indistinguishable from "the token has no trading history".
+        if (!res.ok) throw new Error(`birdeye ${res.status}`);
+        const items = (await res.json())?.data?.items || [];
+        if (!items.length) break;
+        items.forEach(({ v, c }) => { total += v * c; });
+        if (items.length < 1000) break;
+        timeFrom = Math.max(...items.map(i => i.unixTime)) + 1;
+      }
+      return total;
+    }
+
+    // Resolves true only when a real number reached the tile, so the caller knows
+    // whether to schedule the next run a day out or a few seconds out.
     async function fetchTotalVolume() {
       try {
-        let total = 0, timeFrom = 1782000000; // updated launch
-        const now = Math.floor(Date.now() / 1000);
-        while (timeFrom < now) {
-          const res = await fetch(
-            `${BIRDEYE_URL}?address=${CA}&type=1D&time_from=${timeFrom}&time_to=${now}`,
-            { headers: BIRDEYE_HDR }
-          );
-          const items = (await res.json())?.data?.items || [];
-          if (!items.length) break;
-          items.forEach(({ v, c }) => { total += v * c; });
-          if (items.length < 1000) break;
-          timeFrom = Math.max(...items.map(i => i.unixTime)) + 1;
-        }
-        if (total > 0) document.getElementById('stat-tvol').textContent = fmt(total);
-      } catch(e) { console.error('Total volume fetch failed:', e); }
+        let total = await volumeFromWorker();
+        if (total === null) total = await volumeFromBirdeye();
+        if (!(total > 0)) return false;
+        document.getElementById('stat-tvol').textContent = fmt(total);
+        return true;
+      } catch (e) {
+        console.error('Total volume fetch failed:', e);
+        return false;
+      }
     }
-    function scheduleDailyVolume() {
-      const now = new Date();
-      const nextMidnightUTC = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1));
-      const msUntilMidnight = nextMidnightUTC - now;
-      setTimeout(() => { fetchTotalVolume(); setInterval(fetchTotalVolume, 86400000); }, msUntilMidnight);
+
+    function msUntilUtcMidnight() {
+      const n = new Date();
+      return new Date(Date.UTC(n.getUTCFullYear(), n.getUTCMonth(), n.getUTCDate() + 1)) - n;
+    }
+
+    // Success: the number only moves once a day, so sleep until UTC midnight.
+    // Failure: back off in seconds and minutes. The point of the whole change.
+    async function runTotalVolume() {
+      const ok = await fetchTotalVolume();
+      clearTimeout(tvolTimer);
+      if (ok) {
+        tvolFails = 0;
+        tvolTimer = setTimeout(runTotalVolume, msUntilUtcMidnight());
+        return;
+      }
+      const wait = TVOL_BACKOFF[Math.min(tvolFails++, TVOL_BACKOFF.length - 1)];
+      tvolTimer = setTimeout(runTotalVolume, wait);
     }
     // ===== LIVE TOP-UP =====
     // data/*.json is the baseline: it paints on the first frame, costs nothing, and
@@ -1009,8 +1064,7 @@
     fetchHolders();
     fetchBondingCurve();
     setTimeout(fetchBuys, 1200); // paints the baseline, then tops up from chain
-    setTimeout(fetchTotalVolume, 3000);
-    scheduleDailyVolume();
+    setTimeout(runTotalVolume, 3000);   // reschedules itself: daily on success, backoff on failure
     setInterval(fetchStats, 30000);
     setInterval(fetchHolders, 60000);
     setInterval(fetchBondingCurve, 30000);
