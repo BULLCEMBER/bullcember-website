@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-09-21T20:30:39.374Z",
-  "total": 144,
+  "updatedAt": "2026-09-21T23:31:06.369Z",
+  "total": 145,
   "tiers": {
-    "calf": 74,
+    "calf": 75,
     "bull": 45,
     "stampede": 25,
     "alpha": 0
@@ -81,6 +81,10 @@
       13905891458795
     ],
     [
+      "2zovipoX6TSZbbrn7yNYcUZiQ5DQLbUrtt7QUk1FkHEQ",
+      12167193038475
+    ],
+    [
       "4XS1eQoNawaRBKhbRMdnsJAtyURCmY3B7K3fHjoMQfNH",
       11370546049569
     ],
@@ -99,10 +103,6 @@
     [
       "A8egciG8UsoHovCnJTAdYGefMW3MM79AbF1sdi8eU3vf",
       10222976722834
-    ],
-    [
-      "2zovipoX6TSZbbrn7yNYcUZiQ5DQLbUrtt7QUk1FkHEQ",
-      10108214500403
     ],
     [
       "5ce1a8rjD4kWVgsLiKAVF1JrhGcTen9nsLurgiZQvAqN",
@@ -213,10 +213,6 @@
       2655259718648
     ],
     [
-      "D7YoTjLm6vh4X314B7J7At4gEuEMn1UvCy5eTQXLFWSX",
-      2473543172221
-    ],
-    [
       "DbEn1uWDQvB6qBJ99kfvRgSVFCWUr87vJQW5HWNudt52",
       2190354287715
     ],
@@ -227,6 +223,10 @@
     [
       "5rhm34pHsxyYEUtAzsQsu8imQeGibpPGo5nPtP5agQpY",
       2144655124492
+    ],
+    [
+      "7GWfFXc5FgQyioqL5p1SeZ16p7mwV4h1DLNviS4w5giV",
+      2114271667421
     ],
     [
       "CT6qQsdeoQvBQB5MNamWV6fJhMMyrf2FHrRabzP7xVmK",
@@ -309,6 +309,10 @@
       675054978156
     ],
     [
+      "FmLJT3hjrC3j1QK3RGgC1zKzCNyqeFGZRc42PyFK1LYW",
+      664599254101
+    ],
+    [
       "5AFGPgvHdFbigAHZye9GXbVJVZwbkRz9kucsCzxyPLDo",
       599985836822
     ],
@@ -343,10 +347,6 @@
     [
       "8RegWzMbpiAZXciDT3eeExCknE5bNkRd1dfMo9ngbyF1",
       415083704193
-    ],
-    [
-      "FmLJT3hjrC3j1QK3RGgC1zKzCNyqeFGZRc42PyFK1LYW",
-      409799949992
     ],
     [
       "BL5UNdH6mggBAUdc1sMYHLx4dRw78YqNvyumahC9GeDp",
@@ -399,6 +399,10 @@
     [
       "nAjJUi8Rx5WnmtansVxDKYEyLpAW2UWjxDubNtoh9aS",
       143705198835
+    ],
+    [
+      "BXrU6jcjtZnar27jfWCXXhr9EqQGcFvyfnpC9cRjYLmC",
+      127105678801
     ],
     [
       "6gyw9czzFeSdDyedEf6EKrBYfNAVkoHJoAjc8gRP2dwh",
@@ -467,10 +471,6 @@
     [
       "HU23r7UoZbqTUuh3vA7emAGztFtqwTeVips789vqxxBw",
       22975261618
-    ],
-    [
-      "BXrU6jcjtZnar27jfWCXXhr9EqQGcFvyfnpC9cRjYLmC",
-      21276431303
     ],
     [
       "Cg62LzDzUwvvo9hvwoLYrashc8BjMso84VtxFa2ZpRx1",
@@ -555,6 +555,10 @@
     [
       "G1jBWztHhA3FVGJXJc8UNA5zunfZiCwM2o5hTaAPnGMi",
       149506594
+    ],
+    [
+      "3LoAYHuSd7Gh8d7RTFnhvYtiTiefdZ5ByamU42vkzd76",
+      105935182
     ],
     [
       "8NVMAjMHuYYUZfeLqcgdwzJDPjtmKNxBATHzZG2aVjQA",
