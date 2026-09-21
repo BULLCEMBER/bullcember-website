@@ -16,7 +16,7 @@
   <meta property="og:url" content="https://bullcember.net" />
   <meta property="og:title" content="$BULLCEMBER: The Bullish December, Now on Solana" />
   <meta property="og:description" content="$BULLCEMBER just launched on Solana. The most bullish month in crypto finally has a coin. Zero taxes, no VCs, pure community. Q4 2026 is coming. Be ready for December." />
-  <meta property="og:image" content="https://bullcember.net/og-image.png?v=f97a415a" />
+  <meta property="og:image" content="https://bullcember.net/og-image.png?v=c68276c3" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <!-- Twitter Card -->
@@ -24,7 +24,7 @@
   <meta name="twitter:site" content="@bullcembersol" />
   <meta name="twitter:title" content="$BULLCEMBER: The Bullish December, Now on Solana" />
   <meta name="twitter:description" content="$BULLCEMBER just launched on Solana. The most bullish month in crypto finally has a coin. Zero taxes, no VCs, pure community. Q4 2026 is coming. Be ready for December." />
-  <meta name="twitter:image" content="https://bullcember.net/og-image.png?v=f97a415a" />
+  <meta name="twitter:image" content="https://bullcember.net/og-image.png?v=c68276c3" />
   <link rel="stylesheet" href="style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -85,12 +85,22 @@
     <use href="#alpha-head" transform="translate(0 2.4) scale(.94)"/>
     <path d="M11.9 8.3V3.1c0-.5.5-.7.9-.4l2.1 1.7 1.4-2.8 1.4 2.8 2.1-1.7c.4-.3.9 0 .9.4v5.2Z"/>
   </symbol>
+  <!-- Solana mark — the official three-bar logo, shown wherever the page already says
+       "Solana" (hero tag, Network card, footer badge). Defined once and pulled in with
+       <use> so it has a single home instead of three copies.
+       Monochrome on purpose: the official purple/green gradient was the only cool
+       colour left after the rust repaint and read as a foreign object. currentColor
+       means each usage inherits whatever ink its context already uses. -->
+  <symbol id="solana-mark" viewBox="0 0 397.7 311.7" fill="currentColor">
+    <path d="M64.6 237.9c2.4-2.4 5.7-3.8 9.2-3.8h317.4c5.8 0 8.7 7 4.6 11.1l-62.7 62.7c-2.4 2.4-5.7 3.8-9.2 3.8H6.5c-5.8 0-8.7-7-4.6-11.1l62.7-62.7z"/>
+    <path d="M64.6 3.8C67.1 1.4 70.4 0 73.8 0h317.4c5.8 0 8.7 7 4.6 11.1l-62.7 62.7c-2.4 2.4-5.7 3.8-9.2 3.8H6.5c-5.8 0-8.7-7-4.6-11.1L64.6 3.8z"/>
+    <path d="M333.1 120.1c-2.4-2.4-5.7-3.8-9.2-3.8H6.5c-5.8 0-8.7 7-4.6 11.1l62.7 62.7c2.4 2.4 5.7 3.8 9.2 3.8h317.4c5.8 0 8.7-7 4.6-11.1l-62.7-62.7z"/>
+  </symbol>
 </svg>
   <a class="skip-link" href="#main">Skip to content</a>
   <!-- NAVBAR -->
   <nav class="navbar">
     <div class="nav-logo">
-      <img src="pfp.png" alt="$BULLCEMBER" class="nav-pfp" />
       $BULLCEMBER
     </div>
     <ul class="nav-links" id="nav-links">
@@ -113,14 +123,7 @@
   <section class="hero" id="main">
     <div class="hero-glow"></div>
     <div class="hero-content">
-      <div class="hero-pfp-wrapper">
-        <div class="pfp-ring ring1"></div>
-        <div class="pfp-ring ring2"></div>
-        <div class="pfp-circle">
-          <img src="pfp.png" alt="BULLCEMBER" class="hero-pfp" />
-        </div>
-      </div>
-      <div class="hero-tag">Q4 2026 Incoming • Built on Solana</div>
+      <div class="hero-tag">Q4 2026 Incoming • Built on Solana <svg class="sol-mark" aria-hidden="true"><use href="#solana-mark"/></svg></div>
       <h1 class="hero-title">$BULLCEMBER</h1>
       <p class="hero-sub">The most bullish month in crypto has a coin.<br/>December comes once a year. Be ready when it does.</p>
       <div class="hero-btns">
@@ -334,7 +337,7 @@
         </div>
         <div class="toko-card">
           <div class="toko-label">Network</div>
-          <div class="toko-value">Solana ⚡</div>
+          <div class="toko-value">Solana <svg class="sol-mark" aria-hidden="true"><use href="#solana-mark"/></svg></div>
         </div>
         <div class="toko-card">
           <div class="toko-label">DEX</div>
@@ -665,10 +668,9 @@
   </section>
   <!-- FOOTER -->
   <footer class="footer">
-    <img src="pfp.png" alt="BULLCEMBER" class="footer-pfp" loading="lazy" />
     <div class="footer-logo">$BULLCEMBER</div>
     <p class="footer-disclaimer">$BULLCEMBER is a meme coin with no intrinsic value or expectation of financial return. This is not financial advice. Always do your own research (DYOR).</p>
-    <div class="powered-by">Powered by <span class="sol-badge">◎ Solana</span></div>
+    <div class="powered-by">Powered by <svg class="sol-mark" aria-hidden="true"><use href="#solana-mark"/></svg> <span class="sol-badge">Solana</span></div>
     <p class="footer-copy">© 2026 BULLCEMBER</p>
   </footer>
   <script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
@@ -1334,7 +1336,7 @@
           initialOutputMint: CA,
           fixedMint: CA,
         },
-        branding: { logoUri: 'https://bullcember.net/pfp.png', name: 'BULLCEMBER' },
+        branding: { name: 'BULLCEMBER' },
       });
     });
     // ===== CHART =====
@@ -1491,6 +1493,91 @@
       const days = Math.max(0, Math.floor((now - launch) / 864e5));
       document.getElementById('days-about').textContent = days;
       document.querySelectorAll('.ticker-days').forEach(el => { el.textContent = days; });
+    })();
+
+    // ===== SCRAMBLE ON REVEAL =====
+    // Headings and stamp labels shuffle through junk glyphs for ~600ms when they
+    // first scroll into view, then settle on the real words. Headings re-fire on
+    // hover; labels do not, so the eyebrows stay calm while you read.
+    //
+    // Deliberately NOT applied to any live number. A price, a burn total or a
+    // holder count that shuffles reads as a broken feed rather than as style.
+    //
+    // The reduced-motion CSS block above cannot gate this: it zeroes CSS
+    // animation-duration, and this is requestAnimationFrame. So it checks the
+    // media query itself and simply never runs.
+    (function () {
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      const HEADINGS = '.hero-title, .section-title, .final-cta-title';
+      const LABELS   = '.hero-tag, .section-tag, .final-cta-tag';
+      const GLYPHS   = '#$%&@*+=<>?!/|{}[]()0123456789';
+      const DUR      = 600;
+
+      // Walk to the text nodes instead of touching textContent: .section-title
+      // wraps part of itself in <span class="highlight">, and the hero tag now
+      // carries the Solana <svg>. Rewriting textContent would delete both.
+      function textNodes(el) {
+        const out = [], w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+        let n; while ((n = w.nextNode())) if (n.nodeValue.trim()) out.push(n);
+        return out;
+      }
+
+      function scramble(el) {
+        if (el.dataset.scrambling) return;          // already mid-flight
+        const nodes = textNodes(el);
+        if (!nodes.length) return;
+        const orig = nodes.map(n => n.nodeValue);   // snapshot before we touch anything
+        // A screen reader must never be handed the shuffled glyphs, and it may
+        // reach the element mid-animation, so pin the real words as the label.
+        if (!el.getAttribute('aria-label')) el.setAttribute('aria-label', el.textContent.replace(/\s+/g, ' ').trim());
+        el.dataset.scrambling = '1';
+        const t0 = performance.now();
+
+        function finish() {
+          clearTimeout(net);
+          nodes.forEach((node, i) => { node.nodeValue = orig[i]; });  // exact original, always
+          delete el.dataset.scrambling;
+        }
+
+        function frame(now) {
+          const p = Math.min(1, (now - t0) / DUR);
+          if (p >= 1) { finish(); return; }
+          nodes.forEach((node, i) => {
+            const src = orig[i];
+            // Resolves left to right, a little faster than linear so the tail
+            // does not sit as noise while the front is already readable.
+            const settled = Math.floor(src.length * p * 1.35);
+            let out = '';
+            for (let c = 0; c < src.length; c++) {
+              out += (c < settled || src[c] === ' ') ? src[c] : GLYPHS[(Math.random() * GLYPHS.length) | 0];
+            }
+            node.nodeValue = out;
+          });
+          requestAnimationFrame(frame);
+        }
+
+        // requestAnimationFrame is suspended entirely while a tab is hidden, so a
+        // heading that scrambled just before a tab switch would sit there as junk.
+        // Progress is measured off the clock rather than off frames, so it already
+        // self-corrects the instant frames resume — this net just makes the real
+        // words landing unconditional instead of dependent on frame delivery.
+        const net = setTimeout(finish, DUR + 250);
+        requestAnimationFrame(frame);
+      }
+
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          scramble(e.target);
+          io.unobserve(e.target);   // once per element on scroll; hover handles repeats
+        });
+      }, { threshold: 0.25 });
+
+      document.querySelectorAll(HEADINGS + ', ' + LABELS).forEach((el) => io.observe(el));
+      document.querySelectorAll(HEADINGS).forEach((el) => {
+        el.addEventListener('mouseenter', () => scramble(el));
+      });
     })();
   </script>
 </body>

@@ -124,14 +124,14 @@ a { text-decoration: none; color: inherit; }
   font-size: var(--t-xs);
   font-weight: 700;
   letter-spacing: 0.08em;
-  text-transform: uppercase;
+  text-transform: lowercase;
   border-radius: var(--r-sm);
   transition: top var(--dur-2) var(--ease);
 }
 .skip-link:focus { top: var(--s-4); }
 
 /* --- reduced motion -------------------------------------------------------
-   Four infinite animations run on this page (ticker, pulse-btn, spin-ring,
+   Three infinite animations run on this page (ticker, pulse-btn,
    enginePulse). None of them were gated before. */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -171,12 +171,6 @@ a { text-decoration: none; color: inherit; }
   letter-spacing: var(--ls-display);
 }
 
-.nav-pfp {
-  width: 32px;
-  height: 32px;
-  border-radius: 0;
-  object-fit: contain;
-}
 
 .nav-links {
   display: flex;
@@ -190,7 +184,7 @@ a { text-decoration: none; color: inherit; }
   font-size: var(--t-2xs);
   font-weight: 500;
   color: var(--muted);
-  text-transform: uppercase;
+  text-transform: lowercase;
   letter-spacing: 0.12em;
   transition: color var(--dur-1) var(--ease);
 }
@@ -206,7 +200,7 @@ a { text-decoration: none; color: inherit; }
   font-size: var(--t-2xs);
   font-weight: 700;
   color: var(--on-signal);
-  text-transform: uppercase;
+  text-transform: lowercase;
   letter-spacing: 0.1em;
   white-space: nowrap;
   transition: background var(--dur-1) var(--ease);
@@ -290,81 +284,18 @@ a { text-decoration: none; color: inherit; }
   margin: 0 auto;
   padding: 0 var(--gutter);
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  column-gap: var(--s-12);
+  grid-template-columns: minmax(0, 1fr);
   align-items: center;
 }
 
-/* Explicit placement — the mascot sits right of the headline stack while the
-   data strip spans the full measure underneath. DOM order is unchanged. */
+/* Explicit placement — the headline stack runs down column 1 and the data strip
+   spans the full measure underneath. DOM order is unchanged. */
 .hero-tag          { grid-column: 1; grid-row: 1; }
 .hero-title        { grid-column: 1; grid-row: 2; }
 .hero-sub          { grid-column: 1; grid-row: 3; }
 .hero-btns         { grid-column: 1; grid-row: 4; }
-.hero-pfp-wrapper  { grid-column: 2; grid-row: 1 / 5; justify-self: end; }
 .live-bar          { grid-column: 1 / -1; grid-row: 5; }
 
-/* PFP */
-.hero-pfp-wrapper {
-  position: relative;
-  width: 220px;
-  height: 220px;
-  margin-bottom: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* The mascot is framed as an instrument panel rather than a spinning medallion —
-   square plate, hairline border, corner registration marks. */
-.pfp-circle {
-  position: relative;
-  z-index: 2;
-  width: 216px;
-  height: 216px;
-  border-radius: var(--r-md);
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background:
-    linear-gradient(180deg, var(--surface-2), var(--surface));
-  border: 1px solid var(--line);
-}
-
-.hero-pfp {
-  width: 74%;
-  height: 74%;
-  object-fit: contain;
-}
-
-/* .ring1 / .ring2 are repurposed from the old rotating rings into static
-   corner brackets. Markup is untouched. */
-.pfp-ring {
-  position: absolute;
-  width: 22px;
-  height: 22px;
-  border: 1px solid var(--signal);
-  border-radius: 0;
-  pointer-events: none;
-}
-
-.ring1 {
-  inset: -7px auto auto -7px;
-  border-right: 0;
-  border-bottom: 0;
-}
-
-.ring2 {
-  inset: auto -7px -7px auto;
-  border-left: 0;
-  border-top: 0;
-}
-
-@keyframes spin-ring {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
 
 /* Tag */
 .hero-tag {
@@ -375,7 +306,7 @@ a { text-decoration: none; color: inherit; }
   font-size: var(--t-xs);
   font-weight: 500;
   letter-spacing: var(--ls-label);
-  text-transform: uppercase;
+  text-transform: lowercase;
   color: var(--signal-ink);
   margin-bottom: var(--s-5);
 }
@@ -436,7 +367,7 @@ a { text-decoration: none; color: inherit; }
   font-size: var(--t-2xs);
   font-weight: 500;
   letter-spacing: 0.14em;
-  text-transform: uppercase;
+  text-transform: lowercase;
   color: var(--muted);
   white-space: nowrap;
 }
@@ -470,7 +401,7 @@ a { text-decoration: none; color: inherit; }
   font-family: var(--f-mono);
   font-weight: 700;
   font-size: var(--t-sm);
-  text-transform: uppercase;
+  text-transform: lowercase;
   letter-spacing: 0.1em;
   transition: background var(--dur-1) var(--ease);
 }
@@ -485,7 +416,7 @@ a { text-decoration: none; color: inherit; }
   font-family: var(--f-mono);
   font-weight: 600;
   font-size: var(--t-sm);
-  text-transform: uppercase;
+  text-transform: lowercase;
   letter-spacing: 0.1em;
   transition: border-color var(--dur-1) var(--ease), color var(--dur-1) var(--ease);
 }
@@ -515,7 +446,7 @@ a { text-decoration: none; color: inherit; }
   font-size: var(--t-2xs);
   color: var(--muted);
   letter-spacing: 0.14em;
-  text-transform: uppercase;
+  text-transform: lowercase;
 }
 
 @keyframes ticker {
@@ -540,7 +471,7 @@ section { padding: var(--section-y) 0; }
   font-size: var(--t-2xs);
   font-weight: 500;
   letter-spacing: var(--ls-label);
-  text-transform: uppercase;
+  text-transform: lowercase;
   color: var(--signal-ink);
   margin-bottom: var(--s-3);
 }
@@ -585,7 +516,7 @@ section { padding: var(--section-y) 0; }
   font-weight: 500;
   color: var(--signal-ink);
   margin-bottom: var(--s-3);
-  text-transform: uppercase;
+  text-transform: lowercase;
   letter-spacing: var(--ls-label);
 }
 
@@ -621,7 +552,7 @@ section { padding: var(--section-y) 0; }
   font-size: var(--t-2xs);
   font-weight: 500;
   letter-spacing: var(--ls-label);
-  text-transform: uppercase;
+  text-transform: lowercase;
   color: var(--muted);
   margin-bottom: var(--s-3);
 }
@@ -669,7 +600,7 @@ section { padding: var(--section-y) 0; }
   font-size: var(--t-2xs);
   font-weight: 500;
   cursor: pointer;
-  text-transform: uppercase;
+  text-transform: lowercase;
   letter-spacing: 0.1em;
   transition: background var(--dur-1) var(--ease), color var(--dur-1) var(--ease),
               border-color var(--dur-1) var(--ease);
@@ -764,7 +695,7 @@ section { padding: var(--section-y) 0; }
   font-family: var(--f-mono);
   font-weight: 500;
   font-size: var(--t-2xs);
-  text-transform: uppercase;
+  text-transform: lowercase;
   letter-spacing: 0.12em;
   color: var(--muted);
   transition: border-color var(--dur-1) var(--ease), color var(--dur-1) var(--ease);
@@ -785,13 +716,6 @@ section { padding: var(--section-y) 0; }
   padding: var(--s-16) var(--gutter);
 }
 
-.footer-pfp {
-  width: 56px;
-  height: 56px;
-  border-radius: 0;
-  margin-bottom: var(--s-4);
-  object-fit: contain;
-}
 
 .footer-logo {
   font-family: var(--f-display);
@@ -842,7 +766,7 @@ section { padding: var(--section-y) 0; }
   font-size: var(--t-2xs);
   font-weight: 500;
   letter-spacing: 0.1em;
-  text-transform: uppercase;
+  text-transform: lowercase;
   padding: var(--s-2) var(--s-4);
   cursor: pointer;
   transition: color var(--dur-1) var(--ease), border-color var(--dur-1) var(--ease),
@@ -875,7 +799,7 @@ section { padding: var(--section-y) 0; }
   flex-wrap: wrap;
 }
 
-.leg-item { color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; }
+.leg-item { color: var(--muted); letter-spacing: 0.06em; text-transform: lowercase; }
 .leg-val { color: var(--fg); margin-left: var(--s-1); font-variant-numeric: tabular-nums; }
 .leg-sep { flex: 1; }
 .leg-up { color: var(--up); }
@@ -915,7 +839,7 @@ section { padding: var(--section-y) 0; }
   font-size: var(--t-2xs);
   font-weight: 500;
   letter-spacing: 0.08em;
-  text-transform: uppercase;
+  text-transform: lowercase;
   color: var(--muted);
   transition: color var(--dur-1) var(--ease);
 }
@@ -970,7 +894,7 @@ section { padding: var(--section-y) 0; }
   font-size: var(--t-2xs);
   color: var(--muted);
   letter-spacing: 0.08em;
-  text-transform: uppercase;
+  text-transform: lowercase;
 }
 
 /* ===== TOKENOMICS TIMELINE ===== */
@@ -992,7 +916,7 @@ section { padding: var(--section-y) 0; }
   font-size: var(--t-2xs);
   font-weight: 500;
   letter-spacing: var(--ls-label);
-  text-transform: uppercase;
+  text-transform: lowercase;
   color: var(--muted);
 }
 
@@ -1143,7 +1067,7 @@ section { padding: var(--section-y) 0; }
   display: block;
   margin-top: var(--s-3);
   font-family: var(--f-mono);
-  text-transform: uppercase;
+  text-transform: lowercase;
   letter-spacing: var(--ls-label);
   font-size: var(--t-2xs);
   font-weight: 500;
@@ -1209,7 +1133,7 @@ section { padding: var(--section-y) 0; }
   font-weight: 500;
   font-size: var(--t-2xs);
   letter-spacing: var(--ls-label);
-  text-transform: uppercase;
+  text-transform: lowercase;
   color: var(--signal-ink);
   margin: var(--s-3) 0 var(--s-1);
 }
@@ -1217,7 +1141,7 @@ section { padding: var(--section-y) 0; }
 .herd-tier-range {
   font-family: var(--f-mono);
   font-size: var(--t-2xs);
-  text-transform: uppercase;
+  text-transform: lowercase;
   letter-spacing: 0.08em;
   color: var(--muted);
 }
@@ -1236,7 +1160,7 @@ section { padding: var(--section-y) 0; }
   font-family: var(--f-mono);
   font-weight: 500;
   font-size: var(--t-2xs);
-  text-transform: uppercase;
+  text-transform: lowercase;
   letter-spacing: 0.1em;
   color: var(--muted);
   margin-top: var(--s-1);
@@ -1352,7 +1276,7 @@ section { padding: var(--section-y) 0; }
   font-family: var(--f-mono);
   font-weight: 700;
   font-size: var(--t-2xs);
-  text-transform: uppercase;
+  text-transform: lowercase;
   letter-spacing: 0.1em;
   cursor: pointer;
   transition: background var(--dur-1) var(--ease);
@@ -1390,17 +1314,29 @@ section { padding: var(--section-y) 0; }
   font-family: var(--f-mono);
   font-size: var(--t-2xs);
   letter-spacing: 0.1em;
-  text-transform: uppercase;
+  text-transform: lowercase;
   color: var(--muted);
   margin-bottom: var(--s-3);
 }
 
+/* Was a purple→green gradient clipped to the text. After the rust repaint that
+   was the only cool colour on the page, so it is flat rust ink now. */
 .sol-badge {
-  background: linear-gradient(90deg, #9945FF, #14F195);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--signal-ink);
   font-weight: 700;
+}
+
+/* The Solana mark sits inline next to the word it belongs to, so it is sized in em
+   and tracks whatever type it lands in. 0.86em tall keeps it optically level with
+   uppercase mono instead of towering over the cap height. flex:none because
+   .hero-tag is a flex row and would otherwise let it shrink; vertical-align covers
+   the non-flex contexts. Aspect ratio is the mark's own 397.7:311.7. */
+.sol-mark {
+  color: var(--signal-ink);
+  width: 1.1em;
+  height: 0.86em;
+  flex: none;
+  vertical-align: -0.06em;
 }
 
 /* ===== FINAL CTA ===== */
@@ -1430,7 +1366,7 @@ section { padding: var(--section-y) 0; }
   font-size: var(--t-2xs);
   font-weight: 500;
   letter-spacing: var(--ls-label);
-  text-transform: uppercase;
+  text-transform: lowercase;
   color: var(--signal-ink);
   margin-bottom: var(--s-4);
   position: relative;
@@ -1464,7 +1400,7 @@ section { padding: var(--section-y) 0; }
   font-size: var(--t-2xs);
   font-weight: 500;
   letter-spacing: 0.1em;
-  text-transform: uppercase;
+  text-transform: lowercase;
   color: var(--signal-ink);
   margin-left: auto;
   opacity: 0;
@@ -1526,7 +1462,7 @@ section { padding: var(--section-y) 0; }
   font-size: var(--t-2xs);
   font-weight: 500;
   letter-spacing: var(--ls-label);
-  text-transform: uppercase;
+  text-transform: lowercase;
   color: var(--muted);
 }
 
@@ -1541,7 +1477,7 @@ section { padding: var(--section-y) 0; }
   font-size: var(--t-xs);
   font-weight: 500;
   letter-spacing: var(--ls-label);
-  text-transform: uppercase;
+  text-transform: lowercase;
   color: var(--signal-ink);
 }
 
@@ -1570,11 +1506,9 @@ section { padding: var(--section-y) 0; }
   }
   .nav-links li:last-child a { border-bottom: none; }
   .hero { padding: calc(var(--nav-h) + var(--s-8)) 0 0; min-height: 0; }
-  /* single column — mascot above the headline, matching DOM order */
+  /* base is already single column; this only collapses the row gap */
   .hero-content { grid-template-columns: 1fr; row-gap: 0; }
   .hero-tag, .hero-title, .hero-sub, .hero-btns { grid-column: 1; }
-  .hero-pfp-wrapper { grid-column: 1; grid-row: auto; justify-self: start; width: 160px; height: 160px; }
-  .pfp-circle { width: 156px; height: 156px; }
   .live-bar {
     grid-column: 1;
     grid-row: auto;
@@ -1597,12 +1531,9 @@ section { padding: var(--section-y) 0; }
 @media (max-width: 390px) {
   .navbar { padding: 12px 14px; }
   .nav-logo { font-size: 0.9rem; gap: 6px; }
-  .nav-pfp { width: 30px; height: 30px; }
   .btn-nav { padding: 8px 14px; font-size: 0.75rem; }
 
   .hero { padding: calc(var(--nav-h) + var(--s-6)) 0 0; }
-  .hero-pfp-wrapper { width: 140px; height: 140px; }
-  .pfp-circle { width: 120px; height: 120px; }
   .hero-title { letter-spacing: -0.02em; }
   .hero-tag { font-size: 0.6rem; letter-spacing: 1.5px; }
   .hero-sub { font-size: 0.9rem; }
@@ -1654,8 +1585,6 @@ section { padding: var(--section-y) 0; }
   .btn-nav { padding: 7px 10px; font-size: 0.7rem; letter-spacing: 0.5px; }
 
   .hero { padding: calc(var(--nav-h) + var(--s-5)) 0 0; }
-  .hero-pfp-wrapper { width: 110px; height: 110px; }
-  .pfp-circle { width: 96px; height: 96px; }
   .hero-title { letter-spacing: -0.01em; }
   .hero-tag { font-size: 0.55rem; letter-spacing: 1px; }
   .hero-sub { font-size: 0.85rem; max-width: 100%; }
@@ -1722,7 +1651,7 @@ section { padding: var(--section-y) 0; }
   font-size: var(--t-2xs);
   font-weight: 500;
   letter-spacing: var(--ls-label);
-  text-transform: uppercase;
+  text-transform: lowercase;
   color: var(--muted);
   margin-bottom: var(--s-3);
 }
@@ -1777,9 +1706,9 @@ section { padding: var(--section-y) 0; }
   animation: none;
 }
 @keyframes enginePulse {
-  0%   { box-shadow: 0 0 0 0 rgba(0, 224, 138, 0.5); }
-  70%  { box-shadow: 0 0 0 7px rgba(0, 224, 138, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(0, 224, 138, 0); }
+  0%   { box-shadow: 0 0 0 0 rgba(var(--signal-rgb), 0.5); }
+  70%  { box-shadow: 0 0 0 7px rgba(var(--signal-rgb), 0); }
+  100% { box-shadow: 0 0 0 0 rgba(var(--signal-rgb), 0); }
 }
 .refresh-btn {
   background: transparent;
@@ -1789,7 +1718,7 @@ section { padding: var(--section-y) 0; }
   font-weight: 500;
   font-size: var(--t-2xs);
   letter-spacing: 0.08em;
-  text-transform: uppercase;
+  text-transform: lowercase;
   padding: var(--s-1) var(--s-3);
   border-radius: var(--r-sm);
   cursor: pointer;
@@ -1813,7 +1742,7 @@ section { padding: var(--section-y) 0; }
   font-weight: 500;
   font-size: var(--t-2xs);
   letter-spacing: var(--ls-label);
-  text-transform: uppercase;
+  text-transform: lowercase;
   color: var(--muted);
   padding: var(--s-3) var(--s-5);
   border-bottom: 1px solid var(--line);
@@ -1833,7 +1762,7 @@ section { padding: var(--section-y) 0; }
   font-weight: 500;
   font-size: var(--t-2xs);
   letter-spacing: 0.08em;
-  text-transform: uppercase;
+  text-transform: lowercase;
   padding: var(--s-1) var(--s-3);
   border-radius: var(--r-sm);
   cursor: pointer;
@@ -1931,24 +1860,42 @@ section { padding: var(--section-y) 0; }
    ========================================================================= */
 
 :root {
-  /* Solana's own pair, purple leading. Purple is identity; green is action.
-     #9945FF is only 4.2:1 on --surface, so it carries fills, borders, rims and
-     display type — never small text. --signal-ink is the same hue lifted to
-     9.4:1 for anything the reader actually has to read. */
-  --signal:        #9945FF;   /* Solana purple — the lead */
-  --signal-rgb:    153, 69, 255;
-  --signal-ink:    #C9A6FF;   /* 9.4:1 on --surface (AAA) */
-  --signal-dim:    #7A2FD9;
+  /* Iron oxide leading, ochre second. Same two-tier trick the purple needed and
+     for the same reason: #B7410E is only 3.6:1 on --bg, so it carries fills,
+     borders, rims and display type and NEVER small text. --signal-ink is that
+     hue lifted to 7.3:1 for anything the reader actually has to read. */
+  --signal:        #B7410E;   /* iron oxide — the lead */
+  --signal-rgb:    183, 65, 14;
+  --signal-ink:    #E0854A;   /* 7.3:1 on --bg (AAA) */
+  --signal-dim:    #8A300A;
   --signal-wash:   rgba(var(--signal-rgb), 0.10);
-  --on-signal:     #FFFFFF;   /* 4.52:1 on a --signal fill — AA, no margin */
-  /* Solana green, demoted to accent. 14.4:1, so it needs no lifted variant. */
-  --accent:        #00FFA3;
-  --accent-ink:    #00FFA3;
-  --on-accent:     #0A0508;   /* ink on a green fill — 15.3:1 */
-  --bone:          #F2EDE6;
-  --bg:            #08070A;
-  --bg-2:          #0C0A0D;
+  --on-signal:     #FFF8F0;   /* 5.4:1 on a --signal fill */
+  /* Ochre. 7.3:1 unaided, so unlike the rust it needs no lifted variant. */
+  --accent:        #C9922E;
+  --accent-ink:    #C9922E;
+  --on-accent:     #140C04;   /* ink on an ochre fill — 6.9:1 */
+  --bone:          #EDE4D3;
+  --bg:            #0A0806;
+  --bg-2:          #0E0B08;
+
+  /* Warm neutrals. The base tokens are cool greys (#E6E8EA / #8A9199); left
+     alone they read blue against rust and the whole page looks half-repainted. */
+  --fg:            #EDE7DC;
+  --fg-dim:        #BEB3A3;   /* 9.7:1 */
+  --muted:         #8E8275;   /* 5.3:1 */
+  --surface:       #14100C;
+  --surface-2:     #1B1610;
+  --line:          #2A2218;
+  --line-strong:   #3A2F20;
+
+  /* --burn stays deliberately LOUDER than the brand. An oxide-coloured burn
+     would sink into a rust palette and stop meaning anything. */
   --burn:          #FF3B1F;
+  /* Green is gone, so "up" cannot be green any more — and it must not be the
+     rust lead either, or every neutral border would read as a gain. Ochre
+     carries up, red keeps down: gold-good / red-bad still reads instantly. */
+  --up:            #C9922E;
+  --down:          #FF4D4D;
 
   --f-slab:   'Anton', 'Space Grotesk', Impact, sans-serif;
   --f-scrawl: 'Permanent Marker', 'Comic Sans MS', cursive;
@@ -1989,9 +1936,9 @@ body::after {
 .highlight { color: var(--accent); }
 
 /* ---- hero --------------------------------------------------------------- */
-/* The mascot must break the section edge vertically, so plain `hidden` is out
-   (it would force the other axis to auto and clip the burst). `clip` on a
-   single axis contains the horizontal bleed and leaves the vertical free. */
+/* The rotated headline and the scrawl bleed sideways, so plain `hidden` is out
+   (it would force the other axis to auto and clip them). `clip` on a single
+   axis contains the horizontal bleed and leaves the vertical free. */
 .hero { overflow-x: clip; overflow-y: visible; }
 .hero-glow {
   background: radial-gradient(circle, rgba(var(--signal-rgb), 0.16) 0%, transparent 66%);
@@ -2006,7 +1953,7 @@ body::after {
   font-size: clamp(3.2rem, 13vw, 9.5rem);
   line-height: 0.86;
   letter-spacing: -0.015em;
-  text-transform: uppercase;
+  text-transform: lowercase;
   transform: rotate(-1.4deg);
   transform-origin: left center;
   margin-bottom: var(--s-6);
@@ -2019,35 +1966,6 @@ body::after {
   font-weight: 500;
   max-width: 40ch;
 }
-
-/* ---- mascot: die-cut sticker, bursting the frame ------------------------ */
-.hero-pfp-wrapper { overflow: visible; z-index: 5; }
-.pfp-circle {
-  background: none;
-  border: 0;
-  overflow: visible;
-  box-shadow: none;
-}
-.hero-pfp {
-  width: 100%;
-  height: 100%;
-  transform: scale(2.2) translate(3%, -7%);
-  transform-origin: center;
-  /* the render is rgb(24,15,14) — near black. It needs a cut edge to exist
-     on this canvas. Four hard drop-shadows trace the alpha into a bone rim,
-     then a red bloom pushes it off the background. */
-  filter:
-    contrast(1.3) brightness(1.04) saturate(0.9)
-    drop-shadow(1px 0 0 var(--accent))  drop-shadow(-1px 0 0 var(--accent))
-    drop-shadow(0 1px 0 var(--accent))  drop-shadow(0 -1px 0 var(--accent))
-    drop-shadow(0 0 30px rgba(var(--signal-rgb), 0.5))
-    drop-shadow(0 20px 60px rgba(0,0,0,0.95));
-}
-
-/* registration brackets, deliberately off-register */
-.pfp-ring { border-color: var(--accent); width: 30px; height: 30px; }
-.ring1 { inset: -26px auto auto -18px; transform: rotate(-6deg); }
-.ring2 { inset: auto -22px -30px auto; transform: rotate(4deg); }
 
 /* ---- buttons: hard shadow, no soft transitions -------------------------- */
 .btn-primary, .btn-secondary {
@@ -2158,7 +2076,7 @@ body::after {
   font-size: clamp(2.4rem, 7.5vw, 5rem);
   line-height: 0.92;
   color: var(--bone);
-  text-transform: uppercase;
+  text-transform: lowercase;
   letter-spacing: -0.01em;
   transform: rotate(-0.8deg);
   transform-origin: left center;
@@ -2203,8 +2121,6 @@ body::after {
 @media (max-width: 768px) {
   .hero { overflow-x: clip; }
   .hero-title { font-size: clamp(2.6rem, 15vw, 4.4rem); text-shadow: 4px 4px 0 #000; }
-  .hero-pfp-wrapper { width: 190px; height: 190px; align-self: center; justify-self: center; }
-  .hero-pfp { transform: scale(1.75); }
   .live-bar, .ticker-scroll { transform: none; }
   .live-bar::before, .live-bar::after { display: none; }
   .countdown-wrapper { gap: var(--s-3); }
@@ -2233,7 +2149,7 @@ body::after {
   font-size: clamp(2.4rem, 7vw, 4.6rem);
   line-height: 0.94;
   color: var(--bone);
-  text-transform: uppercase;
+  text-transform: lowercase;
   letter-spacing: -0.005em;
   transform: rotate(-0.7deg);
   transform-origin: left center;
@@ -2297,7 +2213,7 @@ body::after {
   font-size: var(--t-2xs);
   font-weight: 700;
   letter-spacing: 0.2em;
-  text-transform: uppercase;
+  text-transform: lowercase;
   color: var(--muted);
 }
 .elive-v {
@@ -2321,7 +2237,7 @@ body::after {
   font-size: var(--t-xs);
   color: var(--fg-dim);
   letter-spacing: 0.08em;
-  text-transform: uppercase;
+  text-transform: lowercase;
 }
 
 .engine-lead { color: var(--fg-dim); }
@@ -2331,7 +2247,7 @@ body::after {
   font-family: var(--f-mono);
   font-size: var(--t-xs);
   letter-spacing: 0.1em;
-  text-transform: uppercase;
+  text-transform: lowercase;
   color: var(--muted);
 }
 .live-dot { background: var(--signal); }
@@ -2341,7 +2257,7 @@ body::after {
   font-family: var(--f-mono);
   font-weight: 700;
   letter-spacing: 0.12em;
-  text-transform: uppercase;
+  text-transform: lowercase;
   color: var(--bone);
   border-bottom: 2px solid var(--line-strong);
 }
@@ -2354,7 +2270,7 @@ body::after {
   font-weight: 700;
   font-size: var(--t-2xs);
   letter-spacing: 0.12em;
-  text-transform: uppercase;
+  text-transform: lowercase;
   transition: transform var(--dur-1) var(--ease), box-shadow var(--dur-1) var(--ease);
 }
 .ftab:hover, .refresh-btn:hover, .copy-btn:hover {
@@ -2389,7 +2305,7 @@ body::after {
   font-size: var(--t-2xs);
   font-weight: 700;
   letter-spacing: 0.2em;
-  text-transform: uppercase;
+  text-transform: lowercase;
   color: var(--muted);
 }
 .toko-value { color: var(--bone); font-weight: 700; }
@@ -2438,7 +2354,7 @@ body::after {
   font-family: var(--f-mono);
   font-weight: 700;
   letter-spacing: 0.18em;
-  text-transform: uppercase;
+  text-transform: lowercase;
   color: var(--muted);
 }
 .herd-tier { padding: var(--s-6) var(--s-5); }
@@ -2447,7 +2363,7 @@ body::after {
   font-family: var(--f-mono);
   font-weight: 700;
   letter-spacing: 0.16em;
-  text-transform: uppercase;
+  text-transform: lowercase;
   color: var(--accent-ink);
 }
 .herd-tier-range { color: var(--muted); }
@@ -2462,7 +2378,7 @@ body::after {
   font-family: var(--f-mono);
   font-weight: 700;
   letter-spacing: 0.12em;
-  text-transform: uppercase;
+  text-transform: lowercase;
   color: var(--bone);
 }
 /* the social label already inherits mono/uppercase from the card; adding
@@ -2488,7 +2404,7 @@ body::after {
   font-weight: 700;
   font-size: var(--t-2xs);
   letter-spacing: 0.2em;
-  text-transform: uppercase;
+  text-transform: lowercase;
   transform: rotate(-2.4deg);
   box-shadow: 3px 3px 0 rgba(var(--signal-rgb), 0.22);
   margin-bottom: var(--s-5);
@@ -2505,7 +2421,7 @@ body::after {
   font-family: var(--f-mono);
   font-weight: 700;
   letter-spacing: 0.1em;
-  text-transform: uppercase;
+  text-transform: lowercase;
   box-shadow: 3px 3px 0 #000;
   transition: transform var(--dur-1) var(--ease), box-shadow var(--dur-1) var(--ease);
 }
@@ -2531,13 +2447,6 @@ body::after {
   .herd-num { font-size: clamp(3rem, 18vw, 5rem); }
 }
 
-.footer-pfp {
-  filter:
-    contrast(1.3) brightness(1.04) saturate(0.9)
-    drop-shadow(1px 0 0 var(--accent))  drop-shadow(-1px 0 0 var(--accent))
-    drop-shadow(0 1px 0 var(--accent))  drop-shadow(0 -1px 0 var(--accent))
-    drop-shadow(0 0 22px rgba(var(--signal-rgb), 0.4));
-}
 
 html { overflow-x: clip; }
 
@@ -2571,7 +2480,7 @@ html { overflow-x: clip; }
   font-size: var(--t-2xs);
   font-weight: 700;
   letter-spacing: var(--ls-label);
-  text-transform: uppercase;
+  text-transform: lowercase;
   color: var(--on-accent);
   background: var(--accent);
   padding: var(--s-1) var(--s-2);
@@ -2602,7 +2511,7 @@ html { overflow-x: clip; }
   font-size: var(--t-xs);
   font-weight: 600;
   letter-spacing: 0.06em;
-  text-transform: uppercase;
+  text-transform: lowercase;
   color: var(--accent-ink);
   white-space: nowrap;
 }
@@ -2647,7 +2556,7 @@ html { overflow-x: clip; }
   font-size: var(--t-2xs);
   font-weight: 600;
   letter-spacing: var(--ls-label);
-  text-transform: uppercase;
+  text-transform: lowercase;
   color: var(--muted);
 }
 .rw-addr-v {
@@ -2666,7 +2575,7 @@ html { overflow-x: clip; }
   font-size: var(--t-2xs);
   font-weight: 600;
   letter-spacing: 0.06em;
-  text-transform: uppercase;
+  text-transform: lowercase;
   color: var(--fg-dim);
   background: var(--bg-2);
   border: 1px solid var(--line-strong);
@@ -2714,3 +2623,29 @@ html { overflow-x: clip; }
   /* back to one column, so the number has the full card again */
   .rw-tiles .elive-v { font-size: clamp(2.4rem, 12.5vw, 3.6rem); }
 }
+
+/* ============================================================================
+   ALL LOWER CASE
+   The page is lower case throughout — set on body so it also reaches text that
+   carries no text-transform of its own (body copy, headings, the ticker's
+   hard-coded capitals) and not just the mono stamp labels.
+   ========================================================================= */
+body { text-transform: lowercase; }
+
+/* CASE-SENSITIVE — DO NOT LOWER-CASE THESE.
+   Solana addresses and transaction signatures are base58, which IS
+   case-sensitive: DTRmPLZ... and dtrmplz... are different strings and only one
+   of them is the real mint. A copy button is unaffected (it reads textContent,
+   not the rendered transform) so the clipboard stays correct either way — but
+   anyone reading an address off the screen, or eyeballing it against a block
+   explorer, would be checking a corrupted string. That is a money mistake, so
+   these opt out explicitly, and any new address element must be added here. */
+.toko-ca-text,             /* the contract address */
+.rw-addr-v,                /* fee distributor */
+.herd-addr,                /* leaderboard wallets */
+.buy-addr,                 /* truncated buyer wallet in the live feed */
+.rank-input,               /* wallet the visitor pastes in */
+.rank-input::placeholder {
+  text-transform: none;
+}
+
