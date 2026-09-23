@@ -1860,42 +1860,80 @@ section { padding: var(--section-y) 0; }
    ========================================================================= */
 
 :root {
-  /* Iron oxide leading, ochre second. Same two-tier trick the purple needed and
-     for the same reason: #B7410E is only 3.6:1 on --bg, so it carries fills,
-     borders, rims and display type and NEVER small text. --signal-ink is that
-     hue lifted to 7.3:1 for anything the reader actually has to read. */
-  --signal:        #B7410E;   /* iron oxide — the lead */
-  --signal-rgb:    183, 65, 14;
-  --signal-ink:    #E0854A;   /* 7.3:1 on --bg (AAA) */
-  --signal-dim:    #8A300A;
-  --signal-wash:   rgba(var(--signal-rgb), 0.10);
-  --on-signal:     #FFF8F0;   /* 5.4:1 on a --signal fill */
-  /* Ochre. 7.3:1 unaided, so unlike the rust it needs no lifted variant. */
-  --accent:        #C9922E;
-  --accent-ink:    #C9922E;
-  --on-accent:     #140C04;   /* ink on an ochre fill — 6.9:1 */
-  --bone:          #EDE4D3;
-  --bg:            #0A0806;
-  --bg-2:          #0E0B08;
+  /* NEON TUBE — sampled from the reference art, not eyeballed. A real tube has
+     three layers and the palette carries all three: a white-hot core, a
+     saturated body, and a halo that bleeds into the dark. --signal is the body
+     (#39F621, the most saturated pixel in the art), --signal-core is the core
+     (#F2FFC9, the brightest), and the halo lives in the glow tokens below.
 
-  /* Warm neutrals. The base tokens are cool greys (#E6E8EA / #8A9199); left
-     alone they read blue against rust and the whole page looks half-repainted. */
-  --fg:            #EDE7DC;
-  --fg-dim:        #BEB3A3;   /* 9.7:1 */
-  --muted:         #8E8275;   /* 5.3:1 */
-  --surface:       #14100C;
-  --surface-2:     #1B1610;
-  --line:          #2A2218;
-  --line-strong:   #3A2F20;
+     This palette INVERTS the rust problem. Iron oxide was only 3.6:1, so it was
+     banned from small text and --signal-ink existed to rescue it. Neon green is
+     13.6:1 — it passes everything. The two-tier split is kept anyway because the
+     failure mode just moved: full-saturation green on black vibrates at small
+     sizes, so --signal-ink is the same hue lifted and desaturated for body-size
+     text, and --signal stays for fills, borders, rims and display type. */
+  --signal:        #39F621;   /* neon tube body — 13.6:1 on --bg */
+  --signal-rgb:    57, 246, 33;
+  --signal-ink:    #8BFF77;   /* 15.8:1 — small text, no vibration */
+  --signal-core:   #F2FFC9;   /* 18.7:1 — the white-hot centre of the tube */
+  --signal-dim:    #1FA814;   /* 6.3:1 — dimmed tube, inactive states */
+  --signal-wash:   rgba(var(--signal-rgb), 0.09);
+  /* CRITICAL: dark ink on a signal fill. The rust fill took near-white
+     (#FFF8F0); on neon green that same white is 1.46:1 and literally
+     unreadable. Any fill this bright takes dark ink. */
+  --on-signal:     #04140A;   /* 13.0:1 on a --signal fill */
 
-  /* --burn stays deliberately LOUDER than the brand. An oxide-coloured burn
-     would sink into a rust palette and stop meaning anything. */
+  /* Second tier is the tube core, not a foreign hue. The art is strictly green
+     on black, so a warm accent (the old ochre) would be the only non-green
+     thing on the page and would read as a leftover. 34.7° of hue separation
+     from the body green is enough to tell them apart without leaving the
+     family. */
+  --accent:        #D6FF7A;   /* pale chartreuse — the core, lifted */
+  --accent-ink:    #D6FF7A;   /* 17.5:1 unaided, needs no variant */
+  --on-accent:     #0A1403;   /* 16.6:1 on an accent fill */
+  --bone:          #E8EFE4;
+  --bg:            #080A07;   /* near-black, faint green cast — matches the art */
+  --bg-2:          #0B0E0A;
+
+  /* Neutrals flip from WARM to cool-green. The rust block deliberately warmed
+     these (#EDE7DC / #8E8275) because cool greys read blue against oxide. The
+     same argument runs in reverse here: warm browns read muddy and half-
+     repainted against acid green, so every neutral takes a green cast. */
+  --fg:            #E8EFE4;   /* 16.9:1 */
+  --fg-dim:        #B2BEAE;   /* 10.3:1 */
+  --muted:         #85917F;   /*  6.0:1 */
+  --surface:       #0F130D;
+  --surface-2:     #161B13;
+  --line:          #1C241A;   /* MUST stay desaturated — see --up below */
+  --line-strong:   #2B3727;
+
+  /* --burn was the known weak point of the rust palette: only 10° of hue from
+     the brand, held apart by lightness alone. Against neon green it is 105.7°
+     away and separates on hue for the first time. Nothing to fix here. */
   --burn:          #FF3B1F;
-  /* Green is gone, so "up" cannot be green any more — and it must not be the
-     rust lead either, or every neutral border would read as a gain. Ochre
-     carries up, red keeps down: gold-good / red-bad still reads instantly. */
-  --up:            #C9922E;
+  /* Green is the brand again, so "up" goes back to green — fighting the
+     universal convention was only ever necessary while the brand was not green.
+     The hazard this creates is the one the rust block called out in reverse: if
+     the structural neutrals carried any green, every hairline would read as a
+     gain. That is why --line and --line-strong above are deliberately
+     desaturated and must stay that way. */
+  --up:            #39F621;
   --down:          #FF4D4D;
+
+  /* ---- glow ------------------------------------------------------------
+     The halo layer, as reusable recipes rather than hand-rolled shadows. Two
+     strengths: --glow-sm for interface furniture (borders, chips, small type)
+     and --glow-lg for display type that is meant to look like it is actually
+     lit. Both are pure colour with no offset — a tube glows evenly in all
+     directions, and any offset immediately reads as a drop shadow instead. */
+  --glow-sm:  0 0 6px rgba(var(--signal-rgb), 0.45),
+              0 0 18px rgba(var(--signal-rgb), 0.22);
+  --glow-lg:  0 0 4px rgba(var(--signal-rgb), 0.9),
+              0 0 14px rgba(var(--signal-rgb), 0.55),
+              0 0 42px rgba(var(--signal-rgb), 0.3),
+              0 0 90px rgba(var(--signal-rgb), 0.16);
+  --glow-accent: 0 0 6px rgba(214, 255, 122, 0.4),
+                 0 0 20px rgba(214, 255, 122, 0.2);
 
   --f-slab:   'Anton', 'Space Grotesk', Impact, sans-serif;
   --f-scrawl: 'Permanent Marker', 'Comic Sans MS', cursive;
@@ -2140,9 +2178,10 @@ body::after {
    leaderboard) — that split is the whole reason the page still reads credible.
    ========================================================================= */
 
-/* purple is the brand now, so green is free to go back to meaning "up" — which
-   also lifts the % figures from purple's 4.2:1 to green's 14.4:1. */
-:root { --up: var(--accent); }
+/* --up is set with the rest of the palette now. It was overridden here twice
+   before (green while the brand was purple, then ochre while the brand was
+   rust) and both comments outlived the palette they described. With green as
+   the brand, up is the brand colour and there is nothing left to override. */
 
 /* ---- every section headline gets the slab ------------------------------- */
 .section-title,
@@ -2633,6 +2672,172 @@ html { overflow-x: clip; }
   /* back to one column, so the number has the full card again */
   .rw-tiles .elive-v { font-size: clamp(2.4rem, 12.5vw, 3.6rem); }
 }
+
+/* ============================================================================
+   NEON LAYER — the tube effect
+   The palette above supplies the colour; this supplies the light. Sits last so
+   it beats the hard-offset shadows the trench layer put on display type,
+   including the ones inside its mobile media queries — hence the selectors
+   here are written at matching specificity rather than the shortest form.
+
+   The rule this layer follows: a tube is LIT, printed matter is not. Display
+   type and status furniture glow; body copy, mono data, labels and addresses
+   stay flat. Glow on 11-13px text turns to mud and costs legibility for an
+   effect nobody can resolve at that size, so none of it is applied there.
+
+   Where a glow replaces a hard black offset, that is deliberate and not an
+   oversight. `text-shadow: 4px 4px 0 #000` is letterpress: a lit sign has no
+   offset shadow, and keeping both reads as two effects fighting.
+   ========================================================================= */
+
+/* ---- the wordmark: the most literal reading of the reference art ---------
+   Core colour in the glyph, saturated green in the halo. That ordering is what
+   makes it read as a tube rather than as green text with a blur behind it. */
+.hero-title {
+  color: var(--signal-core);
+  text-shadow: var(--glow-lg);
+}
+@media (max-width: 768px) {
+  /* the trench layer re-declares text-shadow here at the same specificity */
+  .hero-title { text-shadow: var(--glow-lg); }
+}
+
+/* ---- section titles and the inline highlight ---------------------------- */
+.section-title { text-shadow: 0 0 22px rgba(var(--signal-rgb), 0.18); }
+.highlight {
+  color: var(--signal-core);
+  text-shadow: var(--glow-lg);
+}
+
+/* ---- the big Anton numbers ----------------------------------------------
+   Countdown, herd counter and the engine tiles are the numbers the page is
+   actually about, so they are the ones worth lighting. */
+.countdown-num,
+.herd-num {
+  color: var(--signal-core);
+  text-shadow: var(--glow-lg);
+}
+
+/* Engine tiles. Each value glows in ITS OWN colour, never the brand's — a
+   burn figure haloed in green would say "gain" in the one place it must not.
+   This is the same separation the palette notes protect with --line. */
+.elive .elive-v { text-shadow: var(--glow-lg); }
+.elive.buy .elive-v {
+  color: var(--signal-core);
+  text-shadow: var(--glow-lg);
+}
+.elive.burn .elive-v {
+  color: var(--burn);
+  text-shadow: 0 0 4px rgba(255, 59, 31, 0.9),
+               0 0 14px rgba(255, 59, 31, 0.5),
+               0 0 42px rgba(255, 59, 31, 0.26);
+}
+.elive.rw .elive-v {
+  color: var(--accent);
+  text-shadow: var(--glow-accent);
+}
+/* dev tile is deliberately unlit: it reports zero and should not draw the eye */
+.elive.dev .elive-v { color: var(--muted); text-shadow: none; }
+@media (max-width: 768px) {
+  .elive.burn .elive-v,
+  .elive.buy  .elive-v,
+  .elive.rw   .elive-v,
+  .elive.dev  .elive-v { text-shadow: inherit; }
+  .elive.dev  .elive-v { text-shadow: none; }
+}
+
+/* ---- stamped eyebrows: the border becomes the tube ----------------------
+   The trench stamp carried a hard 3px offset in signal at 22% alpha. A bloom
+   on both sides of the border (outer halo + inner spill) is what a bent tube
+   actually does to the surface it is mounted on. */
+.hero-tag, .section-tag, .final-cta-tag {
+  color: var(--signal-ink);
+  border-color: var(--signal);
+  box-shadow: var(--glow-sm), inset 0 0 12px rgba(var(--signal-rgb), 0.12);
+  text-shadow: 0 0 10px rgba(var(--signal-rgb), 0.5);
+}
+
+/* ---- filled CTA ---------------------------------------------------------
+   Dark ink on the fill, never white: #FFF on this green is 1.46:1. The fill is
+   already the brightest thing on the page, so the halo stays restrained. */
+.btn-primary {
+  background: var(--signal);
+  color: var(--on-signal);
+  border-color: var(--signal);
+  box-shadow: var(--glow-sm);
+}
+.btn-primary:hover {
+  background: var(--signal-core);
+  border-color: var(--signal-core);
+  box-shadow: 0 0 10px rgba(var(--signal-rgb), 0.7),
+              0 0 30px rgba(var(--signal-rgb), 0.4);
+}
+.btn-secondary:hover, .btn-nav:hover {
+  border-color: var(--signal);
+  color: var(--signal-ink);
+  box-shadow: var(--glow-sm);
+}
+
+/* ---- status dots: small, round and bright, which is what a tube end is --- */
+.live-dot, .buy-dot {
+  box-shadow: 0 0 6px rgba(var(--signal-rgb), 0.9),
+              0 0 14px rgba(var(--signal-rgb), 0.5);
+}
+
+/* ---- links and nav ------------------------------------------------------ */
+.nav-links a:hover { color: var(--signal-ink); text-shadow: 0 0 12px rgba(var(--signal-rgb), 0.55); }
+.sol-badge { color: var(--signal-ink); text-shadow: 0 0 10px rgba(var(--signal-rgb), 0.45); }
+.social-cta { text-shadow: 0 0 12px rgba(var(--signal-rgb), 0.4); }
+/* The telegram glyph shipped with its official #2AABEE. That was the only cool
+   colour left on the page, which is the exact reason the solana mark lost its
+   purple/green gradient in the rust repaint — a lone blue reads as a foreign
+   object glued on. It is currentColor now and inherits this tint. Revert by
+   putting fill="#2AABEE" back on the path in index.html. */
+.social-icon { color: var(--signal-ink); }
+
+/* ---- the marquee band ---------------------------------------------------
+   The trench layer filled this band with --accent and put dark ink on it, and
+   its own comment says why: on the purple palette that ink was only 4.48:1, so
+   the band had to be the bright half of the pair to be readable at all. That
+   constraint is gone. Ported straight across, a full-bleed 17.5:1 fill became
+   the brightest object on the page — brighter than the wordmark, which is the
+   one thing that should win — and it flattened into a painted plank.
+
+   Inverted: dark band, lit type. A marquee is a strip of lit letters, not a
+   painted board, so this is both quieter and more faithful to the reference. */
+.ticker-scroll {
+  background: var(--bg-2);
+  border-top: 2px solid var(--signal);
+  border-bottom: 2px solid var(--signal);
+  box-shadow: var(--glow-sm), inset 0 0 26px rgba(var(--signal-rgb), 0.10);
+}
+.ticker-inner {
+  color: var(--signal-ink);
+  text-shadow: 0 0 10px rgba(var(--signal-rgb), 0.5);
+}
+.tk-sep { color: var(--signal-dim); text-shadow: none; }
+
+/* ---- the stats bar ------------------------------------------------------
+   The 3px top edge was already --signal; lit, it reads as the tube the bar is
+   mounted under. The background here was a hardcoded cool grey left over from
+   the mint palette and survived the rust repaint by being a literal, so it is
+   on the token now and will follow the next repaint instead of being missed. */
+.live-bar {
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  box-shadow: 0 -2px 16px rgba(var(--signal-rgb), 0.28), 6px 6px 0 rgba(0,0,0,0.6);
+}
+
+/* ---- the hero wash: a lit sign spills onto the wall behind it ------------ */
+.hero-glow { background: radial-gradient(circle, rgba(var(--signal-rgb), 0.13) 0%, transparent 68%); }
+
+/* ---- scrawl ------------------------------------------------------------- */
+.scrawl, .scrawl-hero, .scrawl-cd { text-shadow: 0 0 14px rgba(214, 255, 122, 0.35); }
+
+/* ---- reduced motion -----------------------------------------------------
+   Every glow here is static, so there is nothing to disable for motion. The
+   block exists to say that explicitly: if a flicker or pulse is ever added to
+   this layer it MUST be gated here, because a flickering sign is exactly the
+   kind of effect this preference is meant to switch off. */
 
 /* ============================================================================
    ALL LOWER CASE
