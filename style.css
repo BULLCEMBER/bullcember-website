@@ -1921,19 +1921,26 @@ section { padding: var(--section-y) 0; }
   --down:          #FF4D4D;
 
   /* ---- glow ------------------------------------------------------------
-     The halo layer, as reusable recipes rather than hand-rolled shadows. Two
-     strengths: --glow-sm for interface furniture (borders, chips, small type)
-     and --glow-lg for display type that is meant to look like it is actually
-     lit. Both are pure colour with no offset — a tube glows evenly in all
-     directions, and any offset immediately reads as a drop shadow instead. */
-  --glow-sm:  0 0 6px rgba(var(--signal-rgb), 0.45),
-              0 0 18px rgba(var(--signal-rgb), 0.22);
-  --glow-lg:  0 0 4px rgba(var(--signal-rgb), 0.9),
-              0 0 14px rgba(var(--signal-rgb), 0.55),
-              0 0 42px rgba(var(--signal-rgb), 0.3),
-              0 0 90px rgba(var(--signal-rgb), 0.16);
-  --glow-accent: 0 0 6px rgba(214, 255, 122, 0.4),
-                 0 0 20px rgba(214, 255, 122, 0.2);
+     The halo layer, as reusable recipes rather than hand-rolled shadows. Pure
+     colour with no offset — a tube glows evenly in all directions, and any
+     offset immediately reads as a drop shadow instead.
+
+     DIALLED BACK 2026-09-24 on the direct report that it hurt to look at, and
+     it did: --glow-lg was four stacked layers reaching 90px at 0.9 alpha, sat
+     under 152px display type on a near-black page. That is a large, bright,
+     soft-edged light source with nothing around it to adapt to, which is the
+     recipe for glare rather than for atmosphere. It is two layers now, half
+     the reach and roughly a quarter of the intensity.
+
+     The tell that the old numbers were wrong: a real tube's halo falls off
+     fast and is dim a few centimetres out. A 90px bloom was never observed
+     behaviour, it was just more effect. If this ever needs to read harder,
+     raise the INNER layer's alpha, never add reach — the wide soft layers are
+     what causes the strain, and they are the ones that read as haze anyway. */
+  --glow-sm:  0 0 5px rgba(var(--signal-rgb), 0.20);
+  --glow-lg:  0 0 6px rgba(var(--signal-rgb), 0.26),
+              0 0 20px rgba(var(--signal-rgb), 0.10);
+  --glow-accent: 0 0 6px rgba(214, 255, 122, 0.14);
 
   --f-slab:   'Anton', 'Space Grotesk', Impact, sans-serif;
   --f-scrawl: 'Permanent Marker', 'Comic Sans MS', cursive;
@@ -2703,7 +2710,8 @@ html { overflow-x: clip; }
 }
 
 /* ---- section titles and the inline highlight ---------------------------- */
-.section-title { text-shadow: 0 0 22px rgba(var(--signal-rgb), 0.18); }
+/* the section title is --bone, not a lit colour, so it never needed a halo */
+.section-title { text-shadow: none; }
 .highlight {
   color: var(--signal-core);
   text-shadow: var(--glow-lg);
@@ -2728,9 +2736,8 @@ html { overflow-x: clip; }
 }
 .elive.burn .elive-v {
   color: var(--burn);
-  text-shadow: 0 0 4px rgba(255, 59, 31, 0.9),
-               0 0 14px rgba(255, 59, 31, 0.5),
-               0 0 42px rgba(255, 59, 31, 0.26);
+  text-shadow: 0 0 6px rgba(255, 59, 31, 0.26),
+               0 0 20px rgba(255, 59, 31, 0.10);
 }
 .elive.rw .elive-v {
   color: var(--accent);
@@ -2750,44 +2757,48 @@ html { overflow-x: clip; }
    The trench stamp carried a hard 3px offset in signal at 22% alpha. A bloom
    on both sides of the border (outer halo + inner spill) is what a bent tube
    actually does to the surface it is mounted on. */
+/* The border is the lit part. The inset spill and the text halo were two more
+   light sources on an element the size of a postage stamp, and at 11px the
+   halo only blurred the letterforms. */
 .hero-tag, .section-tag, .final-cta-tag {
   color: var(--signal-ink);
   border-color: var(--signal);
-  box-shadow: var(--glow-sm), inset 0 0 12px rgba(var(--signal-rgb), 0.12);
-  text-shadow: 0 0 10px rgba(var(--signal-rgb), 0.5);
+  box-shadow: var(--glow-sm);
+  text-shadow: none;
 }
 
 /* ---- filled CTA ---------------------------------------------------------
    Dark ink on the fill, never white: #FFF on this green is 1.46:1. The fill is
    already the brightest thing on the page, so the halo stays restrained. */
+/* No halo on the fill. A solid 13.6:1 block is already the brightest object on
+   the page; a glow around it only smears its edge. The hover brightens the
+   fill instead, which is the cheaper signal and does not add a light source. */
 .btn-primary {
   background: var(--signal);
   color: var(--on-signal);
   border-color: var(--signal);
-  box-shadow: var(--glow-sm);
+  box-shadow: none;
 }
 .btn-primary:hover {
   background: var(--signal-core);
   border-color: var(--signal-core);
-  box-shadow: 0 0 10px rgba(var(--signal-rgb), 0.7),
-              0 0 30px rgba(var(--signal-rgb), 0.4);
+  box-shadow: none;
 }
 .btn-secondary:hover, .btn-nav:hover {
   border-color: var(--signal);
   color: var(--signal-ink);
-  box-shadow: var(--glow-sm);
+  box-shadow: none;
 }
 
 /* ---- status dots: small, round and bright, which is what a tube end is --- */
-.live-dot, .buy-dot {
-  box-shadow: 0 0 6px rgba(var(--signal-rgb), 0.9),
-              0 0 14px rgba(var(--signal-rgb), 0.5);
-}
+.live-dot, .buy-dot { box-shadow: 0 0 5px rgba(var(--signal-rgb), 0.45); }
 
 /* ---- links and nav ------------------------------------------------------ */
-.nav-links a:hover { color: var(--signal-ink); text-shadow: 0 0 12px rgba(var(--signal-rgb), 0.55); }
-.sol-badge { color: var(--signal-ink); text-shadow: 0 0 10px rgba(var(--signal-rgb), 0.45); }
-.social-cta { text-shadow: 0 0 12px rgba(var(--signal-rgb), 0.4); }
+/* All small type, all flat. Colour alone already carries these, and a halo on
+   11-13px text blurs the glyph edges without ever reading as light. */
+.nav-links a:hover { color: var(--signal-ink); text-shadow: none; }
+.sol-badge { color: var(--signal-ink); text-shadow: none; }
+.social-cta { text-shadow: none; }
 /* The telegram glyph shipped with its official #2AABEE. That was the only cool
    colour left on the page, which is the exact reason the solana mark lost its
    purple/green gradient in the rust repaint — a lone blue reads as a foreign
@@ -2809,11 +2820,13 @@ html { overflow-x: clip; }
   background: var(--bg-2);
   border-top: 2px solid var(--signal);
   border-bottom: 2px solid var(--signal);
-  box-shadow: var(--glow-sm), inset 0 0 26px rgba(var(--signal-rgb), 0.10);
+  box-shadow: none;
 }
+/* A full-width band of glowing 12px type scrolling past is the single most
+   fatiguing thing a marquee can do. The rules above and below carry it. */
 .ticker-inner {
   color: var(--signal-ink);
-  text-shadow: 0 0 10px rgba(var(--signal-rgb), 0.5);
+  text-shadow: none;
 }
 .tk-sep { color: var(--signal-dim); text-shadow: none; }
 
@@ -2824,14 +2837,14 @@ html { overflow-x: clip; }
    on the token now and will follow the next repaint instead of being missed. */
 .live-bar {
   background: color-mix(in srgb, var(--surface) 92%, transparent);
-  box-shadow: 0 -2px 16px rgba(var(--signal-rgb), 0.28), 6px 6px 0 rgba(0,0,0,0.6);
+  box-shadow: 6px 6px 0 rgba(0,0,0,0.6);
 }
 
 /* ---- the hero wash: a lit sign spills onto the wall behind it ------------ */
-.hero-glow { background: radial-gradient(circle, rgba(var(--signal-rgb), 0.13) 0%, transparent 68%); }
+.hero-glow { background: radial-gradient(circle, rgba(var(--signal-rgb), 0.07) 0%, transparent 68%); }
 
 /* ---- scrawl ------------------------------------------------------------- */
-.scrawl, .scrawl-hero, .scrawl-cd { text-shadow: 0 0 14px rgba(214, 255, 122, 0.35); }
+.scrawl, .scrawl-hero, .scrawl-cd { text-shadow: none; }
 
 /* ---- reduced motion -----------------------------------------------------
    Every glow here is static, so there is nothing to disable for motion. The
