@@ -2,20 +2,26 @@
 *.local.json
 
 # Working files — generators and social/marketing assets not served by the site.
-# The live site only needs index.html, style.css, pfp.png, og-image.png, CNAME.
+# The live site needs index.html, style.css, logo.png, the icon set,
+# site.webmanifest, og-image.png and CNAME.
 *-template.html
 gif-*.html
 *.gif
 capture-og.cjs
 brand-tokens.css
 *.local-backup.png
-bullcember-hero.png
 community-banner.png
 dex-pfp.png
 twitter-pfp.png
 x-banner.png
 december-clock/
-graphics/
+# graphics/ is scratch art and stays out of the repo -- with one exception.
+# logo-source.png is the confirmed logo as supplied and scripts/make-icons.py
+# regenerates every served icon from it, so the repo keeps it or the icon set
+# becomes unreproducible. A parent directory cannot be un-ignored, hence the
+# glob rather than a bare `graphics/`.
+graphics/*
+!graphics/logo-source.png
 
 # wrangler local state — caches the Cloudflare account id and email, and is
 # regenerated on every deploy. Never belongs in a public repo.

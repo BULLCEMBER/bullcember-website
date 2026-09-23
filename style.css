@@ -2806,6 +2806,43 @@ html { overflow-x: clip; }
    putting fill="#2AABEE" back on the path in index.html. */
 .social-icon { color: var(--signal-ink); }
 
+/* ---- the logo -----------------------------------------------------------
+   logo.png is a straight-alpha cutout of the confirmed mark, so it needs no
+   plate, no ring and no drop-shadow rim -- all of which the previous mascot
+   required only because it had no clean alpha edge. It composites straight
+   onto the page.
+
+   Sized by legibility, not by taste. Rendered and inspected at real size, the
+   full body holds down to about 48px: below that the horns go first and it
+   becomes an anonymous figure. So the nav mark is 44px and the footer mark is
+   88px, and nothing on the page renders it smaller. The 16px browser tab is
+   the one place the full body cannot survive, which is why favicon.ico carries
+   a head crop instead -- see scripts/make-icons.py.
+
+   No glow is added here. The art already carries its own baked halo, and the
+   NEON LAYER's --glow-lg on top of it was the exact doubling that made the
+   first pass painful to look at. */
+.nav-mark {
+  width: 44px;
+  height: 44px;
+  flex: none;
+  object-fit: contain;
+}
+.footer-mark {
+  display: block;
+  width: 88px;
+  height: 88px;
+  margin: 0 auto var(--s-4);
+  object-fit: contain;
+}
+/* The nav is 64px tall, so the mark cannot simply scale with the viewport --
+   it has to stay inside the bar. 36px is still above the 48px-ish floor once
+   you account for a phone's higher pixel density. */
+@media (max-width: 768px) {
+  .nav-mark { width: 36px; height: 36px; }
+  .footer-mark { width: 72px; height: 72px; }
+}
+
 /* ---- the marquee band ---------------------------------------------------
    The trench layer filled this band with --accent and put dark ink on it, and
    its own comment says why: on the purple palette that ink was only 4.48:1, so

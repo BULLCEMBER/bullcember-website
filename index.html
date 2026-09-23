@@ -11,12 +11,13 @@
   <link rel="icon" href="favicon-32x32.png" type="image/png" sizes="32x32" />
   <link rel="icon" href="favicon-16x16.png" type="image/png" sizes="16x16" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="manifest" href="site.webmanifest" />
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://bullcember.net" />
   <meta property="og:title" content="$BULLCEMBER: The Bullish December, Now on Solana" />
   <meta property="og:description" content="$BULLCEMBER just launched on Solana. The most bullish month in crypto finally has a coin. Zero taxes, no VCs, pure community. Q4 2026 is coming. Be ready for December." />
-  <meta property="og:image" content="https://bullcember.net/og-image.png?v=a12dce12" />
+  <meta property="og:image" content="https://bullcember.net/og-image.png?v=57c47bd1" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <!-- Twitter Card -->
@@ -24,7 +25,7 @@
   <meta name="twitter:site" content="@bullcembersol" />
   <meta name="twitter:title" content="$BULLCEMBER: The Bullish December, Now on Solana" />
   <meta name="twitter:description" content="$BULLCEMBER just launched on Solana. The most bullish month in crypto finally has a coin. Zero taxes, no VCs, pure community. Q4 2026 is coming. Be ready for December." />
-  <meta name="twitter:image" content="https://bullcember.net/og-image.png?v=a12dce12" />
+  <meta name="twitter:image" content="https://bullcember.net/og-image.png?v=57c47bd1" />
   <link rel="stylesheet" href="style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -101,6 +102,9 @@
   <!-- NAVBAR -->
   <nav class="navbar">
     <div class="nav-logo">
+      <!-- The mark is decorative here: the wordmark beside it already says the
+           name, so alt="" keeps a screen reader from announcing it twice. -->
+      <img src="logo.png" alt="" class="nav-mark" width="512" height="512" />
       $BULLCEMBER
     </div>
     <ul class="nav-links" id="nav-links">
@@ -668,6 +672,7 @@
   </section>
   <!-- FOOTER -->
   <footer class="footer">
+    <img src="logo.png" alt="BULLCEMBER" class="footer-mark" width="512" height="512" />
     <div class="footer-logo">$BULLCEMBER</div>
     <p class="footer-disclaimer">$BULLCEMBER is a meme coin with no intrinsic value or expectation of financial return. This is not financial advice. Always do your own research (DYOR).</p>
     <div class="powered-by">Powered by <svg class="sol-mark" aria-hidden="true"><use href="#solana-mark"/></svg> <span class="sol-badge">Solana</span></div>
