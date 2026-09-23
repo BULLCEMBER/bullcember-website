@@ -1,17 +1,13 @@
 {
-  "updatedAt": "2026-09-22T22:51:58.982Z",
-  "total": 146,
+  "updatedAt": "2026-09-23T05:48:00.340Z",
+  "total": 149,
   "tiers": {
-    "calf": 76,
-    "bull": 45,
-    "stampede": 25,
+    "calf": 78,
+    "bull": 47,
+    "stampede": 24,
     "alpha": 0
   },
   "holders": [
-    [
-      "2zeHdhPzvfKxR3fPXTzhEjJapmATrnAoor5XYKehJqTk",
-      40098016048058
-    ],
     [
       "4fbX9B8QkCymGe1ihb5Qcf4uQsBCAe2Hk884qT8FZ2rF",
       37245939643650
@@ -245,6 +241,10 @@
       1724852648931
     ],
     [
+      "2eZhMoya4PBVLrPammvEUaCkfrKnzfCcuau7mt1Py9A5",
+      1549860058103
+    ],
+    [
       "8RtZGiAbAKQeh9FZE7DZUjAFzTRpn41LdgcRpimTpB9y",
       1444115188859
     ],
@@ -277,6 +277,10 @@
       1089758818976
     ],
     [
+      "ACcdmqVnmTUCgKf9ARVeguooMeCJURE5KvDHtJ6vGfuE",
+      1048222131713
+    ],
+    [
       "FtUgaJ3SgSTo3da17QWdd5kqXdrd54WtSzTDySt73ZFT",
       1018029364992
     ],
@@ -293,16 +297,16 @@
       932125476408
     ],
     [
+      "76WoCZAGzoVSinUrsdbjJzki9z8qVs7ixbLfW2gTrMmv",
+      894947082418
+    ],
+    [
       "9yaypmTHqKz4D9SJmVqREzE8ewx2ZoW6UcsSGhkWTgKV",
       854398060072
     ],
     [
       "AU92oNrLgwCaoYJFNfgKrKPXJQAWBqpmnfEQ38gYXxaF",
       829666077449
-    ],
-    [
-      "4Ev5acvKT64Fnww9JKM1cEa4mhzQQa9toPQGEyxh2hMs",
-      735981007021
     ],
     [
       "AfxiTH8A4XaNWs4pnRsh1KybRzUhcyWbnt1fChzuJDhH",
@@ -315,6 +319,10 @@
     [
       "5AFGPgvHdFbigAHZye9GXbVJVZwbkRz9kucsCzxyPLDo",
       599985836822
+    ],
+    [
+      "FFXKTkc95KqmVSWSe5rZE2idCCVLxummG61SEv9827DJ",
+      575974669781
     ],
     [
       "AAQDt83tDFpZWM1eFE3g1XbzDrEWFLdyo71Ahd3XPeDb",
@@ -386,11 +394,15 @@
     ],
     [
       "G6gRYsMTJCFRFsb316P4QxbpgZSKSnSpgG5JPSAoShj1",
-      174053452235
+      174053427235
     ],
     [
       "7nfLcx6bLukwjDtKEddSg5cdJgimoMWRbqJZ4HtweSDZ",
       153173175633
+    ],
+    [
+      "2qnHs8fZZLUJFVCkTCEXXZnEZTgfu7HFVBFmbUmXiYiW",
+      149870502009
     ],
     [
       "nAjJUi8Rx5WnmtansVxDKYEyLpAW2UWjxDubNtoh9aS",
