@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-09-24T14:56:18.382Z",
-  "total": 154,
+  "updatedAt": "2026-09-24T18:59:36.425Z",
+  "total": 155,
   "tiers": {
     "calf": 80,
-    "bull": 46,
-    "stampede": 28,
+    "bull": 48,
+    "stampede": 27,
     "alpha": 0
   },
   "holders": [
@@ -117,10 +117,6 @@
       10000005016058
     ],
     [
-      "3uJUDrrMaDpATUvVWMRzCBaTeedKghX1LEDK2u2z4Ffq",
-      10000000000000
-    ],
-    [
       "588xE2Gx8hcojVVTCumf78w8Piqv3Akq965udrrdD9yX",
       9761439508017
     ],
@@ -161,6 +157,14 @@
       5901901489536
     ],
     [
+      "H5FUBkfxcp5GJmjFTfti3vQfHmtAM2zw8Hd7S3L4QZDY",
+      5143965664072
+    ],
+    [
+      "3uJUDrrMaDpATUvVWMRzCBaTeedKghX1LEDK2u2z4Ffq",
+      5000000000000
+    ],
+    [
       "4TpArgdoxD1RiMQDZYCjez3Kpi1CHaUbVmeYQe656xUD",
       4777147059534
     ],
@@ -195,10 +199,6 @@
     [
       "93NNxT2VPRnuoMaizSsMQAXA3RgiAeZLxGCjkctSgb4Z",
       3304165975522
-    ],
-    [
-      "D7YoTjLm6vh4X314B7J7At4gEuEMn1UvCy5eTQXLFWSX",
-      2948501411622
     ],
     [
       "69sqjwuNDVc8x8u9pdAMoadq3FSQUD6TArYG3DQ5yNfz",
@@ -241,12 +241,12 @@
       2089382853901
     ],
     [
-      "2ecpq4MA2b9WEFZRGpNDwrP4dtSmabjC5MzjkK9LGT5d",
-      1789196508337
+      "D7YoTjLm6vh4X314B7J7At4gEuEMn1UvCy5eTQXLFWSX",
+      1916525917555
     ],
     [
-      "3deAcCdB4rDtQs3erXC1V75QwE9AW5PBqUtxMyiDY2xn",
-      1745803158678
+      "2ecpq4MA2b9WEFZRGpNDwrP4dtSmabjC5MzjkK9LGT5d",
+      1789196508337
     ],
     [
       "5J8gvEtPZZbcEnXLy7LemBFWVDwruU93PE1edCNb9G24",
@@ -255,6 +255,10 @@
     [
       "Ekrwgxzy28Cxdt8XFgX6AciYgPSksciy1M593v1yzwYD",
       1724852648931
+    ],
+    [
+      "3deAcCdB4rDtQs3erXC1V75QwE9AW5PBqUtxMyiDY2xn",
+      1616363105817
     ],
     [
       "2eZhMoya4PBVLrPammvEUaCkfrKnzfCcuau7mt1Py9A5",
@@ -478,7 +482,7 @@
     ],
     [
       "8psNvWTrdNTiVRNzAgsou9kETXNJm2SXZyaKuJraVRtf",
-      38787350631
+      39887591080
     ],
     [
       "6CigR5rPFF1tk4rT3pMNDK2EpFTHEm61wiaKCzXwhMM1",
