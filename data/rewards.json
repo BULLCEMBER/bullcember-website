@@ -1,120 +1,126 @@
 {
-  "updatedAt": "2026-09-25T05:17:52.929Z",
+  "updatedAt": "2026-09-25T10:14:52.768Z",
   "distributor": "7D2dJwtSH4dmM19MzJk1ms9kH5gmpbRbGaCXURmVdhQc",
   "dev": "BXrU6jcjtZnar27jfWCXXhr9EqQGcFvyfnpC9cRjYLmC",
   "devSol": 0,
-  "totalSol": 0.993394,
-  "totalUsd": 116.7,
-  "collectedSol": 1.001989,
-  "overheadSol": 0.000356,
-  "pendingSol": 0.008238,
-  "rounds": 5,
-  "wallets": 94,
-  "lastRound": 1790154921,
+  "totalSol": 1.160878,
+  "totalUsd": 137.28,
+  "collectedSol": 1.169452,
+  "overheadSol": 0.000426,
+  "pendingSol": 0.008148,
+  "rounds": 6,
+  "wallets": 103,
+  "lastRound": 1790323401,
   "biggestSol": 0.232989,
   "top": [
     [
       "4fbX9B8QkCymGe1ihb5Qcf4uQsBCAe2Hk884qT8FZ2rF",
-      0.051122
+      0.060293
+    ],
+    [
+      "7v2YQLGteDLa3JQkBm2HxzuDx8XB3g7pewPSg1PNHtfk",
+      0.055372
+    ],
+    [
+      "3dWaunQc21VmoHnPBpc5UBL2BoT5DdsKp7UnU9W1KQBi",
+      0.052072
+    ],
+    [
+      "De3Jt9TUQSEvJm2Eh9crRjSC3qEzrUnCMUap64dgwDrW",
+      0.050164
+    ],
+    [
+      "Ftza73zx8AzdVhFGoCnodoyrvEEyjZTMw3C9ysUtstv6",
+      0.04887
+    ],
+    [
+      "BvpujiYFk8XaGvZTdYJDeLEzLAQDWLs33ax9TRukCVG4",
+      0.04863
     ],
     [
       "2zeHdhPzvfKxR3fPXTzhEjJapmATrnAoor5XYKehJqTk",
       0.048108
     ],
     [
-      "7v2YQLGteDLa3JQkBm2HxzuDx8XB3g7pewPSg1PNHtfk",
-      0.04695
-    ],
-    [
-      "3dWaunQc21VmoHnPBpc5UBL2BoT5DdsKp7UnU9W1KQBi",
-      0.044152
-    ],
-    [
-      "De3Jt9TUQSEvJm2Eh9crRjSC3qEzrUnCMUap64dgwDrW",
-      0.042534
-    ],
-    [
-      "Ftza73zx8AzdVhFGoCnodoyrvEEyjZTMw3C9ysUtstv6",
-      0.041437
-    ],
-    [
-      "BvpujiYFk8XaGvZTdYJDeLEzLAQDWLs33ax9TRukCVG4",
-      0.041233
-    ],
-    [
       "EYXDyx8yihoRNW8L9GmWZ3Gds1PfmRtkNCnvGvdoE3xa",
-      0.040123
+      0.047321
     ],
     [
       "7B6fnUh5Bw59qDdSRqmZTPDmTNz75Zyg5YFNWbDTYVrh",
-      0.039976
+      0.040222
     ],
     [
       "583S1Jk6SpnSehRHNEeNcEmJettgTSgfwunftecJXHjD",
-      0.034
+      0.040099
     ],
     [
       "8oQCeJPR8mwbSVrMWddbQfBxVMkgFdC2LeYdMLR6ZHmL",
-      0.030439
+      0.0359
+    ],
+    [
+      "8DgovYJwx8cq14vvFNuZbsD6B4QzH9SqPc2R1iAMTa9o",
+      0.03356
+    ],
+    [
+      "9JoExVJx751pqS5ef9sACuAwTsZB5MQEjZMacyGsqsHs",
+      0.032376
+    ],
+    [
+      "D8sj8c8AmKqNApgujCaLRuCpwN41bR92N6toGrpVZZEC",
+      0.029225
     ],
     [
       "ASr6Hy8zvwwdeiNxNf7CgRH3JHXwYFGGx2C95DMNpRBo",
       0.028533
     ],
     [
-      "8DgovYJwx8cq14vvFNuZbsD6B4QzH9SqPc2R1iAMTa9o",
-      0.028221
-    ],
-    [
-      "9JoExVJx751pqS5ef9sACuAwTsZB5MQEjZMacyGsqsHs",
-      0.027451
-    ],
-    [
-      "D8sj8c8AmKqNApgujCaLRuCpwN41bR92N6toGrpVZZEC",
-      0.02478
-    ],
-    [
       "3hvSYRdnPNvAPFKKTkBpc2exAgJo72urjJMVxY55FUHv",
-      0.023202
+      0.027239
     ],
     [
       "994P1acnvtGuBd8BhzDUCnJAhpmfeeZX8pWGWp2rbdQS",
-      0.021325
+      0.025151
+    ],
+    [
+      "2zovipoX6TSZbbrn7yNYcUZiQ5DQLbUrtt7QUk1FkHEQ",
+      0.020636
+    ],
+    [
+      "DQUeoVMwKdP4ZbUUtRe5nTTvAPzwmziq5TSYErkHUF1e",
+      0.01958
+    ],
+    [
+      "4XS1eQoNawaRBKhbRMdnsJAtyURCmY3B7K3fHjoMQfNH",
+      0.018406
     ],
     [
       "915iUA3bCDCL6j8KQcEpC2NVNQ21HycEeEGCgt9miFoY",
       0.018362
     ],
     [
-      "2zovipoX6TSZbbrn7yNYcUZiQ5DQLbUrtt7QUk1FkHEQ",
-      0.017127
-    ],
-    [
-      "DQUeoVMwKdP4ZbUUtRe5nTTvAPzwmziq5TSYErkHUF1e",
-      0.017047
-    ],
-    [
-      "4XS1eQoNawaRBKhbRMdnsJAtyURCmY3B7K3fHjoMQfNH",
-      0.015607
-    ],
-    [
       "GTfJj1sHhw5fWvMxFxcdUBrF9KizQrwHCjW7yaNeT5Vm",
-      0.015358
+      0.018113
     ],
     [
       "G8b5aQwVymgDzuTR2BnPzMcKNCt3tkirvBdqXwxfeyo9",
-      0.015094
-    ],
-    [
-      "Ak652ZMgmhj3cAXP5fWRA81xegrp4rdus4KwRBHZbofk",
-      0.015071
+      0.017802
     ],
     [
       "A8egciG8UsoHovCnJTAdYGefMW3MM79AbF1sdi8eU3vf",
-      0.014032
+      0.016549
+    ],
+    [
+      "5ce1a8rjD4kWVgsLiKAVF1JrhGcTen9nsLurgiZQvAqN",
+      0.016286
     ]
   ],
   "feed": [
+    {
+      "time": 1790323401,
+      "sol": 0.167484,
+      "wallets": 84,
+      "sig": "3n6X3xq7VnYQbuHKusQn52JW4gPEYMgAyMmaSLoqnnPcZA1DaeDNHjtMxsYTdHZLQxnQyx12xjoBHsPQCbLiU7j6"
+    },
     {
       "time": 1790154921,
       "sol": 0.165245,
