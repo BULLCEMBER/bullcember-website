@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-25T00:34:40.575Z",
+  "updatedAt": "2026-09-25T05:17:51.569Z",
   "total": 155,
   "tiers": {
     "calf": 80,
@@ -129,10 +129,6 @@
       9361787095022
     ],
     [
-      "Ak652ZMgmhj3cAXP5fWRA81xegrp4rdus4KwRBHZbofk",
-      7876460302569
-    ],
-    [
       "GpNwLDyzrD1mNLJ2CzpwPkH9bCe3BywGQ5pJAei3nR9Y",
       7394066662037
     ],
@@ -189,10 +185,6 @@
       3897904511695
     ],
     [
-      "CzzRkobEcih22PtFmyq4kb6kYhKuUvVN9W67GVq9KKXP",
-      3583086075035
-    ],
-    [
       "GvfTqJYCkiC8T7tMu5F9s4pPd7kdwt51AL8SojQM3MMB",
       3544009638746
     ],
@@ -223,6 +215,10 @@
     [
       "62Tr4E6psNWAxBr1UtnzM6aK4QUZQ1dMD71redf2sgL5",
       2466765386217
+    ],
+    [
+      "CzzRkobEcih22PtFmyq4kb6kYhKuUvVN9W67GVq9KKXP",
+      2465108677692
     ],
     [
       "97Amtg1SHZhHX42FMpsWiM745rsvy6G9ohEa8f52sMBP",
@@ -299,6 +295,10 @@
     [
       "8VGGZF6G5z7gBM67cdGnHJGMcSNDFLZZY4GTQVXjvTuk",
       1014021142668
+    ],
+    [
+      "K5NfaeEwPajyZGoyM4GvBG8AQW4adiE9ZB9Ykd8yTTE",
+      1002831318979
     ],
     [
       "7B6fnUh5Bw59qDdSRqmZTPDmTNz75Zyg5YFNWbDTYVrh",
@@ -410,7 +410,7 @@
     ],
     [
       "G6gRYsMTJCFRFsb316P4QxbpgZSKSnSpgG5JPSAoShj1",
-      174053427235
+      174053412235
     ],
     [
       "7nfLcx6bLukwjDtKEddSg5cdJgimoMWRbqJZ4HtweSDZ",
