@@ -1,9 +1,9 @@
 {
-  "updatedAt": "2026-09-25T10:14:51.381Z",
-  "total": 158,
+  "updatedAt": "2026-09-25T15:18:22.936Z",
+  "total": 155,
   "tiers": {
-    "calf": 80,
-    "bull": 52,
+    "calf": 79,
+    "bull": 50,
     "stampede": 26,
     "alpha": 0
   },
@@ -217,16 +217,12 @@
       2465108677692
     ],
     [
-      "5SFyDk8Et2g2DPSGhfXdGBnYGidV8o71WJ4gopxNqiE5",
-      2412553521809
-    ],
-    [
       "97Amtg1SHZhHX42FMpsWiM745rsvy6G9ohEa8f52sMBP",
       2383784671517
     ],
     [
-      "HQoLrD8NSizGKsEeihvx6mdh9NcUCG9fDnxdRs4qxGiJ",
-      2355066815785
+      "3deAcCdB4rDtQs3erXC1V75QwE9AW5PBqUtxMyiDY2xn",
+      2207278187885
     ],
     [
       "EVWJXJjXYSxmDag5qZcepL7fJTtkFpi5vLnjVEbCDHEe",
@@ -237,16 +233,16 @@
       2144655124492
     ],
     [
-      "3deAcCdB4rDtQs3erXC1V75QwE9AW5PBqUtxMyiDY2xn",
-      2135311121564
-    ],
-    [
       "CT6qQsdeoQvBQB5MNamWV6fJhMMyrf2FHrRabzP7xVmK",
       2089382853901
     ],
     [
       "D7YoTjLm6vh4X314B7J7At4gEuEMn1UvCy5eTQXLFWSX",
       1916525917555
+    ],
+    [
+      "5SFyDk8Et2g2DPSGhfXdGBnYGidV8o71WJ4gopxNqiE5",
+      1809415141357
     ],
     [
       "2ecpq4MA2b9WEFZRGpNDwrP4dtSmabjC5MzjkK9LGT5d",
@@ -261,10 +257,6 @@
       1724852648931
     ],
     [
-      "8DRJdA5PqqydAkkagV2QmYik5e5raNSFEQtC6D8xZQxN",
-      1652917798600
-    ],
-    [
       "2eZhMoya4PBVLrPammvEUaCkfrKnzfCcuau7mt1Py9A5",
       1549860058103
     ],
@@ -274,7 +266,7 @@
     ],
     [
       "8nKcYWn9apHVmV3RWpqEKRo27T4uFYQnBy9s9NaPQET6",
-      1439138280725
+      1327799645407
     ],
     [
       "7fqyHVaXD4bzwrjEvS1HXwuFvVvBf8oLzc3URWu9Tdht",
@@ -385,10 +377,6 @@
       356139384828
     ],
     [
-      "5m5LuxdsU8ZhbmVFokQfu6WkB5TCR6vSSKcHCvKbDVFx",
-      327907418636
-    ],
-    [
       "9oc83pXbXL4vdApvToagakdtsiAd2jo2rfa5ik4WhYBY",
       326437394754
     ],
@@ -409,6 +397,10 @@
       285726012090
     ],
     [
+      "BdumW75NSSfGgChmVoPpSFt9FhkSSZJ7zKuWx5SLxFG5",
+      260441030684
+    ],
+    [
       "EBD3xmtz72bE6DAMsMrVNX5xLEEtzK5H2oVHt8t1X44",
       248308599499
     ],
@@ -427,10 +419,6 @@
     [
       "G6gRYsMTJCFRFsb316P4QxbpgZSKSnSpgG5JPSAoShj1",
       174053412235
-    ],
-    [
-      "2Fm9LT7HkZoDS8kMVFDaYfRBZHuojmrLtAR2Gvi113rV",
-      160463493543
     ],
     [
       "7nfLcx6bLukwjDtKEddSg5cdJgimoMWRbqJZ4HtweSDZ",
