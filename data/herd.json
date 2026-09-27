@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-09-27T17:40:49.222Z",
-  "total": 158,
+  "updatedAt": "2026-09-27T20:26:38.617Z",
+  "total": 154,
   "tiers": {
-    "calf": 85,
-    "bull": 48,
-    "stampede": 25,
+    "calf": 82,
+    "bull": 46,
+    "stampede": 26,
     "alpha": 0
   },
   "holders": [
@@ -105,6 +105,10 @@
       10222976722834
     ],
     [
+      "7B6fnUh5Bw59qDdSRqmZTPDmTNz75Zyg5YFNWbDTYVrh",
+      10062184226795
+    ],
+    [
       "5ce1a8rjD4kWVgsLiKAVF1JrhGcTen9nsLurgiZQvAqN",
       10060352943186
     ],
@@ -165,12 +169,12 @@
       4461396642219
     ],
     [
-      "BHAgiUmkJSdjnFJXYsNwoMj1GfsX6jxCJFTW1Bqrvy8G",
-      4302706883163
+      "3deAcCdB4rDtQs3erXC1V75QwE9AW5PBqUtxMyiDY2xn",
+      4336054457374
     ],
     [
-      "3deAcCdB4rDtQs3erXC1V75QwE9AW5PBqUtxMyiDY2xn",
-      4195740365156
+      "BHAgiUmkJSdjnFJXYsNwoMj1GfsX6jxCJFTW1Bqrvy8G",
+      4302706883163
     ],
     [
       "Epg638D52bpk6EWvHKEVKveS9iN2DQQ95CzXrNoDvqe",
@@ -249,10 +253,6 @@
       1724852648931
     ],
     [
-      "6ZDv5tTzJyNVu9ZCJQH9taaoptZnHhjsG9JekXfnnqqe",
-      1645411673154
-    ],
-    [
       "2eZhMoya4PBVLrPammvEUaCkfrKnzfCcuau7mt1Py9A5",
       1549860058103
     ],
@@ -283,10 +283,6 @@
     [
       "BFpMcMCRQibK65PR3V6jyy3RDjgEKdfwHNBGaBA9EzVX",
       1221524628480
-    ],
-    [
-      "4QV1phpAFcEQLH78gypTLwTvmchfypzNUmSmzRr6iMCG",
-      1187430599088
     ],
     [
       "7GPhFTQNKNca88QBUkGrAeE1cgz76rAruVHF47dthhkZ",
@@ -373,16 +369,8 @@
       356139384828
     ],
     [
-      "8DRJdA5PqqydAkkagV2QmYik5e5raNSFEQtC6D8xZQxN",
-      335001866153
-    ],
-    [
       "9oc83pXbXL4vdApvToagakdtsiAd2jo2rfa5ik4WhYBY",
       326437394754
-    ],
-    [
-      "5m5LuxdsU8ZhbmVFokQfu6WkB5TCR6vSSKcHCvKbDVFx",
-      326424595973
     ],
     [
       "GgycuP4HSWpxwPtL5wnpKDD8e2rcg6SxDu5t9fkSQ1ii",
@@ -463,10 +451,6 @@
     [
       "8KuF4RsqvXzr5obdoJSmuR5dyehwHuBRiwA63NRam34z",
       102746339341
-    ],
-    [
-      "H5h4uyRjMXwhCp95WM87zFxGsyv575B4wjiDKPBzbaZ5",
-      86617789643
     ],
     [
       "ydwVQrApTGJXbraAsLqqYyv28ZAKuKoMZxnSZXZ7oPM",
