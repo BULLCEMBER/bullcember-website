@@ -1,6 +1,30 @@
 {
-  "updatedAt": "2026-09-29T19:15:28.270Z",
+  "updatedAt": "2026-09-29T22:59:48.871Z",
   "buys": [
+    {
+      "sig": "2jqVYFzfqXp3Ha7D7vv1N29n3arysiapSrE6jMLhSRV4XeEUun9CHM1hL3oWLxaMjYvxeyvZJ5xNXYe1S2BDcS6k",
+      "buyer": "3deAcCdB4rDtQs3erXC1V75QwE9AW5PBqUtxMyiDY2xn",
+      "tokens": 185732.260681,
+      "ts": 1790718851
+    },
+    {
+      "sig": "3rTmA3BzFo5gkwDvWTmY4BWeqeoAmcrnpDU9oopikVB7bzsnHWpiuzQvdCzTUM2sCfujVGda9xU5GF9ZqLdDxuYN",
+      "buyer": "3deAcCdB4rDtQs3erXC1V75QwE9AW5PBqUtxMyiDY2xn",
+      "tokens": 111166.111699,
+      "ts": 1790718842
+    },
+    {
+      "sig": "8oS4SWMAAmbvuDN1en1GXGPNnPUta1yBDk6Te6c99LtCXcHpy4G4fJGqVTimbxynfzKPQTSB1m8ii9zaQqKv4Nw",
+      "buyer": "3deAcCdB4rDtQs3erXC1V75QwE9AW5PBqUtxMyiDY2xn",
+      "tokens": 37095.059841,
+      "ts": 1790718824
+    },
+    {
+      "sig": "58MQXu1JXAZZs8KLxoR8DH4DGZEs7tcybcAo1tP3C9z3yFHHy122pn27jGACbepvnpEmL3RmzWMtyJjSQneahcgL",
+      "buyer": "3deAcCdB4rDtQs3erXC1V75QwE9AW5PBqUtxMyiDY2xn",
+      "tokens": 37106.328163,
+      "ts": 1790718808
+    },
     {
       "sig": "21h3boXX7yH4TV66QMXyuUmt4iWsjsEMzj8LchS2pxHwSzKN3tMfq5T9HGKiAc9zQRPAGVLMcLsXUsTtzNPeL8FY",
       "buyer": "K5NfaeEwPajyZGoyM4GvBG8AQW4adiE9ZB9Ykd8yTTE",
@@ -48,30 +72,6 @@
       "buyer": "3deAcCdB4rDtQs3erXC1V75QwE9AW5PBqUtxMyiDY2xn",
       "tokens": 35046.657944,
       "ts": 1790538132
-    },
-    {
-      "sig": "5hYMMFSnMZBKSPfW6ZHbpbg3AQPHPv2U9wKvh9xhAHUneqqCr394xHLeqPUrvAuV8EJjcmp5gkCkRjJHY2ayQJF6",
-      "buyer": "3deAcCdB4rDtQs3erXC1V75QwE9AW5PBqUtxMyiDY2xn",
-      "tokens": 35084.209672,
-      "ts": 1790538111
-    },
-    {
-      "sig": "4w72vVdNcxmCgsKyiqYYQrn2wtS8ENRJUXAxBV9xc7BjJ9147B9H6d6HcB9zhvdMejbSDtCVr8EL9Bg45f2JMMq1",
-      "buyer": "3deAcCdB4rDtQs3erXC1V75QwE9AW5PBqUtxMyiDY2xn",
-      "tokens": 35092.051443,
-      "ts": 1790537992
-    },
-    {
-      "sig": "3o8VBios8BpwhzqWEiBHJRicNdfbVDEUY7p13eTz13881yiVo1sAVPcDQw1C3VAJkXc7LZ79VLVydeqfXNgcZJNK",
-      "buyer": "3deAcCdB4rDtQs3erXC1V75QwE9AW5PBqUtxMyiDY2xn",
-      "tokens": 35091.173159,
-      "ts": 1790537978
-    },
-    {
-      "sig": "23mHasJ4czWjfCc3XvY9ZaZVXD3PLZmqbbh6ow1HkJi4iMReiuAmRyPZF4Tn5Lz3FzgpMH1nmD9Am63s4Q5rcTch",
-      "buyer": "7B6fnUh5Bw59qDdSRqmZTPDmTNz75Zyg5YFNWbDTYVrh",
-      "tokens": 6890012.515766,
-      "ts": 1790533306
     }
   ]
 }
