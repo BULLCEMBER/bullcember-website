@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-09-30T14:58:12.162Z",
+  "updatedAt": "2026-09-30T19:55:10.374Z",
   "total": 151,
   "tiers": {
     "calf": 79,
-    "bull": 47,
-    "stampede": 25,
+    "bull": 48,
+    "stampede": 24,
     "alpha": 0
   },
   "holders": [
@@ -49,10 +49,6 @@
       21683352773385
     ],
     [
-      "6gyw9czzFeSdDyedEf6EKrBYfNAVkoHJoAjc8gRP2dwh",
-      19227187059096
-    ],
-    [
       "D8sj8c8AmKqNApgujCaLRuCpwN41bR92N6toGrpVZZEC",
       18053691376870
     ],
@@ -93,8 +89,8 @@
       10686347524359
     ],
     [
-      "DbEn1uWDQvB6qBJ99kfvRgSVFCWUr87vJQW5HWNudt52",
-      10679796627252
+      "36Hi9JHZZXZSKt3hhMMQrcZrxp3ExvNqo9UkdieQXnRK",
+      10394669324534
     ],
     [
       "DQUeoVMwKdP4ZbUUtRe5nTTvAPzwmziq5TSYErkHUF1e",
@@ -117,16 +113,20 @@
       9582669652953
     ],
     [
+      "D7YoTjLm6vh4X314B7J7At4gEuEMn1UvCy5eTQXLFWSX",
+      9455727591123
+    ],
+    [
+      "7B6fnUh5Bw59qDdSRqmZTPDmTNz75Zyg5YFNWbDTYVrh",
+      9375967685387
+    ],
+    [
       "ArCLPFhSWzrhT8LdMFCxPLZdVoi2NjqHosq576eBeH5P",
       9361787095022
     ],
     [
       "GpNwLDyzrD1mNLJ2CzpwPkH9bCe3BywGQ5pJAei3nR9Y",
       7394066662037
-    ],
-    [
-      "36Hi9JHZZXZSKt3hhMMQrcZrxp3ExvNqo9UkdieQXnRK",
-      6943524284141
     ],
     [
       "5ZLR5hoH2kUh3dTrK8iz7VRi9XiYzpTuj4vbNY5D3SzF",
@@ -137,20 +137,12 @@
       5997436812908
     ],
     [
-      "D7YoTjLm6vh4X314B7J7At4gEuEMn1UvCy5eTQXLFWSX",
-      5985186023836
-    ],
-    [
-      "K5NfaeEwPajyZGoyM4GvBG8AQW4adiE9ZB9Ykd8yTTE",
-      5928863659577
+      "9Cic4BLGjGvxRdprQSTtpK3M9ia1S9Wxhy3w94tMjA93",
+      5977610502524
     ],
     [
       "7WVmFAwkDREkbRhUmNJf4iU8RSfQzN9Z1QMHWRs5xLSS",
       5901901489536
-    ],
-    [
-      "3uJUDrrMaDpATUvVWMRzCBaTeedKghX1LEDK2u2z4Ffq",
-      5164438665169
     ],
     [
       "2ecpq4MA2b9WEFZRGpNDwrP4dtSmabjC5MzjkK9LGT5d",
@@ -173,6 +165,10 @@
       4302706883163
     ],
     [
+      "2o53bTHrK82pQSBbD6iQKmQ9emAAW6eJFRT6LrTMqZS5",
+      4066928618038
+    ],
+    [
       "Epg638D52bpk6EWvHKEVKveS9iN2DQQ95CzXrNoDvqe",
       3941207861842
     ],
@@ -181,16 +177,16 @@
       3897904511695
     ],
     [
-      "3deAcCdB4rDtQs3erXC1V75QwE9AW5PBqUtxMyiDY2xn",
-      3552528816034
-    ],
-    [
       "GvfTqJYCkiC8T7tMu5F9s4pPd7kdwt51AL8SojQM3MMB",
       3544009638746
     ],
     [
       "93NNxT2VPRnuoMaizSsMQAXA3RgiAeZLxGCjkctSgb4Z",
       3304165975522
+    ],
+    [
+      "3deAcCdB4rDtQs3erXC1V75QwE9AW5PBqUtxMyiDY2xn",
+      3189796741362
     ],
     [
       "69sqjwuNDVc8x8u9pdAMoadq3FSQUD6TArYG3DQ5yNfz",
@@ -215,6 +211,10 @@
     [
       "Amic9Pq8XCVBN3Z2tzygx228RaCrDiKHcEZHyDSEZP5q",
       2655259718648
+    ],
+    [
+      "Ag4RvVGSPQKd7uA8j4oyyFbc6VucdpCA1a2kUr9MBogZ",
+      2355665569989
     ],
     [
       "97Amtg1SHZhHX42FMpsWiM745rsvy6G9ohEa8f52sMBP",
@@ -317,6 +317,10 @@
       780372943038
     ],
     [
+      "Cjh9WC5DSw9mcnMgQ5LQLS2bVSaFrnUZ3NPzHCewyjSw",
+      681451366432
+    ],
+    [
       "FmLJT3hjrC3j1QK3RGgC1zKzCNyqeFGZRc42PyFK1LYW",
       664599254101
     ],
@@ -401,8 +405,8 @@
       244291280644
     ],
     [
-      "2o53bTHrK82pQSBbD6iQKmQ9emAAW6eJFRT6LrTMqZS5",
-      221749559108
+      "8psNvWTrdNTiVRNzAgsou9kETXNJm2SXZyaKuJraVRtf",
+      198822002717
     ],
     [
       "DXmUDYe2dByjqEaGtb6ERGkZRu2Yb7rt8zwjb5mgvC4k",
@@ -411,10 +415,6 @@
     [
       "7nfLcx6bLukwjDtKEddSg5cdJgimoMWRbqJZ4HtweSDZ",
       153173175633
-    ],
-    [
-      "8psNvWTrdNTiVRNzAgsou9kETXNJm2SXZyaKuJraVRtf",
-      145343438977
     ],
     [
       "nAjJUi8Rx5WnmtansVxDKYEyLpAW2UWjxDubNtoh9aS",
@@ -451,6 +451,10 @@
     [
       "ydwVQrApTGJXbraAsLqqYyv28ZAKuKoMZxnSZXZ7oPM",
       85344779837
+    ],
+    [
+      "2rbMgYvzAb3xDk6vXrzKkY3VwsmyDZsJTkvB3JJYsRzA",
+      82623131424
     ],
     [
       "GJh9daNEsGTXXekAaSxbiHYwNmGG8Bht1mdrvG3yL62U",
@@ -531,10 +535,6 @@
     [
       "69yhtoJR4JYPPABZcSNkzuqbaFbwHsCkja1sP1Q2aVT5",
       5744958528
-    ],
-    [
-      "2rbMgYvzAb3xDk6vXrzKkY3VwsmyDZsJTkvB3JJYsRzA",
-      4566588818
     ],
     [
       "sobLmyY3kjTYqk2r7Ui18PC6YzHUBDaD2tk6PPNAv4o",
