@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-10-02T06:18:06.787Z",
-  "total": 147,
+  "updatedAt": "2026-10-02T12:44:55.898Z",
+  "total": 145,
   "tiers": {
-    "calf": 74,
-    "bull": 48,
-    "stampede": 25,
+    "calf": 72,
+    "bull": 47,
+    "stampede": 26,
     "alpha": 0
   },
   "holders": [
@@ -77,6 +77,10 @@
       11189007370967
     ],
     [
+      "3deAcCdB4rDtQs3erXC1V75QwE9AW5PBqUtxMyiDY2xn",
+      11184152504070
+    ],
+    [
       "G8b5aQwVymgDzuTR2BnPzMcKNCt3tkirvBdqXwxfeyo9",
       10997289136911
     ],
@@ -123,10 +127,6 @@
     [
       "ArCLPFhSWzrhT8LdMFCxPLZdVoi2NjqHosq576eBeH5P",
       9361787095022
-    ],
-    [
-      "8znd3ascuSJ7XY7urvLQJBEAKS6y8vYG7RsjMGz3qxsA",
-      8778813100421
     ],
     [
       "4fbX9B8QkCymGe1ihb5Qcf4uQsBCAe2Hk884qT8FZ2rF",
@@ -177,6 +177,10 @@
       4461396642219
     ],
     [
+      "8znd3ascuSJ7XY7urvLQJBEAKS6y8vYG7RsjMGz3qxsA",
+      4361721977625
+    ],
+    [
       "BHAgiUmkJSdjnFJXYsNwoMj1GfsX6jxCJFTW1Bqrvy8G",
       4302706883163
     ],
@@ -189,16 +193,16 @@
       3897904511695
     ],
     [
+      "5SFyDk8Et2g2DPSGhfXdGBnYGidV8o71WJ4gopxNqiE5",
+      3698949277690
+    ],
+    [
       "GvfTqJYCkiC8T7tMu5F9s4pPd7kdwt51AL8SojQM3MMB",
       3544009638746
     ],
     [
       "93NNxT2VPRnuoMaizSsMQAXA3RgiAeZLxGCjkctSgb4Z",
       3304165975522
-    ],
-    [
-      "5SFyDk8Et2g2DPSGhfXdGBnYGidV8o71WJ4gopxNqiE5",
-      3096196030017
     ],
     [
       "69sqjwuNDVc8x8u9pdAMoadq3FSQUD6TArYG3DQ5yNfz",
@@ -239,10 +243,6 @@
     [
       "EVWJXJjXYSxmDag5qZcepL7fJTtkFpi5vLnjVEbCDHEe",
       2149827469399
-    ],
-    [
-      "CT6qQsdeoQvBQB5MNamWV6fJhMMyrf2FHrRabzP7xVmK",
-      2089382853901
     ],
     [
       "5J8gvEtPZZbcEnXLy7LemBFWVDwruU93PE1edCNb9G24",
@@ -393,10 +393,6 @@
       244291280644
     ],
     [
-      "5rhm34pHsxyYEUtAzsQsu8imQeGibpPGo5nPtP5agQpY",
-      214465512450
-    ],
-    [
       "8psNvWTrdNTiVRNzAgsou9kETXNJm2SXZyaKuJraVRtf",
       208542199423
     ],
@@ -427,10 +423,6 @@
     [
       "AJRfAAtptVsNfsrr2ywGpB5o9rFhu5Yof12qJWL1QH6k",
       112912362233
-    ],
-    [
-      "2rbMgYvzAb3xDk6vXrzKkY3VwsmyDZsJTkvB3JJYsRzA",
-      110019061685
     ],
     [
       "9JEcc7P9qoHXxauKQgiSGLzkXfDbRdJPb7eGizuaddVj",
