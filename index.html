@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>$BULLCEMBER: The Bullish December on Solana</title>
-  <meta name="description" content="$BULLCEMBER just launched on Solana. The most bullish month in crypto finally has a coin. Zero taxes, no VCs, pure community. Q4 2026 is coming. Be ready for December." />
+  <meta name="description" content="$BULLCEMBER is live on Solana. The most bullish month in crypto has a coin. Zero taxes, no VCs, pure community. December 1, 2026." />
   <link rel="canonical" href="https://bullcember.net/" />
   <meta name="theme-color" content="#080A07" />
   <link rel="icon" href="favicon.ico" sizes="any" />
@@ -16,7 +16,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://bullcember.net" />
   <meta property="og:title" content="$BULLCEMBER: The Bullish December, Now on Solana" />
-  <meta property="og:description" content="$BULLCEMBER just launched on Solana. The most bullish month in crypto finally has a coin. Zero taxes, no VCs, pure community. Q4 2026 is coming. Be ready for December." />
+  <meta property="og:description" content="$BULLCEMBER is live on Solana. The most bullish month in crypto has a coin. Zero taxes, no VCs, pure community. December 1, 2026." />
   <meta property="og:image" content="https://bullcember.net/og-image.png?v=57c47bd1" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -24,7 +24,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:site" content="@bullcembersol" />
   <meta name="twitter:title" content="$BULLCEMBER: The Bullish December, Now on Solana" />
-  <meta name="twitter:description" content="$BULLCEMBER just launched on Solana. The most bullish month in crypto finally has a coin. Zero taxes, no VCs, pure community. Q4 2026 is coming. Be ready for December." />
+  <meta name="twitter:description" content="$BULLCEMBER is live on Solana. The most bullish month in crypto has a coin. Zero taxes, no VCs, pure community. December 1, 2026." />
   <meta name="twitter:image" content="https://bullcember.net/og-image.png?v=57c47bd1" />
   <link rel="stylesheet" href="style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -199,7 +199,7 @@
     <div class="container">
       <div class="section-tag">NEXT SEASON</div>
       <h2 class="section-title">December <span class="highlight">Returns</span></h2>
-      <p class="countdown-sub">December is the most bullish month in crypto, and now it has a coin. $BULLCEMBER just launched on Solana, built for the season ahead. Get in position before Q4 2026 arrives.</p>
+      <p class="countdown-sub">December is the most bullish month in crypto, and now it has a coin. $BULLCEMBER is on Solana for this season. Get in position before December 1.</p>
       <div class="countdown-wrapper">
         <div class="countdown-unit">
           <span class="countdown-num" id="cd-days">—</span>
@@ -350,8 +350,8 @@
         </div>
         <div class="toko-card">
           <div class="toko-label">Total Supply</div>
-          <div class="toko-value" id="toko-supply">940,151,654</div>
-          <div class="toko-sub" id="toko-burned">59.85M burned of 1B · 5.98%</div>
+          <div class="toko-value" id="toko-supply">930,494,005</div>
+          <div class="toko-sub" id="toko-burned">69.51M burned of 1B · 6.95%</div>
         </div>
         <div class="toko-card toko-wide">
           <div class="toko-label">Timeline</div>
@@ -812,7 +812,10 @@
     // Mint authority is null and the engine only ever burns, so on-chain supply IS the
     // circulating supply — and it keeps shrinking. Holder shares have to divide by the
     // live number, not the 1B the token launched with, or every share reads low.
-    let TOTAL_SUPPLY = 940151654;
+    // Chain supply on 2026-10-03. applySupply() replaces this as soon as stats.json loads.
+    // The chart's market-cap mode multiplies by this number, so it must not be the
+    // 1B launch supply or the candles draw about 7% high.
+    let TOTAL_SUPPLY = 930494005;
     let lastBalances = null;
     const HERD_MILESTONES = [100, 250, 500, 1000, 2500, 5000, 10000, 25000, 50000, 100000];
     let herdTotal = 0, herdVisible = false, herdAnimated = false, herdRanked = [];
@@ -856,6 +859,7 @@
       const bEl = document.getElementById('toko-burned');
       if (bEl) bEl.textContent = fmtTok(burned) + ' burned of 1B · ' + (burned / LAUNCH_SUPPLY * 100).toFixed(2) + '%';
       if (lastBalances) renderHerd(lastBalances);
+      if (typeof refreshMcap === 'function') refreshMcap();
     }
     function renderHerd(balances) {
       lastBalances = balances;
@@ -955,22 +959,10 @@
       links.querySelectorAll('a').forEach(a => a.addEventListener('click', close));
     })();
     // ===== TOTAL VOLUME =====
-    // Lifetime figure, summed across the whole daily OHLCV history. Two upstreams,
-    // in order of preference:
-    //
-    //   1. the Worker's /volume route — key hidden, 1h edge cache, so the whole
-    //      internet costs Birdeye at most 24 calls a day
-    //   2. Birdeye directly, with the key that is still in this file
-    //
-    // Order matters: once the Worker has its BIRDEYE_KEY secret, path 2 stops being
-    // reached and the key here can be deleted. Until then this keeps working.
-    //
-    // The old version had a quiet failure that produced the dash on the stat tile: it
-    // paged Birdeye several times back to back (which trips the free-tier rate limit),
-    // read a 429 body as `items = []`, treated that as "no more pages", broke out with
-    // total still 0, and skipped the update WITHOUT throwing — so even the catch never
-    // fired. Then it did not try again until the next UTC midnight. A transient rate
-    // limit therefore cost up to a full day of showing nothing.
+    // Lifetime figure from the Worker's /volume route. The Birdeye key stays in
+    // Cloudflare. There is no browser fallback: a key in this file is how the chart
+    // quota got lifted, and a missing worker should show a dash rather than call
+    // Birdeye from the visitor.
     const TVOL_BACKOFF = [30e3, 120e3, 600e3];   // 30s, 2m, 10m, then hold at 10m
     let tvolFails = 0, tvolTimer = null;
 
@@ -980,32 +972,11 @@
       return Number.isFinite(t) && t > 0 ? t : null;
     }
 
-    async function volumeFromBirdeye() {
-      let total = 0, timeFrom = 1782000000; // updated launch
-      const now = Math.floor(Date.now() / 1000);
-      while (timeFrom < now) {
-        const res = await fetch(
-          `${BIRDEYE_URL}?address=${CA}&type=1D&time_from=${timeFrom}&time_to=${now}`,
-          { headers: BIRDEYE_HDR }
-        );
-        // Throw, do not fall through. This is the line whose absence made a 429
-        // indistinguishable from "the token has no trading history".
-        if (!res.ok) throw new Error(`birdeye ${res.status}`);
-        const items = (await res.json())?.data?.items || [];
-        if (!items.length) break;
-        items.forEach(({ v, c }) => { total += v * c; });
-        if (items.length < 1000) break;
-        timeFrom = Math.max(...items.map(i => i.unixTime)) + 1;
-      }
-      return total;
-    }
-
     // Resolves true only when a real number reached the tile, so the caller knows
     // whether to schedule the next run a day out or a few seconds out.
     async function fetchTotalVolume() {
       try {
-        let total = await volumeFromWorker();
-        if (total === null) total = await volumeFromBirdeye();
+        const total = await volumeFromWorker();
         if (!(total > 0)) return false;
         document.getElementById('stat-tvol').textContent = fmt(total);
         return true;
@@ -1399,21 +1370,13 @@
       });
     });
     // ===== CHART =====
-    const BIRDEYE_KEY = '6925b84a60fd4ec6876b311926a87de4';
-    const BIRDEYE_URL = 'https://public-api.birdeye.so/defi/ohlcv';
-    const BIRDEYE_HDR = { 'X-API-KEY': BIRDEYE_KEY, 'x-chain': 'solana' };
-    const LAUNCH_TS = 1782000000; // June 21, 2026
-    const SUPPLY = 1_000_000_000;
-    const TF_MAP = {
-      '1H': { type: '1H', fromTs: () => Math.floor(Date.now()/1000) - 30*24*3600 },
-      '4H': { type: '4H', fromTs: () => LAUNCH_TS },
-      '1D': { type: '1D', fromTs: () => LAUNCH_TS },
-    };
+    // Candles come from the Worker (/ohlcv). Market cap uses the circulating supply
+    // from stats.json (TOTAL_SUPPLY), which applySupply() keeps current.
     let priceChart, candleSeries, volSeries, rawCandles = [], candleMap = new Map(), showMCap = false;
     function fmtLeg(p) {
       if (p == null) return '—';
       if (showMCap) {
-        const m = p * SUPPLY;
+        const m = p * TOTAL_SUPPLY;
         return m >= 1e6 ? '$'+(m/1e6).toFixed(2)+'M' : m >= 1e3 ? '$'+(m/1e3).toFixed(2)+'K' : '$'+m.toFixed(0);
       }
       if (p < 0.000001) return '$'+p.toExponential(3);
@@ -1443,33 +1406,30 @@
     }
     function displayCandles() {
       if (!showMCap) return rawCandles.map(({ time, open, high, low, close }) => ({ time, open, high, low, close }));
-      return rawCandles.map(c => ({ time: c.time, open: c.open*SUPPLY, high: c.high*SUPPLY, low: c.low*SUPPLY, close: c.close*SUPPLY }));
+      const s = TOTAL_SUPPLY;
+      return rawCandles.map(c => ({ time: c.time, open: c.open*s, high: c.high*s, low: c.low*s, close: c.close*s }));
     }
-    async function fetchAll(type, fromTs) {
-      let all = [];
-      let timeFrom = fromTs;
-      const now = Math.floor(Date.now() / 1000);
-      while (timeFrom < now) {
-        const url = `${BIRDEYE_URL}?address=${CA}&type=${type}&time_from=${timeFrom}&time_to=${now}`;
-        const res = await fetch(url, { headers: BIRDEYE_HDR });
-        const items = (await res.json())?.data?.items || [];
-        if (!items.length) break;
-        all = [...all, ...items];
-        if (items.length < 1000) break;
-        timeFrom = Math.max(...items.map(i => i.unixTime)) + 1;
-      }
-      return all
-        .sort((a, b) => a.unixTime - b.unixTime)
-        .filter((c, i, arr) => i === 0 || c.unixTime !== arr[i-1].unixTime)
-        .map(({ unixTime, o, h, l, c, v }) => ({ time: unixTime, open: o, high: h, low: l, close: c, volume: v * c }));
+    // Redraw after stats.json lands, so a market-cap chart opened early does not
+    // stay on the fallback supply.
+    function refreshMcap() {
+      if (!showMCap || !candleSeries) return;
+      setFormat(true);
+      candleSeries.setData(displayCandles());
+      updateLegend(rawCandles[rawCandles.length - 1]);
+    }
+    async function fetchCandles(tf) {
+      const r = await fetch(`${LIVE_API}/ohlcv?tf=${encodeURIComponent(tf)}`, { cache: 'no-store' });
+      if (!r.ok) throw new Error('ohlcv ' + r.status);
+      const j = await r.json();
+      if (!Array.isArray(j.candles) || !j.candles.length) throw new Error('ohlcv empty');
+      return j.candles;
     }
     async function loadTf(tf) {
       document.querySelectorAll('.tf-btn').forEach(b => b.classList.toggle('active', b.dataset.tf === tf));
       const el = document.getElementById('price-chart');
       el.style.opacity = '0.4';
       try {
-        const { type, fromTs } = TF_MAP[tf];
-        rawCandles = await fetchAll(type, fromTs());
+        rawCandles = await fetchCandles(tf);
         candleMap = new Map(rawCandles.map(c => [c.time, c]));
         setFormat(showMCap);
         candleSeries.setData(displayCandles());

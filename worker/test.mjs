@@ -88,8 +88,8 @@ globalThis.fetch = async (url, opts) => {
   if (u.includes("birdeye")) {
     upstreamCalls++;
     return new Response(JSON.stringify({ data: { items: [
-      { unixTime: T,       v: 1000, c: 0.5  },
-      { unixTime: T + 864, v: 2000, c: 0.25 },
+      { unixTime: T,       v: 1000, o: 0.4, h: 0.6, l: 0.3, c: 0.5  },
+      { unixTime: T + 864, v: 2000, o: 0.2, h: 0.3, l: 0.1, c: 0.25 },
     ] } }));
   }
   throw new Error("unexpected upstream " + u);
@@ -132,6 +132,15 @@ ok("volume works with BIRDEYE_KEY alone", volRes.status === 200);
 const vol = await volRes.json();
 ok("volume sums v*c across candles", vol.totalUsd === 1000, JSON.stringify(vol.totalUsd));
 ok("volume gets the 1h edge TTL", (volRes.headers.get("cache-control") || "").includes("s-maxage=3600"));
+
+store.clear();
+const ohlcvRes = await call("/ohlcv?tf=1D", { BIRDEYE_KEY: "b" });
+ok("ohlcv works with BIRDEYE_KEY alone", ohlcvRes.status === 200);
+const ohlcv = await ohlcvRes.json();
+ok("ohlcv maps price and volume", ohlcv.candles.length === 2 && ohlcv.candles[0].open === 0.4 && ohlcv.candles[0].volume === 500, JSON.stringify(ohlcv.candles?.[0]));
+ok("ohlcv cached per timeframe", (await call("/ohlcv?tf=1D", { BIRDEYE_KEY: "b" })).headers.get("x-bull-cache") === "HIT");
+ok("ohlcv bad timeframe -> 400", (await call("/ohlcv?tf=1W", { BIRDEYE_KEY: "b" })).status === 400);
+ok("ohlcv without BIRDEYE_KEY -> 503", (await call("/ohlcv", { HELIUS_KEY: "stub" })).status === 503);
 
 // ---- buys --------------------------------------------------------------------
 const buys = await (await call("/buys")).json();

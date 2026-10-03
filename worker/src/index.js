@@ -49,7 +49,14 @@ const ALLOWED_ORIGINS = [
 // lifetime cumulative figure that the page only ever refreshes once a day, so an
 // hour at the edge is generous — and it caps Birdeye at 24 calls a day for the
 // entire internet, which is the whole point of putting it behind here.
-const TTL = { buys: 15, engine: 45, rewards: 45, volume: 3600 };
+const TTL = { buys: 15, engine: 45, rewards: 45, volume: 3600, ohlcv: 120 };
+// Chart timeframes the page can ask for. Anything else is a 400, not a Birdeye call.
+const OHLCV_TF = {
+  "1H": 30 * 24 * 3600, // last 30 days of hourly candles
+  "4H": null,           // from launch
+  "1D": null,
+};
+const LAUNCH_TS = 1782000000; // a little before the June 21 2026 launch
 
 const cors = (origin) => ({
   "access-control-allow-origin": ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0],
@@ -154,22 +161,38 @@ function burnAmount(tx) {
 async function getEngine(env, since) {
   const sigs = new Map();
   for (const acct of [DEV_ATA, BOOST]) {
-    const page = await rpc(env, "getSignaturesForAddress", [acct, { limit: 25 }]).catch(() => []);
-    for (const s of page || []) {
-      if (s.err || !s.blockTime || s.blockTime <= since) continue;
-      sigs.set(s.signature, true);
+    // A failed page used to become []. The other account's events would still be
+    // returned, and the browser would treat that partial list as the whole delta.
+    let before;
+    for (let page = 0; page < 4; page++) {
+      const opts = { limit: 25, ...(before ? { before } : {}) };
+      const batch = await rpc(env, "getSignaturesForAddress", [acct, opts]);
+      if (!batch || !batch.length) break;
+      let hitOld = false;
+      for (const s of batch) {
+        if (s.err || !s.blockTime) continue;
+        if (s.blockTime <= since) { hitOld = true; break; }
+        sigs.set(s.signature, true);
+      }
+      if (hitOld || batch.length < 25) break;
+      before = batch[batch.length - 1].signature;
     }
   }
 
+  const pending = [...sigs.keys()];
+  // A browser-facing endpoint must never fan out unboundedly, even if `since`
+  // arrives as 0. Past this cap, fail the request so the page keeps its baseline
+  // instead of painting a silently shortened delta.
+  if (pending.length > 40) throw new Error(`engine window truncated: ${pending.length} signatures`);
+
   const events = [];
-  // Hard cap: a browser-facing endpoint must never fan out unboundedly, even if
-  // `since` arrives as 0 from a client with no baseline.
-  for (const sig of [...sigs.keys()].slice(0, 12)) {
+  for (const sig of pending) {
     const tx = await rpc(env, "getTransaction", [
       sig,
       { maxSupportedTransactionVersion: 0, encoding: "jsonParsed" },
-    ]).catch(() => null);
-    if (!tx || tx.meta?.err) continue;
+    ]);
+    if (!tx) throw new Error(`getTransaction returned nothing for ${sig}`);
+    if (tx.meta?.err) continue;
 
     const time = tx.blockTime;
     const pre = tx.meta?.preTokenBalances;
@@ -271,28 +294,56 @@ async function getRewards(env, since) {
 //
 // Behind here the key is a secret binding and the 1h TTL above means traffic cannot
 // drive the call count at all.
-async function getVolume(env) {
-  let total = 0;
-  let from = 1782000000;               // a little before launch; same floor the page used
+async function birdeyeCandles(env, type, from) {
   const now = Math.floor(Date.now() / 1000);
-  // Birdeye returns at most 1000 daily candles per page, so this is one page in
-  // practice. The page cap exists only so a malformed response cannot spin forever.
+  const items = [];
+  // Birdeye returns at most 1000 candles per page. The page cap exists only so a
+  // malformed response cannot spin forever.
   for (let page = 0; page < 8 && from < now; page++) {
     const r = await fetch(
-      `https://public-api.birdeye.so/defi/ohlcv?address=${MINT}&type=1D&time_from=${from}&time_to=${now}`,
+      `https://public-api.birdeye.so/defi/ohlcv?address=${MINT}&type=${type}&time_from=${from}&time_to=${now}`,
       { headers: { "X-API-KEY": env.BIRDEYE_KEY, "x-chain": "solana" } },
     );
     // Must throw rather than fall through: the old client code treated a 429 as
     // "no items", which silently produced a zero and never retried.
     if (!r.ok) throw new Error(`birdeye ${r.status}`);
-    const items = (await r.json())?.data?.items || [];
-    if (!items.length) break;
-    for (const it of items) total += (Number(it.v) || 0) * (Number(it.c) || 0);
-    if (items.length < 1000) break;
-    from = Math.max(...items.map((i) => i.unixTime)) + 1;
+    const batch = (await r.json())?.data?.items || [];
+    if (!batch.length) break;
+    items.push(...batch);
+    if (batch.length < 1000) break;
+    from = Math.max(...batch.map((i) => i.unixTime)) + 1;
   }
+  return items;
+}
+
+async function getVolume(env) {
+  const items = await birdeyeCandles(env, "1D", LAUNCH_TS);
+  let total = 0;
+  for (const it of items) total += (Number(it.v) || 0) * (Number(it.c) || 0);
   if (!(total > 0)) throw new Error("birdeye returned no volume");
   return { updatedAt: new Date().toISOString(), totalUsd: total };
+}
+
+// Candles for the page chart. The browser used to call Birdeye with a key that
+// shipped in index.html. Same secret as /volume, different timeframe.
+async function getOhlcv(env, tf) {
+  const window = OHLCV_TF[tf];
+  const now = Math.floor(Date.now() / 1000);
+  const from = window ? now - window : LAUNCH_TS;
+  const items = await birdeyeCandles(env, tf, from);
+  const candles = items
+    .sort((a, b) => a.unixTime - b.unixTime)
+    .filter((c, i, arr) => i === 0 || c.unixTime !== arr[i - 1].unixTime)
+    .map(({ unixTime, o, h, l, c, v }) => ({
+      time: unixTime,
+      open: o,
+      high: h,
+      low: l,
+      close: c,
+      volume: (Number(v) || 0) * (Number(c) || 0),
+    }));
+  if (!candles.length) throw new Error("birdeye returned no candles");
+  return { updatedAt: new Date().toISOString(), tf, candles };
 }
 
 export default {
@@ -304,12 +355,16 @@ export default {
     const url = new URL(request.url);
     const route = url.pathname.replace(/\/+$/, "").split("/").pop();
     if (!TTL[route]) return new Response("not found", { status: 404, headers: cors(origin) });
-    // /volume fronts Birdeye, everything else fronts Helius. Gate per route, so a
-    // missing Birdeye secret cannot take down buys/engine/rewards — and so adding
-    // /volume before its secret exists degrades to exactly one dead route.
-    const needs = route === "volume" ? "BIRDEYE_KEY" : "HELIUS_KEY";
+    // /volume and /ohlcv front Birdeye. Everything else fronts Helius. Gate per
+    // route, so a missing Birdeye secret cannot take down buys, engine, or rewards.
+    const needs = route === "volume" || route === "ohlcv" ? "BIRDEYE_KEY" : "HELIUS_KEY";
     if (!env[needs]) {
       return new Response(`worker not configured: ${needs}`, { status: 503, headers: cors(origin) });
+    }
+
+    const tf = url.searchParams.get("tf") || "1H";
+    if (route === "ohlcv" && !Object.prototype.hasOwnProperty.call(OHLCV_TF, tf)) {
+      return new Response("bad timeframe", { status: 400, headers: cors(origin) });
     }
 
     // `since` is clamped, not trusted: it comes from the visitor's baseline file and
@@ -319,7 +374,11 @@ export default {
 
     // Cache on a normalized key so one visitor's cache-buster query can't force a
     // miss for everyone else — that would defeat the whole point of the edge cache.
-    const key = new Request(`${url.origin}/${route}?since=${since}`, { method: "GET" });
+    // /ohlcv must keep the timeframe in the key, or 1H and 1D would share a body.
+    const key = new Request(
+      route === "ohlcv" ? `${url.origin}/ohlcv?tf=${tf}` : `${url.origin}/${route}?since=${since}`,
+      { method: "GET" },
+    );
     const cache = caches.default;
     const hit = await cache.match(key);
     if (hit) {
@@ -334,6 +393,7 @@ export default {
         route === "buys" ? await getBuys(env)
         : route === "engine" ? await getEngine(env, since)
         : route === "volume" ? await getVolume(env)
+        : route === "ohlcv" ? await getOhlcv(env, tf)
         : await getRewards(env, since);
 
       const res = json(body, origin, TTL[route]);

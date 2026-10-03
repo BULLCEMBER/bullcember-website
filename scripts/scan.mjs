@@ -62,7 +62,11 @@ async function allSigs(acct, sinceTime = 0) {
     const s = await rpc("getSignaturesForAddress", [acct, { limit: 1000, ...(before ? { before } : {}) }]);
     if (!s.length) break;
     for (const x of s) {
-      if (sinceTime && x.blockTime && x.blockTime <= sinceTime) break outer;
+      // `<`, not `<=`. The caller cursors on the newest saved timestamp, and two
+      // engine transactions can share that second. Stopping on equality dropped
+      // the unsaved sibling forever. Re-reading the boundary second is safe:
+      // update-stats dedupes on type+signature.
+      if (sinceTime && x.blockTime && x.blockTime < sinceTime) break outer;
       if (!x.err) out.push(x.signature);
     }
     before = s[s.length - 1].signature;
@@ -110,13 +114,19 @@ export async function scan(sinceTime = 0) {
   const devAcct = await tokenAccount(DEV);
   const set = new Set();
   if (devAcct) (await allSigs(devAcct, sinceTime)).forEach((s) => set.add(s));
-  (await allSigs(BOOST, sinceTime).catch(() => [])).forEach((s) => set.add(s));
+  // A failed boost lookup used to become an empty list. The dev scan would still
+  // succeed, its newer timestamp would advance the cursor, and every boost burn
+  // in the gap was gone for good.
+  (await allSigs(BOOST, sinceTime)).forEach((s) => set.add(s));
   const sigs = [...set];
 
   const rows = [];
   for (const sig of sigs) {
-    const tx = await rpc("getTransaction", [sig, { maxSupportedTransactionVersion: 0, encoding: "jsonParsed" }]).catch(() => null);
-    if (tx && !tx.meta?.err) rows.push({ sig, tx });
+    // rpc() already retries. Swallowing the last failure used to let a later,
+    // successfully fetched transaction advance the cursor past the hole.
+    const tx = await rpc("getTransaction", [sig, { maxSupportedTransactionVersion: 0, encoding: "jsonParsed" }]);
+    if (!tx) throw new Error(`getTransaction returned nothing for ${sig}`);
+    if (!tx.meta?.err) rows.push({ sig, tx });
     await sleep(120);
   }
   rows.sort((a, b) => (a.tx.blockTime || 0) - (b.tx.blockTime || 0)); // oldest -> newest

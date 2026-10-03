@@ -41,7 +41,15 @@ async function main() {
   const sinceTime = prevEvents.reduce((m, e) => Math.max(m, e.time || 0), 0);
 
   // Only scan transactions newer than what we already have.
-  const fresh = await scan(sinceTime).catch((e) => { console.error("scan failed:", e.message); return null; });
+  // On failure, keep the previous event log. Merging a partial scan is what lets
+  // the cursor walk past a transaction that never got fetched. The workflow greps
+  // for this exact phrase and turns the job red without blocking herd or rewards.
+  let scanFailed = false;
+  const fresh = await scan(sinceTime).catch((e) => {
+    console.error("engine scan failed:", e.message);
+    scanFailed = true;
+    return null;
+  });
 
   // Merge, dedupe, keep newest first. The key is type+sig, not sig: a pump.fun boost
   // transaction buys and burns in one instruction set, so a single signature legitimately
@@ -95,6 +103,10 @@ async function main() {
   await writeFile(STATS, JSON.stringify(stats, null, 2) + "\n");
   console.log(`events:${events.length} buyback:${stats.buyback.bull}(${stats.buyback.count}) ` +
     `burned:${stats.burned.amount}(${stats.burned.count})`);
+  if (scanFailed) {
+    // Supply and price above are still published. Events were not advanced.
+    console.error("engine scan failed: event log left unchanged");
+  }
 }
 
 main().catch((e) => { console.error(e); process.exit(1); });

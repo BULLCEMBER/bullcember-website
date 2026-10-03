@@ -28,7 +28,8 @@ This Worker keeps the live reads but removes both failure modes:
 | `GET /buys` | 12 most recent buys off the PumpSwap pool | 15s |
 | `GET /engine?since=<unix>` | classified buyback/burn events newer than `since` | 45s |
 | `GET /rewards?since=<unix>` | payout rounds newer than `since`, plus collected/overhead | 45s |
-| `GET /volume` | `{ totalUsd }` — lifetime traded volume, summed from daily OHLCV | 1h |
+| `GET /volume` | `{ totalUsd }`, lifetime traded volume summed from daily candles | 1h |
+| `GET /ohlcv?tf=1H\|4H\|1D` | chart candles. The browser never holds the Birdeye key | 120s |
 
 `since` is the newest timestamp the caller already has from its baseline JSON, so in
 steady state these return an empty delta and cost almost nothing. It is clamped
@@ -40,7 +41,8 @@ published totals it gets added to.
 
 `/volume` is the odd one out: it fronts **Birdeye**, not Helius, and needs its own
 `BIRDEYE_KEY` secret. The key gate is per route, so a missing Birdeye secret takes
-out `/volume` alone (503) and leaves the other three working. It ignores `since`.
+out `/volume` and `/ohlcv` (503) and leaves buys, engine, and rewards working.
+`/volume` ignores `since`.
 
 Why it exists: the page used to sum that history in the browser, paging Birdeye
 several times per load with the key hardcoded in `index.html`. That is the same
@@ -54,7 +56,7 @@ internet costs Birdeye **24 calls a day**.
 cd worker
 npx wrangler login
 npx wrangler secret put HELIUS_KEY    # paste the Helius key, not the full RPC URL
-npx wrangler secret put BIRDEYE_KEY   # only /volume needs this
+npx wrangler secret put BIRDEYE_KEY   # /volume and /ohlcv
 npx wrangler deploy
 ```
 
@@ -95,9 +97,14 @@ curl -s "https://<your-worker-url>/volume"          # {"updatedAt":...,"totalUsd
 curl -sI "https://<your-worker-url>/buys" | grep -i "x-bull-cache\|cache-control"
 ```
 
-Until `BIRDEYE_KEY` is set, `/volume` answers `503 worker not configured: BIRDEYE_KEY`
-and the page silently falls back to calling Birdeye directly — so nothing breaks, it
-just keeps using the in-page key. Once the secret is set and this route answers 200,
-the `BIRDEYE_KEY` constant in `index.html` is dead and should be deleted.
+Until `BIRDEYE_KEY` is set, `/volume` and `/ohlcv` answer `503 worker not configured: BIRDEYE_KEY`.
+The page does not call Birdeye itself. The chart and the total-volume tile stay empty
+until this Worker is deployed with that secret.
+
+```bash
+npx wrangler secret put BIRDEYE_KEY
+npx wrangler deploy
+curl -s "https://<your-worker-url>/ohlcv?tf=1H" | head -c 300
+```
 
 A second call within the TTL should report `x-bull-cache: HIT`.

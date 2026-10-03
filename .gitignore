@@ -25,5 +25,6 @@ graphics/*
 
 # wrangler local state — caches the Cloudflare account id and email, and is
 # regenerated on every deploy. Never belongs in a public repo.
+.wrangler/
 worker/.wrangler/
 worker/node_modules/
