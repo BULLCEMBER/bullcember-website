@@ -754,6 +754,13 @@
     }
     let lastPriceUsd = 0;
     let lastSolUsd = 0;
+    // Chain fields are base58 in the honest case. Escaping is what keeps a bad
+    // events file from becoming markup. Use it for every value that is not ours.
+    function esc(s) {
+      return String(s ?? '').replace(/[&<>"']/g, (c) => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+      }[c]));
+    }
     function timeAgo(ts) {
       const s = Math.max(0, Math.floor(Date.now() / 1000 - ts));
       if (s < 60) return s + 's ago';
@@ -763,10 +770,10 @@
     }
     function renderBuys(buys) {
       document.getElementById('buys-feed').innerHTML = buys.map(b => {
-        const short = b.buyer.slice(0, 4) + '…' + b.buyer.slice(-4);
+        const short = esc(b.buyer.slice(0, 4) + '…' + b.buyer.slice(-4));
         const usd = lastPriceUsd ? ' · ' + fmt(b.tokens * lastPriceUsd) : '';
         return `<li class="buy-row"><span class="buy-dot"></span>` +
-          `<a class="buy-addr" href="https://solscan.io/tx/${b.sig}" target="_blank" rel="noopener">${short}</a>` +
+          `<a class="buy-addr" href="https://solscan.io/tx/${esc(b.sig)}" target="_blank" rel="noopener">${short}</a>` +
           `<span class="buy-text">bought <strong>${fmtTok(b.tokens)}</strong> $BULLCEMBER${usd}</span>` +
           `<span class="buy-time">${timeAgo(b.ts)}</span></li>`;
       }).join('');
@@ -825,7 +832,7 @@
       if (tok >= 1e6) return { ico: 'bull', name: 'Bull' };
       return { ico: 'calf', name: 'Calf' };
     }
-    const tierIcon = (t) => `<svg class="rank-ico" viewBox="0 0 32 32" role="img" aria-label="${t.name}"><use href="#ico-${t.ico}"/></svg>`;
+    const tierIcon = (t) => `<svg class="rank-ico" viewBox="0 0 32 32" role="img" aria-label="${esc(t.name)}"><use href="#ico-${esc(t.ico)}"/></svg>`;
     function fmtTok(n) {
       if (n >= 1e9) return (n / 1e9).toFixed(2) + 'B';
       if (n >= 1e6) return (n / 1e6).toFixed(2) + 'M';
@@ -878,10 +885,10 @@
       entries.sort((a, b) => b.tok - a.tok);
       herdRanked = entries;
       document.getElementById('herd-board').innerHTML = entries.slice(0, 10).map((e, i) => {
-        const short = e.owner.slice(0, 4) + '…' + e.owner.slice(-4);
+        const short = esc(e.owner.slice(0, 4) + '…' + e.owner.slice(-4));
         const pct = (e.tok / TOTAL_SUPPLY * 100).toFixed(2);
         return `<li class="herd-row"><span class="herd-rank">${i + 1}</span>` +
-          `<a class="herd-addr" href="https://solscan.io/account/${e.owner}" target="_blank" rel="noopener">${short}</a>` +
+          `<a class="herd-addr" href="https://solscan.io/account/${esc(e.owner)}" target="_blank" rel="noopener">${short}</a>` +
           `<span class="herd-amt">${fmtTok(e.tok)}</span><span class="herd-share">${pct}%</span></li>`;
       }).join('');
       const next = HERD_MILESTONES.find(m => m > herdTotal) || Math.ceil((herdTotal + 1) / 10000) * 10000;
@@ -937,7 +944,7 @@
       const t = tierOf(e.tok);
       const pct = (e.tok / TOTAL_SUPPLY * 100).toFixed(2);
       out.className = 'rank-result show';
-      out.innerHTML = `${tierIcon(t)} You're a <strong>${t.name}</strong> · rank <strong>#${idx + 1}</strong> of ${herdRanked.length} bulls · ${fmtTok(e.tok)} $BULLCEMBER (${pct}%)`;
+      out.innerHTML = `${tierIcon(t)} You're a <strong>${esc(t.name)}</strong> · rank <strong>#${idx + 1}</strong> of ${herdRanked.length} bulls · ${fmtTok(e.tok)} $BULLCEMBER (${pct}%)`;
     }
     (() => {
       const btn = document.getElementById('rank-btn');
@@ -1166,7 +1173,7 @@
         const amt = m.sign + fmtTok(ev.bull) + ' $BULLCEMBER';
         const sol = ev.sol ? ' · ' + ev.sol.toFixed(2) + ' SOL' : '';
         const when = ev.time ? timeAgo(ev.time) : '';
-        return `<a class="feed-row ${m.cls}" href="https://solscan.io/tx/${ev.sig}" target="_blank" rel="noopener">` +
+        return `<a class="feed-row ${m.cls}" href="https://solscan.io/tx/${esc(ev.sig)}" target="_blank" rel="noopener">` +
           `<span class="feed-ic">${m.ic}</span>` +
           `<span class="feed-main"><span class="feed-t">${m.label}</span><br><span class="feed-sub">${when}${sol}</span></span>` +
           `<span class="feed-amt">${amt}</span></a>`;
@@ -1243,7 +1250,7 @@
         list.innerHTML = feed.length === 0
           ? '<div class="feed-empty">No payouts recorded yet… 🐂</div>'
           : feed.map(r =>
-              `<a class="feed-row reward" href="https://solscan.io/tx/${r.sig}" target="_blank" rel="noopener">` +
+              `<a class="feed-row reward" href="https://solscan.io/tx/${esc(r.sig)}" target="_blank" rel="noopener">` +
               `<span class="feed-ic">💰</span>` +
               `<span class="feed-main"><span class="feed-t">Paid to holders</span><br>` +
               `<span class="feed-sub">${timeAgo(r.time)} · ${r.wallets} wallets</span></span>` +
@@ -1258,10 +1265,10 @@
         board.innerHTML = top.length === 0
           ? '<li class="herd-empty">No payouts yet.</li>'
           : top.slice(0, 10).map(([addr, sol], i) => {
-              const short = addr.slice(0, 4) + '…' + addr.slice(-4);
+              const short = esc(addr.slice(0, 4) + '…' + addr.slice(-4));
               const pct = j.totalSol ? (sol / j.totalSol * 100).toFixed(1) : '0.0';
               return `<li class="herd-row"><span class="herd-rank">${i + 1}</span>` +
-                `<a class="herd-addr" href="https://solscan.io/account/${addr}" target="_blank" rel="noopener">${short}</a>` +
+                `<a class="herd-addr" href="https://solscan.io/account/${esc(addr)}" target="_blank" rel="noopener">${short}</a>` +
                 `<span class="herd-amt">${fmtSol(sol)} SOL</span><span class="herd-share">${pct}%</span></li>`;
             }).join('');
       }
