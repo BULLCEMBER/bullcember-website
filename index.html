@@ -136,7 +136,7 @@
         <span class="scrawl scrawl-hero">&#8598; you are early</span>
       </div>
       <!-- LIVE STATS BAR -->
-      <div class="live-bar" id="stats">
+      <div class="live-bar" id="stats" aria-live="polite" aria-atomic="false">
         <div class="live-item">
           <span class="live-label">Price</span>
           <span class="live-value" id="stat-price">…</span>
@@ -187,7 +187,7 @@
         <span class="hot-stamp">NEW</span>
         <span class="hot-body">
           <strong class="hot-head">Dev fees are off. Creator fees now go to <span class="highlight">holders</span>.</strong>
-          <span class="hot-sub">Every trade pays holders in proportion to their bag. The pool's coin_creator is the distributor, not the dev wallet. <span class="hot-num" id="hot-total">&hellip;</span> paid out so far.</span>
+          <span class="hot-sub">Every trade pays holders in proportion to their bag. The pool's coin_creator is the distributor, not the dev wallet. <span class="hot-num" id="hot-total" aria-live="polite">&hellip;</span> paid out so far.</span>
         </span>
         <span class="hot-cta">See the payouts &rarr;</span>
       </a>
@@ -200,7 +200,7 @@
       <div class="section-tag">NEXT SEASON</div>
       <h2 class="section-title">December <span class="highlight">Returns</span></h2>
       <p class="countdown-sub">December is the most bullish month in crypto, and now it has a coin. $BULLCEMBER is on Solana for this season. Get in position before December 1.</p>
-      <div class="countdown-wrapper">
+      <div class="countdown-wrapper" role="timer" aria-live="off" aria-label="Time until December 1, 2026">
         <div class="countdown-unit">
           <span class="countdown-num" id="cd-days">…</span>
           <span class="countdown-label">Days</span>
@@ -393,7 +393,7 @@
       <p class="engine-lead">Receipts, not roadmap. Everything below has <strong>already happened on-chain</strong>, pulled live from Solana so you can check every last one yourself. Nothing here is a promise about what comes next.</p>
 
       <!-- LIVE ON-CHAIN TILES -->
-      <div class="engine-live">
+      <div class="engine-live" aria-live="polite" aria-atomic="false">
         <div class="elive burn">
           <div class="elive-ico">🔥</div>
           <div class="elive-k">Burned Forever</div>
@@ -407,7 +407,7 @@
           <div class="elive-sub" id="enBuySub">off the market</div>
         </div>
       </div>
-      <div class="engine-updated"><span class="live-dot"></span><span id="enUpdated">loading on-chain data…</span><button id="enRefresh" class="refresh-btn" type="button">🔄 Refresh</button></div>
+      <div class="engine-updated"><span class="live-dot" aria-hidden="true"></span><span id="enUpdated" role="status">loading on-chain data…</span><button id="enRefresh" class="refresh-btn" type="button">🔄 Refresh</button></div>
 
       <!-- LIVE ACTIVITY FEED -->
       <div class="feed" id="engineFeed" hidden>
@@ -442,7 +442,7 @@
       <h2 class="section-title">Fees Go <span class="highlight">Back To You</span></h2>
       <p class="engine-lead">Creator fees from every trade used to land in the dev wallet. They don't now. The pool's on-chain <code>coin_creator</code> is a pump.fun distributor, and pump.fun pays holders in proportion to what they hold. The tracked rounds have not paid the dev wallet. pump.fun's admin can point that field somewhere else later. This site cannot.</p>
 
-      <div class="engine-live rw-tiles">
+      <div class="engine-live rw-tiles" aria-live="polite" aria-atomic="false">
         <div class="elive buy">
           <div class="elive-ico">💰</div>
           <div class="elive-k">Paid To Holders</div>
@@ -453,7 +453,7 @@
           <div class="elive-ico">🚫</div>
           <div class="elive-k">Dev's Cut</div>
           <div class="elive-v" id="rwDev">0</div>
-          <div class="elive-sub">not in the fee path</div>
+          <div class="elive-sub">not in tracked rounds</div>
         </div>
         <div class="elive rw">
           <div class="elive-ico">🐂</div>
@@ -468,7 +468,7 @@
           <div class="elive-sub" id="rwRoundsSub">since it switched on</div>
         </div>
       </div>
-      <div class="engine-updated"><span class="live-dot"></span><span id="rwUpdated">loading payout data&hellip;</span><button id="rwRefresh" class="refresh-btn" type="button">🔄 Refresh</button></div>
+      <div class="engine-updated"><span class="live-dot" aria-hidden="true"></span><span id="rwUpdated" role="status">loading payout data&hellip;</span><button id="rwRefresh" class="refresh-btn" type="button">🔄 Refresh</button></div>
 
       <!-- THE ADDRESS — the whole claim rests on this, so it is front and centre -->
       <div class="rw-addr">
@@ -585,7 +585,7 @@
       <div class="section-tag">THE BULLCEMBER HERD</div>
       <h2 class="section-title">Meet the <span class="highlight">Herd</span></h2>
       <div class="herd-count">
-        <span class="herd-num" id="herd-num">…</span>
+        <span class="herd-num" id="herd-num" aria-live="polite">…</span>
         <span class="herd-count-label">🐂 Bulls in the Herd</span>
       </div>
       <div class="herd-milestone">
@@ -601,7 +601,7 @@
         <input id="rank-input" class="rank-input" type="text" placeholder="Paste your wallet address" aria-label="Your Solana wallet address" spellcheck="false" autocomplete="off" />
         <button id="rank-btn" class="rank-btn">Check</button>
       </div>
-      <div class="rank-result" id="rank-result"></div>
+      <div class="rank-result" id="rank-result" aria-live="polite"></div>
       <div class="herd-tiers">
         <div class="herd-tier">
           <svg class="herd-tier-ico" viewBox="0 0 32 32" role="img" aria-label="Calf"><use href="#ico-calf"/></svg>
