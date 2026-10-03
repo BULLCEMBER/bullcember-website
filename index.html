@@ -1077,8 +1077,11 @@ const mcap = fmt(pair.marketCap || pair.fdv);
 
     function enCombined() {
       const cut = enBaseNewest();
-      const live = enLive.filter(e => e.time > cut);
       const b = enBaseline || { burned: { amount: 0, count: 0 }, buyback: { bull: 0, sol: 0, count: 0 }, feed: [] };
+      // The live route re-reads the newest second, matching scripts/scan.mjs.
+      // Events already in the baseline feed are already inside the totals.
+      const seen = new Set((b.feed || []).map(e => e.type + '\0' + e.sig));
+      const live = enLive.filter(e => e.time >= cut && !seen.has(e.type + '\0' + e.sig));
       const of = t => live.filter(e => e.type === t);
       const burnL = of('burn').filter(e => e.time >= BURN_SINCE);
       const sumF = (a, f) => a.reduce((s, e) => s + (e[f] || 0), 0);
@@ -1173,7 +1176,7 @@ const mcap = fmt(pair.marketCap || pair.fdv);
       // entries here are harmless — but dropping them keeps the array from growing
       // on a page left open for hours.
       const cut = enBaseNewest();
-      const merged = [...enLive, ...j.events].filter(e => e.time > cut);
+      const merged = [...enLive, ...j.events].filter(e => e.time >= cut);
       enLive = merged.filter((e, i, a) => a.findIndex(x => x.sig === e.sig && x.type === e.type) === i);
       enLiveAt = Math.floor(Date.now() / 1000);
       enRenderAll();

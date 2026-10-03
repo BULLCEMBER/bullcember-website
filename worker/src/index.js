@@ -152,12 +152,14 @@ function burnAmount(tx) {
   return burned;
 }
 
-// Recent classified engine events newer than `since`. Classification is a port of
+// Recent classified engine events at or after `since`. Classification is a port of
 // scripts/scan.mjs — it has to agree with it exactly, because the browser merges
 // what comes back on top of the totals that script already published.
 //
-// In steady state `since` is the newest event in data/stats.json, so this loop
-// fetches zero or one transaction. The signature pages are the only fixed cost.
+// `since` is the newest event in data/stats.json. The boundary second is re-read,
+// same as scan.mjs: two engine transactions can share it, and stopping on equality
+// dropped the unsaved one until the next stats run. The page dedupes type+sig
+// before adding, so returning the already-saved sibling does not double-count.
 async function getEngine(env, since) {
   const sigs = new Map();
   for (const acct of [DEV_ATA, BOOST]) {
@@ -171,7 +173,8 @@ async function getEngine(env, since) {
       let hitOld = false;
       for (const s of batch) {
         if (s.err || !s.blockTime) continue;
-        if (s.blockTime <= since) { hitOld = true; break; }
+        // `<`, not `<=`. See the comment on getEngine. scan.mjs uses the same test.
+        if (since && s.blockTime < since) { hitOld = true; break; }
         sigs.set(s.signature, true);
       }
       if (hitOld || batch.length < 25) break;

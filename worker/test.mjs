@@ -29,6 +29,20 @@ const boostTx = {
   },
 };
 
+// --- a buyback that lands in the same second as `since` ------------------------
+// scan.mjs re-reads that second. Stopping on blockTime <= since dropped it.
+const sameSecTx = {
+  blockTime: T,
+  transaction: { message: { accountKeys: [{ pubkey: DEV }, { pubkey: POOL }], instructions: [] } },
+  meta: {
+    err: null,
+    preBalances: [1e9, 0], postBalances: [1e9 - 2e7, 0], // dev spends 0.02 SOL
+    innerInstructions: [],
+    preTokenBalances:  [{ owner: DEV, mint: MINT, uiTokenAmount: { uiAmount: 0 } }],
+    postTokenBalances: [{ owner: DEV, mint: MINT, uiTokenAmount: { uiAmount: 111 } }],
+  },
+};
+
 // --- a plain dev buyback: BULLCEMBER in, SOL out ------------------------------
 const devTx = {
   blockTime: T + 200,
@@ -51,13 +65,14 @@ globalThis.fetch = async (url, opts) => {
       const acct = params[0];
       const sigs = acct === DEV_ATA
         ? [{ signature: "DEVSIG", blockTime: T + 200, err: null },
+           { signature: "SAMESEC", blockTime: T, err: null },         // equal to `since`
            { signature: "OLDSIG", blockTime: T - 5000, err: null },   // below `since`
            { signature: "FAILSIG", blockTime: T + 300, err: "boom" }] // failed tx
         : [{ signature: "BOOSTSIG", blockTime: T + 100, err: null }];
       return new Response(JSON.stringify({ jsonrpc: "2.0", result: sigs }));
     }
     const sig = params[0];
-    const tx = sig === "BOOSTSIG" ? boostTx : sig === "DEVSIG" ? devTx : null;
+    const tx = sig === "BOOSTSIG" ? boostTx : sig === "DEVSIG" ? devTx : sig === "SAMESEC" ? sameSecTx : null;
     return new Response(JSON.stringify({ jsonrpc: "2.0", result: tx }));
   }
   if (u.includes(`/addresses/${POOL}/`)) {
@@ -152,7 +167,7 @@ store.clear();
 const eng = await (await call(`/engine?since=${T}`)).json();
 const byType = (t) => eng.events.filter((e) => e.type === t);
 ok("engine: boost tx yields BOTH a burn and a buyback",
-   byType("burn").length === 1 && byType("buyback").length === 2,
+   byType("burn").length === 1 && byType("buyback").some(e => e.sig === "BOOSTSIG") && byType("buyback").some(e => e.sig === "DEVSIG"),
    JSON.stringify(eng.events.map(e => e.type + ":" + e.sig)));
 ok("engine: boost burn amount from parsed instruction", byType("burn")[0].bull === 500000);
 ok("engine: boost spend read off WSOL drop",
@@ -160,6 +175,9 @@ ok("engine: boost spend read off WSOL drop",
 ok("engine: dev buyback = tokens in, SOL out",
    byType("buyback").find(e => e.sig === "DEVSIG").bull === 272065 &&
    byType("buyback").find(e => e.sig === "DEVSIG").sol === 0.1);
+ok("engine: boundary second is re-read",
+   byType("buyback").some(e => e.sig === "SAMESEC" && e.bull === 111 && e.time === T),
+   JSON.stringify(eng.events.map(e => e.sig)));
 ok("engine: failed + pre-`since` sigs skipped", !JSON.stringify(eng.events).includes("OLDSIG") && !JSON.stringify(eng.events).includes("FAILSIG"));
 ok("engine: newest first", eng.events[0].time >= eng.events[eng.events.length - 1].time);
 
