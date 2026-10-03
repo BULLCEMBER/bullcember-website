@@ -782,17 +782,32 @@ const mcap = fmt(pair.marketCap || pair.fdv);
           `<span class="buy-time">${timeAgo(b.ts)}</span></li>`;
       }).join('');
     }
+    // Once a live list has painted, the baseline file must not paint again.
+    // It is often hours older, and the next poll would flash it for the whole
+    // time the Worker call takes. A failed file still has to reach the Worker.
+    let buysFromLive = false;
+    function pickBuys(baseline, live, haveLive) {
+      if (Array.isArray(live) && live.length) return live;
+      if (!haveLive && Array.isArray(baseline) && baseline.length) return baseline;
+      return null;
+    }
     async function fetchBuys() {
+      let baseline = null;
       try {
         const r = await fetch('data/buys.json?t=' + Math.floor(Date.now() / 60000), { cache: 'no-store' });
-        if (!r.ok) return;
-        const j = await r.json();
-        if (Array.isArray(j.buys) && j.buys.length) renderBuys(j.buys);
+        if (r.ok) {
+          const j = await r.json();
+          baseline = j.buys;
+        }
       } catch (e) { console.error('Buy feed load failed:', e); }
-      // Then the live list on top, in sequence. These must NOT be two independent
-      // pollers: on separate intervals the baseline lands second often enough to
-      // overwrite fresher chain data with a file that can be hours old.
-      await fetchBuysLive();
+      const first = pickBuys(baseline, null, buysFromLive);
+      if (first) renderBuys(first);
+      const live = await liveGet('buys');
+      const next = pickBuys(null, live && live.buys, buysFromLive);
+      if (next) {
+        buysFromLive = true;
+        renderBuys(next);
+      }
     }
     // BULLCEMBER graduated to PumpSwap on 2026-08-08 and bonding is one-way, so
     // this can never regress. The PDA is drained and closed, so reading it over
@@ -1039,13 +1054,6 @@ const mcap = fmt(pair.marketCap || pair.fdv);
         if (!r.ok) return null;
         return await r.json();
       } catch (e) { return null; }
-    }
-
-    // Live buys fully replace the baseline list — unlike the engine and rewards
-    // sections there is no cumulative total to preserve, so the newer list simply wins.
-    async function fetchBuysLive() {
-      const j = await liveGet('buys');
-      if (j && Array.isArray(j.buys) && j.buys.length) renderBuys(j.buys);
     }
 
     fetchStats();
