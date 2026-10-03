@@ -369,11 +369,11 @@
         </div>
         <div class="toko-card toko-wide grad-card">
           <div class="grad-head">
-            <div class="toko-label">Bonding Curve Progress</div>
-            <div class="grad-pct" id="grad-pct">0%</div>
+            <div class="toko-label">Bonding Curve</div>
+            <div class="grad-pct" id="grad-pct">Bonded</div>
           </div>
-          <div class="grad-bar"><div class="grad-fill" id="grad-fill"></div></div>
-          <div class="grad-meta" id="grad-meta"><span id="grad-sol">0</span> SOL in the bonding curve, graduates to PumpSwap at 85 SOL</div>
+          <div class="grad-bar"><div class="grad-fill" id="grad-fill" style="width:100%"></div></div>
+          <div class="grad-meta" id="grad-meta">Bonding curve complete, now trading on <span>PumpSwap</span></div>
         </div>
         <div class="toko-card toko-wide">
           <div class="toko-label">Contract Address</div>
@@ -713,7 +713,9 @@
         const priceNative = parseFloat(pair.priceNative);
         if (priceNative) lastSolUsd = lastPriceUsd / priceNative;
         const price = fmtPrice(pair.priceUsd);
-        const mcap = fmt(pair.fdv || pair.marketCap);
+        // Circulating cap. fdv is the fallback because preferring it uses the launch
+// supply whenever DexScreener reports the two separately.
+const mcap = fmt(pair.marketCap || pair.fdv);
         const vol = fmt(pair.volume?.h24);
         const chg = pair.priceChange?.h24;
         document.getElementById('stat-price').textContent = price;
@@ -745,7 +747,8 @@
       if (complete) {
         if (meta) meta.innerHTML = 'Bonding curve complete, now trading on <span>PumpSwap</span>';
       } else {
-        document.getElementById('grad-sol').textContent = sol.toFixed(3);
+        const solEl = document.getElementById('grad-sol');
+        if (solEl) solEl.textContent = sol.toFixed(3);
       }
       // Pre-graduation there's no DexScreener liquidity, so estimate pool depth from the
       // curve's SOL reserve (both sides ≈ 2× the SOL value). Post-graduation fetchStats owns it.
