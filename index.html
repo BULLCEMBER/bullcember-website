@@ -1468,7 +1468,14 @@ const mcap = fmt(pair.marketCap || pair.fdv);
         })));
         priceChart.timeScale().fitContent();
         updateLegend(rawCandles[rawCandles.length - 1]);
-      } catch(e) { console.error('Chart error:', e); }
+      } catch(e) {
+        console.error('Chart error:', e);
+        // Keep candles already on screen. Only say so when the chart is still empty.
+        if (!rawCandles.length) {
+          const leg = document.getElementById('leg-c');
+          if (leg) leg.textContent = 'Chart unavailable';
+        }
+      }
       el.style.opacity = '1';
     }
     function initChart() {
