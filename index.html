@@ -351,7 +351,7 @@
         <div class="toko-card">
           <div class="toko-label">Total Supply</div>
           <div class="toko-value" id="toko-supply">930,494,005</div>
-          <div class="toko-sub" id="toko-burned">69.51M burned of 1B · 6.95%</div>
+          <div class="toko-sub" id="toko-burned">69.51M gone from the 1B launch supply · 6.95%</div>
         </div>
         <div class="toko-card toko-wide">
           <div class="toko-label">Timeline</div>
@@ -407,6 +407,7 @@
           <div class="elive-sub" id="enBuySub">off the market</div>
         </div>
       </div>
+      <p class="engine-gap" id="enBurnGap" hidden></p>
       <div class="engine-updated"><span class="live-dot" aria-hidden="true"></span><span id="enUpdated" role="status">loading on-chain data…</span><button id="enRefresh" class="refresh-btn" type="button">🔄 Refresh</button></div>
 
       <!-- LIVE ACTIVITY FEED -->
@@ -864,7 +865,8 @@
       const sEl = document.getElementById('toko-supply');
       if (sEl) sEl.textContent = Math.floor(supply).toLocaleString();
       const bEl = document.getElementById('toko-burned');
-      if (bEl) bEl.textContent = fmtTok(burned) + ' burned of 1B · ' + (burned / LAUNCH_SUPPLY * 100).toFixed(2) + '%';
+      if (bEl) bEl.textContent = fmtTok(burned) + ' gone from the 1B launch supply · ' + (burned / LAUNCH_SUPPLY * 100).toFixed(2) + '%';
+      if (typeof updateBurnGap === 'function') updateBurnGap();
       if (lastBalances) renderHerd(lastBalances);
       if (typeof refreshMcap === 'function') refreshMcap();
     }
@@ -1087,10 +1089,27 @@
       return { totals, feed, live: live.length };
     }
 
+    // Launch supply minus the mint's current supply counts every burn. The Bullpen
+    // only lists burns the engine scanner tied to the dev wallet or the boost vault.
+    // The difference is real supply, with no receipt in that list. Do not invent a cause.
+    function burnGapText(launch, supply, listed) {
+      const gap = (launch - supply) - listed;
+      if (!(listed > 0) || !(gap > 1)) return '';
+      return 'Supply is ' + Math.round(gap).toLocaleString() + ' tokens lower than the burns listed here. Those extra tokens are gone from the mint, and this list has no transaction for them.';
+    }
+    function updateBurnGap() {
+      const el = document.getElementById('enBurnGap');
+      if (!el) return;
+      const listed = typeof enCombined === 'function' ? enCombined().totals.burned.amount : 0;
+      const text = burnGapText(LAUNCH_SUPPLY, TOTAL_SUPPLY, listed);
+      el.hidden = !text;
+      el.textContent = text;
+    }
     function enRenderAll() {
       const c = enCombined();
       enSetV('enBurned', fmtTok(c.totals.burned.amount));
-      enSetV('enBurnedSub', c.totals.burned.count ? c.totals.burned.count + ' burn' + (c.totals.burned.count === 1 ? '' : 's') : 'nothing burned yet');
+      enSetV('enBurnedSub', c.totals.burned.count ? c.totals.burned.count + ' engine burn' + (c.totals.burned.count === 1 ? '' : 's') : 'nothing burned yet');
+      updateBurnGap();
       enSetV('enBuy', fmtTok(c.totals.buyback.bull));
       const parts = [];
       if (c.totals.buyback.count) parts.push(c.totals.buyback.count + ' buys');

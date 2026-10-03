@@ -1616,6 +1616,13 @@ section { padding: var(--section-y) 0; }
   font-size: var(--t-md);
 }
 .engine-lead strong { color: var(--fg); font-weight: 600; }
+.engine-gap {
+  max-width: 62ch;
+  margin: var(--s-4) 0 0;
+  color: var(--muted);
+  line-height: var(--lh-body);
+  font-size: var(--t-sm);
+}
 
 /* live on-chain tiles */
 .engine-live {
