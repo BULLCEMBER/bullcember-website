@@ -1472,12 +1472,23 @@ const mcap = fmt(pair.marketCap || pair.fdv);
       if (!Array.isArray(j.candles) || !j.candles.length) throw new Error('ohlcv empty');
       return j.candles;
     }
-    async function loadTf(tf) {
+    // The highlighted button is the timeframe on screen. A click stays dim until
+    // its candles arrive, and a slower response must not paint over a newer one.
+    let chartTf = '1H';
+    let chartLoad = 0;
+    function markTf(tf) {
       document.querySelectorAll('.tf-btn').forEach(b => b.classList.toggle('active', b.dataset.tf === tf));
+    }
+    async function loadTf(tf) {
+      const gen = ++chartLoad;
       const el = document.getElementById('price-chart');
       el.style.opacity = '0.4';
       try {
-        rawCandles = await fetchCandles(tf);
+        const candles = await fetchCandles(tf);
+        if (gen !== chartLoad) return;
+        chartTf = tf;
+        markTf(tf);
+        rawCandles = candles;
         candleMap = new Map(rawCandles.map(c => [c.time, c]));
         hoverTime = null;
         setFormat(showMCap);
@@ -1489,14 +1500,16 @@ const mcap = fmt(pair.marketCap || pair.fdv);
         priceChart.timeScale().fitContent();
         updateLegend(rawCandles[rawCandles.length - 1]);
       } catch(e) {
+        if (gen !== chartLoad) return;
         console.error('Chart error:', e);
+        markTf(chartTf);
         // Keep candles already on screen. Only say so when the chart is still empty.
         if (!rawCandles.length) {
           const leg = document.getElementById('leg-c');
           if (leg) leg.textContent = 'Chart unavailable';
         }
       }
-      el.style.opacity = '1';
+      if (gen === chartLoad) el.style.opacity = '1';
     }
     function initChart() {
       const container = document.getElementById('price-chart');
