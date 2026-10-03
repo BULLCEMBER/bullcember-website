@@ -1413,6 +1413,12 @@ const mcap = fmt(pair.marketCap || pair.fdv);
     // Candles come from the Worker (/ohlcv). Market cap uses the circulating supply
     // from stats.json (TOTAL_SUPPLY), which applySupply() keeps current.
     let priceChart, candleSeries, volSeries, rawCandles = [], candleMap = new Map(), showMCap = false;
+    // null means the pointer is not on a candle, so the legend shows the latest bar.
+    let hoverTime = null;
+    function legendCandle() {
+      if (hoverTime != null && candleMap.has(hoverTime)) return candleMap.get(hoverTime);
+      return rawCandles.length ? rawCandles[rawCandles.length - 1] : null;
+    }
     function fmtLeg(p) {
       if (p == null) return '…';
       if (showMCap) {
@@ -1428,7 +1434,7 @@ const mcap = fmt(pair.marketCap || pair.fdv);
     }
     function updateLegend(c) {
       if (!c) return;
-      const chg = ((c.close - c.open) / c.open * 100);
+      const chg = c.open ? ((c.close - c.open) / c.open * 100) : 0;
       document.getElementById('leg-o').textContent = fmtLeg(c.open);
       document.getElementById('leg-h').textContent = fmtLeg(c.high);
       document.getElementById('leg-l').textContent = fmtLeg(c.low);
@@ -1455,7 +1461,7 @@ const mcap = fmt(pair.marketCap || pair.fdv);
       if (!showMCap || !candleSeries) return;
       setFormat(true);
       candleSeries.setData(displayCandles());
-      updateLegend(rawCandles[rawCandles.length - 1]);
+      updateLegend(legendCandle());
     }
     async function fetchCandles(tf) {
       const r = await fetch(`${LIVE_API}/ohlcv?tf=${encodeURIComponent(tf)}`, { cache: 'no-store' });
@@ -1471,6 +1477,7 @@ const mcap = fmt(pair.marketCap || pair.fdv);
       try {
         rawCandles = await fetchCandles(tf);
         candleMap = new Map(rawCandles.map(c => [c.time, c]));
+        hoverTime = null;
         setFormat(showMCap);
         candleSeries.setData(displayCandles());
         volSeries.setData(rawCandles.map(c => ({
@@ -1511,10 +1518,8 @@ const mcap = fmt(pair.marketCap || pair.fdv);
       });
       priceChart.priceScale('vol').applyOptions({ scaleMargins: { top: 0.82, bottom: 0 } });
       priceChart.subscribeCrosshairMove(param => {
-        const raw = (param.time && candleMap.has(param.time))
-          ? candleMap.get(param.time)
-          : rawCandles[rawCandles.length - 1];
-        updateLegend(raw);
+        hoverTime = param.time != null && candleMap.has(param.time) ? param.time : null;
+        updateLegend(legendCandle());
       });
       new ResizeObserver(() => priceChart.applyOptions({ width: container.clientWidth })).observe(container);
       document.querySelectorAll('.tf-btn').forEach(btn =>
@@ -1527,9 +1532,9 @@ const mcap = fmt(pair.marketCap || pair.fdv);
           setFormat(showMCap);
           candleSeries.setData(displayCandles());
           priceChart.timeScale().fitContent();
-          // The axis changes here. The OHLC line reads showMCap too, so leaving
-          // it for the next crosshair move keeps price figures over a cap chart.
-          updateLegend(rawCandles[rawCandles.length - 1]);
+          // The axis changes here. Keep whichever bar the legend was already
+          // reading, including one the crosshair is sitting on.
+          updateLegend(legendCandle());
         })
       );
       loadTf('1H');
