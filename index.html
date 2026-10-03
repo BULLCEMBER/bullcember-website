@@ -1527,6 +1527,9 @@ const mcap = fmt(pair.marketCap || pair.fdv);
           setFormat(showMCap);
           candleSeries.setData(displayCandles());
           priceChart.timeScale().fitContent();
+          // The axis changes here. The OHLC line reads showMCap too, so leaving
+          // it for the next crosshair move keeps price figures over a cap chart.
+          updateLegend(rawCandles[rawCandles.length - 1]);
         })
       );
       loadTf('1H');
