@@ -339,7 +339,6 @@
         <div class="toko-card">
           <div class="toko-label">Total Supply</div>
           <div class="toko-value" id="toko-supply">1,000,000,000</div>
-          <div class="toko-sub" id="toko-burned">nothing burned yet</div>
         </div>
         <div class="toko-card toko-wide">
           <div class="toko-label">Timeline</div>
@@ -697,14 +696,10 @@ const mcap = fmt(pair.marketCap || pair.fdv);
     }
 
     const TOKEN_DECIMALS = 1e6;
-    const LAUNCH_SUPPLY = 1e9;
     // Mint authority is null, so nothing can be minted and on-chain supply IS the
-    // circulating supply. It shrinks if anyone burns. Holder shares have to divide by the
-    // live number, not the 1B the token launched with, or every share reads low.
-    // Chain supply on 2026-10-03. applySupply() replaces this as soon as stats.json loads.
-    // The chart's market-cap mode multiplies by this number, so it must not be the
-    // 1B launch supply or the candles draw about 7% high.
-    let TOTAL_SUPPLY = 930494005;
+    // circulating supply. Holder shares and the chart's market-cap mode divide or
+    // multiply by it. applySupply() replaces this with chain supply from stats.json.
+    let TOTAL_SUPPLY = 1e9;
     let lastBalances = null;
     const HERD_MILESTONES = [100, 250, 500, 1000, 2500, 5000, 10000, 25000, 50000, 100000];
     let herdTotal = 0, herdVisible = false, herdAnimated = false, herdRanked = [];
@@ -742,11 +737,8 @@ const mcap = fmt(pair.marketCap || pair.fdv);
     function applySupply(supply) {
       if (!supply || supply <= 0) return;
       TOTAL_SUPPLY = supply;
-      const burned = LAUNCH_SUPPLY - supply;
       const sEl = document.getElementById('toko-supply');
       if (sEl) sEl.textContent = Math.floor(supply).toLocaleString();
-      const bEl = document.getElementById('toko-burned');
-      if (bEl) bEl.textContent = fmtTok(burned) + ' gone from the 1B launch supply · ' + (burned / LAUNCH_SUPPLY * 100).toFixed(2) + '%';
       if (lastBalances) renderHerd(lastBalances);
       if (typeof refreshMcap === 'function') refreshMcap();
     }
