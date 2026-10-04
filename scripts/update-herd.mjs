@@ -19,7 +19,6 @@ const DATA = join(__dirname, "..", "data");
 const HERD = join(DATA, "herd.json");
 const BUYS = join(DATA, "buys.json");
 
-// Relaunched 2026-10-03. The first mint (DTRmPLZ...) and its pool are retired.
 const MINT = "EUpN7RE7YLXmtF4FDuE4j7hqDhoogGqnbnKCcq3Upump";
 // The PumpSwap pool pump.fun reports for this mint. It does not exist until the
 // curve graduates, so reading it before then just returns nothing.

@@ -12,10 +12,9 @@ const USDC = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
 const DEV = "BXrU6jcjtZnar27jfWCXXhr9EqQGcFvyfnpC9cRjYLmC";
 const DEV_ATA = "9eFXRtXE5FoPFmUMPWkjf7kS6WrUihNGyVBXsUhHLbcS";
 const BOOST = "BGVtkQcLUWtsm6FeZQrk12yXyDDYj9PhvmytYDKcDv5v";
-const DIST = "7D2dJwtSH4dmM19MzJk1ms9kH5gmpbRbGaCXURmVdhQc";
 const WSOL = "So11111111111111111111111111111111111111112";
 
-const T = 1791100000; // after the relaunch, so BUYBACK_AFTER does not filter fixtures
+const T = 1791100000; // after launch, so BUYBACK_AFTER does not filter fixtures
 let upstreamCalls = 0;
 
 // --- a pump.fun boost tx: buys and burns atomically under one signature --------
@@ -135,22 +134,6 @@ globalThis.fetch = async (url, opts) => {
     ]));
   }
   if (u.includes(`/addresses/${FUTURE_POOL}/`)) return new Response("[]");
-  if (u.includes(`/addresses/${DIST}/`)) {
-    return new Response(JSON.stringify([
-      // newest first, as the enhanced API returns
-      { signature: "FEE", timestamp: T + 60, nativeTransfers: [{ fromUserAccount: DIST, toUserAccount: "pumpfee", amount: 69300 }] },
-      { signature: "FANOUT2", timestamp: T + 50, nativeTransfers: [
-        { fromUserAccount: DIST, toUserAccount: "w3", amount: 30000000 },
-        { fromUserAccount: DIST, toUserAccount: "w4", amount: 20000000 }] },
-      { signature: "FANOUT1", timestamp: T + 45, nativeTransfers: [
-        { fromUserAccount: DIST, toUserAccount: "w1", amount: 100000000 },
-        { fromUserAccount: DIST, toUserAccount: "w2", amount: 50000000 }] },
-      { signature: "WITHDRAW", timestamp: T + 40, nativeTransfers: [{ fromUserAccount: "vault", toUserAccount: DIST, amount: 200069300 }] },
-      { signature: "ANCIENT", timestamp: T - 9000, nativeTransfers: [
-        { fromUserAccount: DIST, toUserAccount: "w9", amount: 777 },
-        { fromUserAccount: DIST, toUserAccount: "w8", amount: 777 }] },
-    ]));
-  }
   // --- birdeye OHLCV, for /volume. 1000*0.5 + 2000*0.25 = 1000 -----------------
   if (u.includes("birdeye")) {
     upstreamCalls++;
@@ -244,34 +227,6 @@ store.clear();
 const curve = await (await call("/curve")).json();
 ok("curve: progress from real_token reserve", curve.pct === 64.32 && curve.complete === false, JSON.stringify(curve));
 ok("curve: PUMP in the curve, 6dp", Math.abs(curve.quote - 619736.737946) < 1e-6);
-
-// ---- rewards -----------------------------------------------------------------
-store.clear();
-const rw = await (await call(`/rewards?since=${T}`)).json();
-ok("rewards: fan-out batches inside ROUND_GAP bucket into one round", rw.rounds.length === 1, JSON.stringify(rw.rounds));
-ok("rewards: round sums both batches", rw.rounds[0].sol === 0.2);
-ok("rewards: wallets deduped across batches", rw.rounds[0].wallets === 4);
-// 6dp is the published convention (update-rewards.mjs uses +(x/1e9).toFixed(6)),
-// so the Worker's delta and the baseline it gets added to are on the same scale.
-ok("rewards: lone-transfer tx booked as overhead, not a payout", rw.overheadSol === 0.000069);
-ok("rewards: inbound counted as collected", rw.collectedSol === 0.200069);
-ok("rewards: pre-`since` round excluded", !JSON.stringify(rw.rounds).includes("ANCIENT"));
-ok("rewards: collected = paid + overhead (no dust here)",
-   Math.abs(rw.collectedSol - (rw.rounds[0].sol + rw.overheadSol)) < 1e-9);
-
-// Regression: the flat fee lands ~9s AFTER the round it pays for, so when `since`
-// is that round's timestamp the fee sits just past the cutoff. Returning it would
-// double-bill overhead against a baseline that already counted it.
-store.clear();
-// since = T+50, the bucket's MAX timestamp — which is what update-rewards.mjs
-// publishes as lastRound (bucket.time = Math.max(bucket.time, tx.timestamp)).
-const trailing = await (await call(`/rewards?since=${T + 50}`)).json();
-ok("rewards: trailing fee of an already-counted round is NOT re-reported",
-   trailing.overheadSol === 0, `got ${trailing.overheadSol}`);
-// A fee far enough past `since` is a genuinely new round's fee and must still count.
-store.clear();
-const older = await (await call(`/rewards?since=${T - 600}`)).json();
-ok("rewards: a fee beyond ROUND_GAP still counts as overhead", older.overheadSol === 0.000069);
 
 // ---- cache -------------------------------------------------------------------
 store.clear();

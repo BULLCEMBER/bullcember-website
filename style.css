@@ -2514,184 +2514,6 @@ body::after {
 html { overflow-x: clip; }
 
 /* ============================================================================
-   REWARDS LAYER — the fee switch (hot topic banner + holder payout tracker)
-   Leans on the existing .elive / .feed / .herd-board furniture so the tracker
-   reads as the same instrument panel as the Bullpen; only the pieces with no
-   existing equivalent are defined here.
-   ========================================================================= */
-
-/* ---- HOT TOPIC ---------------------------------------------------------- */
-/* Sits between hero and countdown. Green (--accent), not purple, so it reads as
-   a separate announcement rather than more hero furniture. */
-.hot-topic { padding: var(--s-6) 0 0; }
-.hot-inner {
-  display: flex;
-  align-items: center;
-  gap: var(--s-5);
-  padding: var(--s-5) var(--s-6);
-  background: var(--surface);
-  border: 2px solid var(--accent);
-  box-shadow: 4px 4px 0 #000;
-  transform: rotate(-0.35deg);
-  transition: transform var(--dur-1) var(--ease), box-shadow var(--dur-1) var(--ease);
-}
-.hot-inner:hover { transform: rotate(-0.35deg) translate(-2px, -2px); box-shadow: 6px 6px 0 #000; }
-.hot-stamp {
-  flex: none;
-  align-self: flex-start;
-  font-family: var(--f-mono);
-  font-size: var(--t-2xs);
-  font-weight: 700;
-  letter-spacing: var(--ls-label);
-  text-transform: lowercase;
-  color: var(--on-accent);
-  background: var(--accent);
-  padding: var(--s-1) var(--s-2);
-  transform: rotate(-3deg);
-}
-.hot-body { flex: 1; min-width: 0; }
-.hot-head {
-  display: block;
-  font-family: var(--f-display);
-  font-size: var(--t-md);
-  font-weight: 700;
-  letter-spacing: var(--ls-display);
-  color: var(--bone);
-  line-height: var(--lh-snug);
-}
-.hot-sub {
-  display: block;
-  margin-top: var(--s-1);
-  font-family: var(--f-mono);
-  font-size: var(--t-xs);
-  color: var(--fg-dim);
-  line-height: var(--lh-snug);
-}
-.hot-num { color: var(--accent-ink); font-weight: 700; }
-.hot-ca { color: var(--signal-ink); font-weight: 700; word-break: break-all; }
-.hot-cta {
-  flex: none;
-  font-family: var(--f-mono);
-  font-size: var(--t-xs);
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: lowercase;
-  color: var(--accent-ink);
-  white-space: nowrap;
-}
-
-/* ---- SECTION ------------------------------------------------------------ */
-/* Engine and Partners are both --bg-2; --bg here keeps the band alternating. */
-.rewards { background: var(--bg); }
-.rewards code {
-  font-family: var(--f-mono);
-  font-size: 0.92em;
-  color: var(--accent-ink);
-  background: var(--surface-2);
-  padding: 1px var(--s-1);
-  border-radius: var(--r-xs);
-}
-
-/* ---- TILES -------------------------------------------------------------- */
-/* Four tiles instead of the engine's two: 4-up on desktop, 2x2 on tablet. */
-.rw-tiles { grid-template-columns: repeat(4, 1fr); }
-/* Four tiles occupy the width the engine gives two, and these numbers are long
-   (0.5952, not 69.4M), so the inherited display size overflows and clips the
-   last glyph. Size is stepped per column count, not per viewport alone. */
-.rw-tiles .elive-v { font-size: clamp(2rem, 4.4vw, 3.9rem); }
-.elive.rw  { border-top: 4px solid var(--accent); transform: rotate(-0.4deg); }
-.elive.dev { border-top: 4px solid var(--line-strong); transform: rotate(0.5deg); }
-.elive.rw .elive-v  { color: var(--accent-ink); text-shadow: 4px 4px 0 #000; }
-/* The zero is the point of the tile, so it gets the same weight as a real
-   number rather than being dimmed into looking like missing data. */
-.elive.dev .elive-v { color: var(--muted); text-shadow: 4px 4px 0 #000; }
-
-/* ---- DISTRIBUTOR ADDRESS ------------------------------------------------ */
-.rw-addr {
-  margin: var(--s-6) 0;
-  padding: var(--s-5) var(--s-6);
-  background: var(--surface);
-  border: 2px solid var(--line-strong);
-  box-shadow: 3px 3px 0 #000;
-}
-.rw-addr-row { display: flex; align-items: center; gap: var(--s-4); flex-wrap: wrap; }
-.rw-addr-k {
-  font-family: var(--f-mono);
-  font-size: var(--t-2xs);
-  font-weight: 600;
-  letter-spacing: var(--ls-label);
-  text-transform: lowercase;
-  color: var(--muted);
-}
-.rw-addr-v {
-  flex: 1;
-  min-width: 0;
-  font-family: var(--f-mono);
-  font-size: var(--t-sm);
-  color: var(--accent-ink);
-  word-break: break-all;
-  transition: color var(--dur-1) var(--ease);
-}
-.rw-addr-v:hover { color: var(--bone); }
-.rw-copy {
-  flex: none;
-  font-family: var(--f-mono);
-  font-size: var(--t-2xs);
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: lowercase;
-  color: var(--fg-dim);
-  background: var(--bg-2);
-  border: 1px solid var(--line-strong);
-  padding: var(--s-2) var(--s-3);
-  cursor: pointer;
-  transition: color var(--dur-1) var(--ease), border-color var(--dur-1) var(--ease);
-}
-.rw-copy:hover { color: var(--accent-ink); border-color: var(--accent); }
-.rw-addr-note {
-  margin-top: var(--s-3);
-  font-family: var(--f-mono);
-  font-size: var(--t-2xs);
-  line-height: var(--lh-snug);
-  color: var(--muted);
-}
-.rw-pending { color: var(--fg-dim); }
-
-/* ---- PAYOUT FEED + BOARD ------------------------------------------------ */
-/* Payouts are SOL going out to holders — green, so it can never be mistaken
-   for the purple buyback rows or the red burn rows in the Bullpen feed. */
-.feed-row.reward .feed-amt { color: var(--accent-ink); }
-.rw-board-wrap { max-width: 720px; margin-top: var(--s-10); }
-.rw-board-wrap .herd-row:first-child { box-shadow: inset 2px 0 0 var(--accent); }
-.rw-cards { margin-top: var(--s-10); }
-
-@media (max-width: 900px) {
-  .rw-tiles { grid-template-columns: 1fr 1fr; }
-  .rw-tiles .elive-v { font-size: clamp(2rem, 7vw, 3.4rem); }
-}
-@media (max-width: 768px) {
-  .hot-inner {
-    flex-wrap: wrap;
-    gap: var(--s-3);
-    transform: none;
-    padding: var(--s-4) var(--s-5);
-  }
-  .hot-inner:hover { transform: translate(-2px, -2px); }
-  /* Full row, or the stamp and CTA squeeze the body into a one-word column —
-     the relaunch banner carries a 44-character address, so it showed at once. */
-  .hot-body { flex-basis: 100%; }
-  .hot-head { font-size: var(--t-base); }
-  .elive.rw, .elive.dev { transform: none; }
-  .elive.rw .elive-v, .elive.dev .elive-v { text-shadow: 3px 3px 0 #000; }
-  .rw-addr-v { font-size: var(--t-2xs); }
-}
-@media (max-width: 480px) {
-  .rw-tiles { grid-template-columns: 1fr; }
-  /* back to one column, so the number has the full card again */
-  .rw-tiles .elive-v { font-size: clamp(2.4rem, 12.5vw, 3.6rem); }
-}
-
-/* ============================================================================
    NEON LAYER — the tube effect
    The palette above supplies the colour; this supplies the light. Sits last so
    it beats the hard-offset shadows the trench layer put on display type,
@@ -2750,18 +2572,9 @@ html { overflow-x: clip; }
   text-shadow: 0 0 6px rgba(255, 59, 31, 0.26),
                0 0 20px rgba(255, 59, 31, 0.10);
 }
-.elive.rw .elive-v {
-  color: var(--accent);
-  text-shadow: var(--glow-accent);
-}
-/* dev tile is deliberately unlit: it reports zero and should not draw the eye */
-.elive.dev .elive-v { color: var(--muted); text-shadow: none; }
 @media (max-width: 768px) {
   .elive.burn .elive-v,
-  .elive.buy  .elive-v,
-  .elive.rw   .elive-v,
-  .elive.dev  .elive-v { text-shadow: inherit; }
-  .elive.dev  .elive-v { text-shadow: none; }
+  .elive.buy  .elive-v { text-shadow: inherit; }
 }
 
 /* ---- stamped eyebrows: the border becomes the tube ----------------------
@@ -2910,15 +2723,13 @@ body { text-transform: lowercase; }
 
 /* CASE-SENSITIVE — DO NOT LOWER-CASE THESE.
    Solana addresses and transaction signatures are base58, which IS
-   case-sensitive: DTRmPLZ... and dtrmplz... are different strings and only one
+   case-sensitive: EUpN7RE... and eupn7re... are different strings and only one
    of them is the real mint. A copy button is unaffected (it reads textContent,
    not the rendered transform) so the clipboard stays correct either way — but
    anyone reading an address off the screen, or eyeballing it against a block
    explorer, would be checking a corrupted string. That is a money mistake, so
    these opt out explicitly, and any new address element must be added here. */
 .toko-ca-text,             /* the contract address */
-.hot-ca,                   /* new + retired CA in the relaunch banner */
-.rw-addr-v,                /* fee distributor */
 .herd-addr,                /* leaderboard wallets */
 .buy-addr,                 /* truncated buyer wallet in the live feed */
 .rank-input,               /* wallet the visitor pastes in */

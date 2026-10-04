@@ -12,7 +12,7 @@ const DATA = join(__dirname, "..", "data");
 const STATS = join(DATA, "stats.json");
 const EVENTS = join(DATA, "events.json");
 
-const MINT = "EUpN7RE7YLXmtF4FDuE4j7hqDhoogGqnbnKCcq3Upump"; // relaunched 2026-10-03
+const MINT = "EUpN7RE7YLXmtF4FDuE4j7hqDhoogGqnbnKCcq3Upump";
 const INITIAL_SUPPLY = 1_000_000_000;
 const RPC = process.env.RPC_URL || "https://api.mainnet-beta.solana.com";
 // Count dev-wallet burns from launch (pump.fun, 2026-10-03 21:03:35 UTC). The mint
@@ -43,7 +43,7 @@ async function main() {
   // Only scan transactions newer than what we already have.
   // On failure, keep the previous event log. Merging a partial scan is what lets
   // the cursor walk past a transaction that never got fetched. The workflow greps
-  // for this exact phrase and turns the job red without blocking herd or rewards.
+  // for this exact phrase and turns the job red without blocking herd or buys.
   let scanFailed = false;
   const fresh = await scan(sinceTime).catch((e) => {
     console.error("engine scan failed:", e.message);

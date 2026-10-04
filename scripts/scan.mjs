@@ -8,7 +8,6 @@
 // Total burned for the headline tile is itemized from the burn events we attribute.
 
 const RPC = process.env.RPC_URL || "https://api.mainnet-beta.solana.com";
-// Relaunched 2026-10-03. The first mint (DTRmPLZ...) is retired.
 const MINT = "EUpN7RE7YLXmtF4FDuE4j7hqDhoogGqnbnKCcq3Upump";
 // This launch is quoted in PUMP: creator fees are paid in PUMP and the dev buys
 // back with PUMP, so a buyback shows as PUMP out rather than lamports out.
@@ -23,8 +22,7 @@ const BUYBACK_AFTER = 1791061415;
 const DEV = "BXrU6jcjtZnar27jfWCXXhr9EqQGcFvyfnpC9cRjYLmC"; // pump.fun creator / fee wallet
 // pump.fun "boost" vault. On graduation it takes a slice of the migration SOL and spends
 // it buying BULLCEMBER on PumpSwap, burning each buy inside the same transaction. The
-// tokens never touch the dev wallet, so a DEV-only scan is blind to every bit of it —
-// on 2026-08-08 that was 17.58 SOL and 39.09M BULLCEMBER the engine never saw.
+// tokens never touch the dev wallet, so a DEV-only scan is blind to every bit of it.
 // The vault is shared across coins: most of its signatures are other coins' failed txs
 // (allSigs drops those) and burnAmount() filters whatever survives down to our mint.
 const BOOST = "BGVtkQcLUWtsm6FeZQrk12yXyDDYj9PhvmytYDKcDv5v";
@@ -50,9 +48,9 @@ async function rpc(method, params, tries = 8) {
 // so it is CONSTANT. The account at that address can be created and closed
 // repeatedly, but the address never changes and signatures stay indexed against it.
 //
-// On 2026-08-01 (first mint) the dev burned its remaining balance and closed the
-// account in one transaction. getTokenAccountsByOwner then returned zero accounts,
-// and the scan silently reported "no new events" while a 1.7M burn sat unrecorded.
+// If the dev burns its whole balance and closes the account, getTokenAccountsByOwner
+// returns zero accounts, and a scan keyed on it would silently report "no new events"
+// while the burn sits unrecorded.
 // Must stay in agreement with DEV_ATA in worker/src/index.js.
 const DEV_ATA_ADDR = "9eFXRtXE5FoPFmUMPWkjf7kS6WrUihNGyVBXsUhHLbcS";
 

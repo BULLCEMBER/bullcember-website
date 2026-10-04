@@ -16,7 +16,6 @@
 // best-effort top-up, so if this Worker is down, unreachable, or never deployed,
 // the site renders exactly as it did before.
 
-// Relaunched 2026-10-03. The first mint (DTRmPLZ…) and its PumpSwap pool are retired.
 const MINT = "EUpN7RE7YLXmtF4FDuE4j7hqDhoogGqnbnKCcq3Upump";
 // pump.fun bonding curve PDA. Pre-graduation every trade goes through it.
 const CURVE = "CrFq4zNsEAEZqdmJWy9aWarZDSb1FLx64RbfUW7mVbvJ";
@@ -37,14 +36,12 @@ const DEV_ATA = "9eFXRtXE5FoPFmUMPWkjf7kS6WrUihNGyVBXsUhHLbcS";
 // Buybacks count strictly after this second. Same value as scan.mjs.
 const BUYBACK_AFTER = 1791061415;
 const BOOST = "BGVtkQcLUWtsm6FeZQrk12yXyDDYj9PhvmytYDKcDv5v";
-const DISTRIBUTOR = "7D2dJwtSH4dmM19MzJk1ms9kH5gmpbRbGaCXURmVdhQc";
 
 const DECIMALS = 6;
 const WSOL = "So11111111111111111111111111111111111111112";
 const SOL_FEE_FLOOR = 0.0005;
 const PUMP_FLOOR = 1; // ignore PUMP dust when tagging a buyback
 const USDC_FLOOR = 0.01;
-const ROUND_GAP = 600;
 const WANT_BUYS = 12;
 
 // 4321 is the port in .claude/launch.json, so the local preview can exercise the
@@ -63,14 +60,14 @@ const ALLOWED_ORIGINS = [
 // lifetime cumulative figure that the page only ever refreshes once a day, so an
 // hour at the edge is generous — and it caps Birdeye at 24 calls a day for the
 // entire internet, which is the whole point of putting it behind here.
-const TTL = { buys: 15, engine: 45, rewards: 45, volume: 3600, ohlcv: 120, curve: 30 };
+const TTL = { buys: 15, engine: 45, volume: 3600, ohlcv: 120, curve: 30 };
 // Chart timeframes the page can ask for. Anything else is a 400, not a Birdeye call.
 const OHLCV_TF = {
   "1H": 30 * 24 * 3600, // last 30 days of hourly candles
   "4H": null,           // from launch
   "1D": null,
 };
-const LAUNCH_TS = 1791061000; // a little before the 2026-10-03 relaunch
+const LAUNCH_TS = 1791061000; // a little before the 2026-10-03 launch
 
 const cors = (origin) => ({
   "access-control-allow-origin": ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0],
@@ -278,69 +275,6 @@ async function getEngine(env, since) {
   return { updatedAt: new Date().toISOString(), since, events };
 }
 
-// ---------------------------------------------------------------- rewards ---
-// Payout rounds newer than `since`, bucketed the same way scripts/update-rewards.mjs
-// buckets them. Returns only the delta; the browser adds it to the cumulative totals
-// in data/rewards.json rather than trying to recompute all-time state here.
-async function getRewards(env, since) {
-  const txns = await enhanced(env, DISTRIBUTOR, 60);
-
-  const rounds = [];
-  let collected = 0;
-  let overhead = 0;
-
-  // Oldest first so rounds bucket in chronological order.
-  for (const tx of txns.slice().reverse()) {
-    if (!tx.timestamp || tx.timestamp <= since) continue;
-    const native = tx.nativeTransfers || [];
-    const outs = native.filter((n) => n.fromUserAccount === DISTRIBUTOR);
-
-    for (const n of native.filter((n) => n.toUserAccount === DISTRIBUTOR)) collected += n.amount;
-    if (outs.length === 0) continue;
-
-    // pump.fun's flat per-round fee ships alone in its own transaction; holder
-    // payouts always arrive as a fan-out batch. Splitting on batch size keeps the
-    // headline "paid to holders" figure honest without hardcoding an address.
-    if (outs.length === 1) {
-      // ...but that fee lands a few seconds AFTER the round it pays for, while
-      // `since` is the round's own timestamp. So the trailing fee of the round the
-      // caller already has sits just past the cutoff and would be handed back as a
-      // delta the baseline has already counted — double-billing the overhead and
-      // under-reporting pending by the same amount.
-      //
-      // Transactions are walked oldest-first, so a fee arriving before any new round
-      // has been bucketed must belong to the round at `since`. Once a new round IS
-      // open, the fee pays for THAT round and has to count — which is why this tests
-      // rounds.length rather than the timestamp alone.
-      if (rounds.length === 0 && since && tx.timestamp - since <= ROUND_GAP) continue;
-      overhead += outs[0].amount;
-      continue;
-    }
-
-    const last = rounds[rounds.length - 1];
-    const bucket =
-      last && tx.timestamp - last.time <= ROUND_GAP
-        ? last
-        : (rounds.push({ time: tx.timestamp, lamports: 0, payees: [], sig: tx.signature }),
-           rounds[rounds.length - 1]);
-
-    const seen = new Set(bucket.payees);
-    for (const n of outs) { bucket.lamports += n.amount; seen.add(n.toUserAccount); }
-    bucket.time = Math.max(bucket.time, tx.timestamp);
-    bucket.payees = [...seen];
-  }
-
-  return {
-    updatedAt: new Date().toISOString(),
-    since,
-    rounds: rounds
-      .map((r) => ({ time: r.time, sol: +(r.lamports / 1e9).toFixed(6), wallets: r.payees.length, sig: r.sig }))
-      .sort((a, b) => b.time - a.time),
-    collectedSol: +(collected / 1e9).toFixed(6),
-    overheadSol: +(overhead / 1e9).toFixed(6),
-  };
-}
-
 // ------------------------------------------------------------------ router ---
 // Lifetime traded volume, summed across the full daily OHLCV history.
 //
@@ -415,7 +349,7 @@ export default {
     const route = url.pathname.replace(/\/+$/, "").split("/").pop();
     if (!TTL[route]) return new Response("not found", { status: 404, headers: cors(origin) });
     // /volume and /ohlcv front Birdeye. Everything else fronts Helius. Gate per
-    // route, so a missing Birdeye secret cannot take down buys, engine, or rewards.
+    // route, so a missing Birdeye secret cannot take down buys, engine, or curve.
     const needs = route === "volume" || route === "ohlcv" ? "BIRDEYE_KEY" : "HELIUS_KEY";
     if (!env[needs]) {
       return new Response(`worker not configured: ${needs}`, { status: 503, headers: cors(origin) });
@@ -453,8 +387,7 @@ export default {
         : route === "engine" ? await getEngine(env, since)
         : route === "volume" ? await getVolume(env)
         : route === "ohlcv" ? await getOhlcv(env, tf)
-        : route === "curve" ? await getCurve(env)
-        : await getRewards(env, since);
+        : await getCurve(env);
 
       const res = json(body, origin, TTL[route]);
       // Store a copy without the per-origin CORS header, so the cached body is

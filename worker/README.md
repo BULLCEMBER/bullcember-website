@@ -27,7 +27,7 @@ This Worker keeps the live reads but removes both failure modes:
 |---|---|---|
 | `GET /buys` | 12 most recent buys off the PumpSwap pool | 15s |
 | `GET /engine?since=<unix>` | classified buyback/burn events at or after `since`. The boundary second is re-read; the page dedupes type+sig | 45s |
-| `GET /rewards?since=<unix>` | payout rounds newer than `since`, plus collected/overhead | 45s |
+| `GET /curve` | bonding-curve progress and PUMP in the curve | 30s |
 | `GET /volume` | `{ totalUsd }`, lifetime traded volume summed from daily candles | 1h |
 | `GET /ohlcv?tf=1H\|4H\|1D` | chart candles. The browser never holds the Birdeye key | 120s |
 
@@ -41,7 +41,7 @@ published totals it gets added to.
 
 `/volume` is the odd one out: it fronts **Birdeye**, not Helius, and needs its own
 `BIRDEYE_KEY` secret. The key gate is per route, so a missing Birdeye secret takes
-out `/volume` and `/ohlcv` (503) and leaves buys, engine, and rewards working.
+out `/volume` and `/ohlcv` (503) and leaves buys, engine, and curve working.
 `/volume` ignores `since`.
 
 Why it exists: the page used to sum that history in the browser, paging Birdeye
