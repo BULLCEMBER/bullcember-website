@@ -1,7 +1,7 @@
 name: Update site data
 
 # Regenerates the JSON the site paints on first frame and commits whatever changed:
-#   data/stats.json  - engine buyback & burn baseline
+#   data/stats.json  - mint supply + price
 #   data/herd.json   - holder census + leaderboard
 #   data/buys.json   - Live Buys feed
 # Without this they go stale and every visitor sees old numbers. Each script keeps
@@ -41,10 +41,7 @@ jobs:
           # needed if the Enhanced Transactions API key differs from the RPC one.
           HELIUS_KEY: ${{ secrets.HELIUS_KEY }}
         run: |
-          # pipefail, or the `| tee` below would swallow a hard crash in
-          # update-stats and report the step as successful.
-          set -o pipefail
-          node scripts/update-stats.mjs 2>&1 | tee engine.log
+          node scripts/update-stats.mjs
           node scripts/update-herd.mjs
 
       # always(), because each script keeps its previous file on failure and writes
@@ -60,19 +57,5 @@ jobs:
           git config user.name  "bullcember-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/
-          git commit -m "Refresh site data (engine, herd, buys)"
+          git commit -m "Refresh site data (supply, herd, buys)"
           git push
-
-      # Runs AFTER the commit on purpose. update-stats catches a failed scan and keeps
-      # the previous event log — right for the site, but it would leave this job green
-      # while the engine sat frozen. Failing here still lets the herd/buys refresh land;
-      # it just turns the run red so it is visible instead of silent.
-      - name: Flag a stale engine
-        if: always()
-        run: |
-          failed=0
-          if [ -f engine.log ] && grep -q "engine scan failed" engine.log; then
-            echo "::error::Buyback and burn scan did not finish. The event log was left unchanged so the cursor cannot skip a missed transaction."
-            failed=1
-          fi
-          exit $failed

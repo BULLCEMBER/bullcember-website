@@ -118,7 +118,6 @@
       <li><a href="#countdown">December</a></li>
       <li><a href="#about">About</a></li>
       <li><a href="#how-to-buy">Buy</a></li>
-      <li><a href="#bullpen">Bullpen</a></li>
       <li><a href="#herd">Herd</a></li>
       <li><a href="#community">Community</a></li>
     </ul>
@@ -179,7 +178,7 @@
     </div>
     <!-- TICKER -->
     <div class="ticker-scroll">
-      <span class="ticker-inner" id="ticker-inner">$BULLCEMBER<span class="tk-sep">/</span>DEC 1 &middot; 2026<span class="tk-sep">/</span><span class="ticker-days">0</span> <span class="days-word">DAYS</span> LIVE<span class="tk-sep">/</span>BUYBACK &amp; BURN RUNNING<span class="tk-sep">/</span>CREATOR FEES: MARKET-MAKING &middot; LIQUIDITY &middot; DEV &middot; MARKETING<span class="tk-sep">/</span>NEVER SENDING SUPPLY<span class="tk-sep">/</span>SOLANA<span class="tk-sep">/</span>THE HERD IS EARLY<span class="tk-sep">/</span>$BULLCEMBER<span class="tk-sep">/</span>DEC 1 &middot; 2026<span class="tk-sep">/</span><span class="ticker-days">0</span> <span class="days-word">DAYS</span> LIVE<span class="tk-sep">/</span>BUYBACK &amp; BURN RUNNING<span class="tk-sep">/</span>CREATOR FEES: MARKET-MAKING &middot; LIQUIDITY &middot; DEV &middot; MARKETING<span class="tk-sep">/</span>NEVER SENDING SUPPLY<span class="tk-sep">/</span>SOLANA<span class="tk-sep">/</span>THE HERD IS EARLY<span class="tk-sep">/</span>$BULLCEMBER<span class="tk-sep">/</span>DEC 1 &middot; 2026<span class="tk-sep">/</span><span class="ticker-days">0</span> <span class="days-word">DAYS</span> LIVE<span class="tk-sep">/</span>BUYBACK &amp; BURN RUNNING<span class="tk-sep">/</span>CREATOR FEES: MARKET-MAKING &middot; LIQUIDITY &middot; DEV &middot; MARKETING<span class="tk-sep">/</span>NEVER SENDING SUPPLY<span class="tk-sep">/</span>SOLANA<span class="tk-sep">/</span>THE HERD IS EARLY<span class="tk-sep">/</span></span>
+      <span class="ticker-inner" id="ticker-inner">$BULLCEMBER<span class="tk-sep">/</span>DEC 1 &middot; 2026<span class="tk-sep">/</span><span class="ticker-days">0</span> <span class="days-word">DAYS</span> LIVE<span class="tk-sep">/</span>CREATOR FEES: MARKET-MAKING &middot; LIQUIDITY &middot; DEV &middot; MARKETING<span class="tk-sep">/</span>SOLANA<span class="tk-sep">/</span>THE HERD IS EARLY<span class="tk-sep">/</span>$BULLCEMBER<span class="tk-sep">/</span>DEC 1 &middot; 2026<span class="tk-sep">/</span><span class="ticker-days">0</span> <span class="days-word">DAYS</span> LIVE<span class="tk-sep">/</span>CREATOR FEES: MARKET-MAKING &middot; LIQUIDITY &middot; DEV &middot; MARKETING<span class="tk-sep">/</span>SOLANA<span class="tk-sep">/</span>THE HERD IS EARLY<span class="tk-sep">/</span>$BULLCEMBER<span class="tk-sep">/</span>DEC 1 &middot; 2026<span class="tk-sep">/</span><span class="ticker-days">0</span> <span class="days-word">DAYS</span> LIVE<span class="tk-sep">/</span>CREATOR FEES: MARKET-MAKING &middot; LIQUIDITY &middot; DEV &middot; MARKETING<span class="tk-sep">/</span>SOLANA<span class="tk-sep">/</span>THE HERD IS EARLY<span class="tk-sep">/</span></span>
     </div>
   </section>
 
@@ -370,7 +369,7 @@
           <ul class="fee-uses">
             <li><strong>Market-making</strong><span>buybacks and keeping the chart healthy</span></li>
             <li><strong>Liquidity</strong><span>deeper pools, smaller slippage</span></li>
-            <li><strong>Development</strong><span>this site, the tools and the on-chain tracker</span></li>
+            <li><strong>Development</strong><span>this site, the chart and the tools</span></li>
             <li><strong>Marketing</strong><span>listings like DexScreener, promos and raids</span></li>
           </ul>
         </div>
@@ -384,57 +383,6 @@
       </div>
     </div>
   </section>
-  <!-- THE BULLPEN -->
-  <section class="engine" id="bullpen">
-    <div class="container">
-      <div class="section-tag">ON-CHAIN</div>
-      <h2 class="section-title">The <span class="highlight">Bullpen</span></h2>
-      <p class="engine-lead">Receipts, not roadmap. Everything below has <strong>already happened on-chain</strong>, pulled live from Solana so you can check every last one yourself. Nothing here is a promise about what comes next.</p>
-
-      <!-- LIVE ON-CHAIN TILES -->
-      <div class="engine-live" aria-live="polite" aria-atomic="false">
-        <div class="elive burn">
-          <div class="elive-ico">🔥</div>
-          <div class="elive-k">Burned Forever</div>
-          <div class="elive-v" id="enBurned">…</div>
-          <div class="elive-sub" id="enBurnedSub">bought &amp; burned</div>
-        </div>
-        <div class="elive buy">
-          <div class="elive-ico">🐂</div>
-          <div class="elive-k">Bought Back</div>
-          <div class="elive-v" id="enBuy">…</div>
-          <div class="elive-sub" id="enBuySub">off the market</div>
-        </div>
-      </div>
-      <p class="engine-gap" id="enBurnGap" hidden></p>
-      <div class="engine-updated"><span class="live-dot" aria-hidden="true"></span><span id="enUpdated" role="status">loading on-chain data…</span><button id="enRefresh" class="refresh-btn" type="button">🔄 Refresh</button></div>
-
-      <!-- LIVE ACTIVITY FEED -->
-      <div class="feed" id="engineFeed" hidden>
-        <div class="feed-head">🐂 Live Activity: every buyback &amp; burn</div>
-        <div class="feed-tabs">
-          <button class="ftab active" data-f="all">All</button>
-          <button class="ftab" data-f="buyback">🐂 Buybacks</button>
-          <button class="ftab" data-f="burn">🔥 Burns</button>
-        </div>
-        <div class="feed-list" id="feedList"></div>
-      </div>
-
-      <div class="engine-cards">
-        <div class="engine-card">
-          <div class="engine-card-ico">🐂</div>
-          <h3>Bought Back</h3>
-          <p>$BULLCEMBER taken off the open market at market price, same as any other buyer. Buybacks are the market-making share of the creator fees; the rest goes to liquidity, development and marketing. Every buy in the count above carries a signature you can open on Solscan and read for yourself.</p>
-        </div>
-        <div class="engine-card">
-          <div class="engine-card-ico">🔥</div>
-          <h3>Burned</h3>
-          <p>Burned coins are gone. They leave the supply for good, and nothing brings them back. That's why the total supply in Tokenomics reads lower than the 1B it launched with.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- LISTED ON -->
   <section class="partners" id="partners">
     <div class="container">
@@ -750,8 +698,8 @@ const mcap = fmt(pair.marketCap || pair.fdv);
 
     const TOKEN_DECIMALS = 1e6;
     const LAUNCH_SUPPLY = 1e9;
-    // Mint authority is null and the engine only ever burns, so on-chain supply IS the
-    // circulating supply — and it keeps shrinking. Holder shares have to divide by the
+    // Mint authority is null, so nothing can be minted and on-chain supply IS the
+    // circulating supply. It shrinks if anyone burns. Holder shares have to divide by the
     // live number, not the 1B the token launched with, or every share reads low.
     // Chain supply on 2026-10-03. applySupply() replaces this as soon as stats.json loads.
     // The chart's market-cap mode multiplies by this number, so it must not be the
@@ -799,7 +747,6 @@ const mcap = fmt(pair.marketCap || pair.fdv);
       if (sEl) sEl.textContent = Math.floor(supply).toLocaleString();
       const bEl = document.getElementById('toko-burned');
       if (bEl) bEl.textContent = fmtTok(burned) + ' gone from the 1B launch supply · ' + (burned / LAUNCH_SUPPLY * 100).toFixed(2) + '%';
-      if (typeof updateBurnGap === 'function') updateBurnGap();
       if (lastBalances) renderHerd(lastBalances);
       if (typeof refreshMcap === 'function') refreshMcap();
     }
@@ -981,188 +928,16 @@ const mcap = fmt(pair.marketCap || pair.fdv);
     setInterval(fetchBondingCurve, 30000);
     setInterval(fetchBuys, 20000); // baseline + live top-up, in that order
 
-    // ===== THE BULLCEMBER ENGINE: buybacks + burns (no supply sent to anyone) =====
-    const DEV = 'BXrU6jcjtZnar27jfWCXXhr9EqQGcFvyfnpC9cRjYLmC'; // pump.fun creator / fee wallet
-    const BURN_SINCE = 1791061415; // launch (pump.fun created_timestamp, 2026-10-03)
-
-    let enBaseline = null;         // latest data/stats.json, published by the Action
-    let enLive = [];               // events newer than the baseline, from the LIVE_API Worker
-    const enSeen = new Set();
-    let EN_FEED = [];
-    let EN_FILTER = 'all';
-    let enState = 'idle';          // 'idle' | 'ok' | 'error' — did the last snapshot fetch land?
-    let enLiveAt = 0;              // unix secs of the last successful chain top-up; 0 = baseline only
-
-    const enSetV = (id, val) => { const el = document.getElementById(id); if (el) { el.textContent = val; el.classList.remove('pending'); } };
-    const enAgoIso = iso => timeAgo(Math.floor(new Date(iso).getTime() / 1000));
-
-    const enBaseNewest = () => (enBaseline?.feed || []).reduce((m, e) => Math.max(m, e.time || 0), 0);
-
-    function enCombined() {
-      const cut = enBaseNewest();
-      const b = enBaseline || { burned: { amount: 0, count: 0 }, buyback: { bull: 0, sol: 0, count: 0 }, feed: [] };
-      // The live route re-reads the newest second, matching scripts/scan.mjs.
-      // Events already in the baseline feed are already inside the totals.
-      const seen = new Set((b.feed || []).map(e => e.type + '\0' + e.sig));
-      const live = enLive.filter(e => e.time >= cut && !seen.has(e.type + '\0' + e.sig));
-      const of = t => live.filter(e => e.type === t);
-      const burnL = of('burn').filter(e => e.time >= BURN_SINCE);
-      const sumF = (a, f) => a.reduce((s, e) => s + (e[f] || 0), 0);
-      const totals = {
-        burned:  { amount: (b.burned?.amount || 0) + sumF(burnL, 'bull'), count: (b.burned?.count || 0) + burnL.length },
-        buyback: {
-          bull: (b.buyback?.bull || 0) + sumF(of('buyback'), 'bull'),
-          sol: (b.buyback?.sol || 0) + sumF(of('buyback'), 'sol'),
-          pump: (b.buyback?.pump || 0) + sumF(of('buyback'), 'pump'),
-          usdc: (b.buyback?.usdc || 0) + sumF(of('buyback'), 'usdc'),
-          count: (b.buyback?.count || 0) + of('buyback').length,
-        },
-      };
-      // Dedupe on type+sig: a pump.fun boost tx buys and burns under one signature, so
-      // both events are real and keying on sig alone would throw one of them away.
-      const feed = [...live, ...(b.feed || [])].filter((e, i, a) => a.findIndex(x => x.sig === e.sig && x.type === e.type) === i).sort((a, b) => (b.time || 0) - (a.time || 0));
-      return { totals, feed, live: live.length };
-    }
-
-    // Launch supply minus the mint's current supply counts every burn. The Bullpen
-    // only lists burns the engine scanner tied to the dev wallet or the boost vault.
-    // The difference is real supply, with no receipt in that list. Do not invent a cause.
-    function burnGapText(launch, supply, listed) {
-      const gap = (launch - supply) - listed;
-      if (!(listed > 0) || !(gap > 1)) return '';
-      return 'Supply is ' + Math.round(gap).toLocaleString() + ' tokens lower than the burns listed here. Those extra tokens are gone from the mint, and this list has no transaction for them.';
-    }
-    function updateBurnGap() {
-      const el = document.getElementById('enBurnGap');
-      if (!el) return;
-      const listed = typeof enCombined === 'function' ? enCombined().totals.burned.amount : 0;
-      const text = burnGapText(LAUNCH_SUPPLY, TOTAL_SUPPLY, listed);
-      el.hidden = !text;
-      el.textContent = text;
-    }
-    function enRenderAll() {
-      const c = enCombined();
-      enSetV('enBurned', fmtTok(c.totals.burned.amount));
-      enSetV('enBurnedSub', c.totals.burned.count ? c.totals.burned.count + ' engine burn' + (c.totals.burned.count === 1 ? '' : 's') : 'nothing burned yet');
-      updateBurnGap();
-      enSetV('enBuy', fmtTok(c.totals.buyback.bull));
-      const parts = [];
-      if (c.totals.buyback.count) parts.push(c.totals.buyback.count + ' buys');
-      // This launch is quoted in PUMP, and the dev has paid for buybacks in PUMP, SOL
-      // and USDC. Show what was actually spent, in each currency it was spent in.
-      if (c.totals.buyback.pump) parts.push(fmtTok(c.totals.buyback.pump) + ' PUMP');
-      if (c.totals.buyback.sol) parts.push(c.totals.buyback.sol.toFixed(2) + ' SOL');
-      if (c.totals.buyback.usdc) parts.push(c.totals.buyback.usdc.toFixed(0) + ' USDC');
-      enSetV('enBuySub', parts.length ? parts.join(' · ') : 'off the market');
-      EN_FEED = c.feed;
-      enRenderFeed();
-      const u = document.getElementById('enUpdated');
-      if (u) {
-        // Say which clock the number is actually on. Without LIVE_API the age shown
-        // is the snapshot's own age — re-fetching the same file in the browser does
-        // not make it newer, only the Action's cron does, and claiming "live" over a
-        // 3-hour-old file is the lie this section used to tell.
-        if (enState === 'error') {
-          u.textContent = "⚠️ Couldn't refresh, showing the last saved snapshot"
-            + (enBaseline?.updatedAt ? ' from ' + enAgoIso(enBaseline.updatedAt) : '');
-        } else if (enLiveAt) {
-          u.textContent = 'Live from chain · checked ' + timeAgo(enLiveAt);
-        } else {
-          u.textContent = 'Updated ' + (enBaseline?.updatedAt ? enAgoIso(enBaseline.updatedAt) : 'just now');
-        }
-        // the pulsing green dot means "live" — don't let it pulse over a failed check
-        u.closest('.engine-updated')?.classList.toggle('stale', enState === 'error');
-      }
-    }
-
-    async function enLoadBaseline() {
+    // ===== SUPPLY =====
+    // data/stats.json carries the mint's chain supply, refreshed by the Action.
+    async function loadSupply() {
       try {
         const res = await fetch('data/stats.json?t=' + Math.floor(Date.now() / 60000), { cache: 'no-store' });
-        if (!res.ok) throw new Error('stats.json ' + res.status);
-        enBaseline = await res.json();
-        (enBaseline.feed || []).forEach(e => enSeen.add(e.sig));
-        applySupply(enBaseline.supply);
-        enState = 'ok';
-        enRenderAll();
-      } catch (e) {
-        enState = 'error';
-        const u = document.getElementById('enUpdated');
-        if (enBaseline) enRenderAll();
-        else if (u) u.textContent = 'Syncing on-chain data…';
-      }
+        if (res.ok) applySupply((await res.json()).supply);
+      } catch (e) { /* keep the last known supply */ }
     }
-    // The client-side Helius poll that used to live here is gone. It cost a
-    // getSignaturesForAddress page plus one getTransaction per new signature on
-    // EVERY page load, against a key hardcoded in this file — which is how the
-    // quota reached "max usage reached" on 2026-08-25 and took the live widgets
-    // down.
-    //
-    // enLoadLive() below brings live reads back WITHOUT either of those properties:
-    // the key sits in the Worker as a secret, and the Worker's edge cache means the
-    // upstream call count is a function of time, not of how many people are looking.
-    // It also asks only for events newer than the baseline, so the steady-state
-    // answer is an empty array.
-    async function enLoadLive() {
-      const j = await liveGet('engine', enBaseNewest());
-      if (!j || !Array.isArray(j.events)) return;
-      // enCombined() re-filters against the baseline cut every render, so stale
-      // entries here are harmless — but dropping them keeps the array from growing
-      // on a page left open for hours.
-      const cut = enBaseNewest();
-      const merged = [...enLive, ...j.events].filter(e => e.time >= cut);
-      enLive = merged.filter((e, i, a) => a.findIndex(x => x.sig === e.sig && x.type === e.type) === i);
-      enLiveAt = Math.floor(Date.now() / 1000);
-      enRenderAll();
-    }
-
-    const EN_META = {
-      buyback: { ic: '🐂', label: 'Buyback', cls: 'buyback', sign: '+' },
-      burn:    { ic: '🔥', label: 'Burn',    cls: 'burn',    sign: '−' },
-    };
-    function enRenderFeed() {
-      const box = document.getElementById('engineFeed');
-      const list = document.getElementById('feedList');
-      if (!box || !list) return;
-      box.hidden = false;
-      const feed = EN_FILTER === 'all' ? EN_FEED : EN_FEED.filter(e => e.type === EN_FILTER);
-      if (feed.length === 0) { list.innerHTML = '<div class="feed-empty">Nothing here yet… 🐂</div>'; return; }
-      list.innerHTML = feed.map(ev => {
-        const m = EN_META[ev.type] || EN_META.buyback;
-        const amt = m.sign + fmtTok(ev.bull) + ' $BULLCEMBER';
-        const sol = ev.pump ? ' · ' + fmtTok(ev.pump) + ' PUMP'
-          : ev.usdc ? ' · ' + ev.usdc.toFixed(2) + ' USDC'
-          : ev.sol ? ' · ' + ev.sol.toFixed(2) + ' SOL' : '';
-        const when = ev.time ? timeAgo(ev.time) : '';
-        return `<a class="feed-row ${m.cls}" href="https://solscan.io/tx/${esc(ev.sig)}" target="_blank" rel="noopener">` +
-          `<span class="feed-ic">${m.ic}</span>` +
-          `<span class="feed-main"><span class="feed-t">${m.label}</span><br><span class="feed-sub">${when}${sol}</span></span>` +
-          `<span class="feed-amt">${amt}</span></a>`;
-      }).join('');
-    }
-    document.querySelectorAll('.ftab').forEach(btn => btn.addEventListener('click', () => {
-      document.querySelectorAll('.ftab').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      EN_FILTER = btn.dataset.f;
-      enRenderFeed();
-    }));
-    async function enManualRefresh() {
-      const btn = document.getElementById('enRefresh');
-      if (btn && btn.disabled) return;
-      if (btn) { btn.dataset.label = btn.dataset.label || btn.textContent; btn.disabled = true; btn.textContent = '⏳ Checking…'; }
-      // Baseline first so enBaseNewest() is current, then the live delta on top of it.
-      try { await enLoadBaseline(); await enLoadLive(); } catch (e) {}
-      if (btn) {
-        btn.textContent = enState === 'ok' ? '✓ Up to date' : '⚠️ Check failed';
-        setTimeout(() => { btn.textContent = btn.dataset.label; btn.disabled = false; }, 6000);
-      }
-    }
-    document.getElementById('enRefresh')?.addEventListener('click', enManualRefresh);
-    // boot: paint the Action's baseline first (instant, free, always available),
-    // then top it up from chain. Order matters — the live call asks for events newer
-    // than the baseline, so it needs the baseline loaded to know where to start.
-    (async () => { await enLoadBaseline(); await enLoadLive(); })();
-    setInterval(enLoadBaseline, 60000); // keep baseline current from the Action (free)
-    setInterval(enLoadLive, 30000);     // and top it up from chain in between
+    loadSupply();
+    setInterval(loadSupply, 60000);
 
     // ===== JUPITER SWAP PLUGIN =====
     window.addEventListener('load', () => {

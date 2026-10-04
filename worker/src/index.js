@@ -22,23 +22,8 @@ const CURVE = "CrFq4zNsEAEZqdmJWy9aWarZDSb1FLx64RbfUW7mVbvJ";
 // The PumpSwap pool pump.fun reports for this mint. It does not exist until the
 // curve graduates; reading it before then just returns no transactions.
 const POOL = "598LgNU99ZQmPCNkfdF93eEmSkvtshgPPjnQ2ebatuWZ";
-// This launch is quoted in PUMP, not SOL: the curve takes PUMP in and creator
-// fees are paid out in PUMP. A buyback therefore spends PUMP, not lamports.
-const PUMP = "pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn";
-// The dev has also bought back straight out of USDC (37Y8iyDR..., 155 USDC).
-const USDC = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
-const DEV = "BXrU6jcjtZnar27jfWCXXhr9EqQGcFvyfnpC9cRjYLmC";
-// Constant ATA address. The account can be created and closed repeatedly, but the
-// address is derived from (owner, mint, program) so signatures stay indexed
-// against it either way. Must stay in agreement with DEV_ATA_ADDR in scripts/scan.mjs.
-const DEV_ATA = "9eFXRtXE5FoPFmUMPWkjf7kS6WrUihNGyVBXsUhHLbcS";
-const BOOST = "BGVtkQcLUWtsm6FeZQrk12yXyDDYj9PhvmytYDKcDv5v";
 
 const DECIMALS = 6;
-const WSOL = "So11111111111111111111111111111111111111112";
-const SOL_FEE_FLOOR = 0.0005;
-const PUMP_FLOOR = 1; // ignore PUMP dust when tagging a buyback
-const USDC_FLOOR = 0.01;
 const WANT_BUYS = 12;
 
 // 4321 is the port in .claude/launch.json, so the local preview can exercise the
@@ -52,13 +37,12 @@ const ALLOWED_ORIGINS = [
   "http://127.0.0.1:4321",
 ];
 
-// Per-route edge TTL. Buys move constantly; the engine and payout rounds move a few
-// times a week, so they can sit longer and cost almost nothing. Total volume is a
+// Per-route edge TTL. Buys move constantly. Total volume is a
 // lifetime cumulative figure that the page only ever refreshes once a day, so an
 // hour at the edge is generous — and it caps Birdeye at 24 calls a day for the
 // entire internet, which is the whole point of putting it behind here.
-const CACHE_V = 2; // bump when a route's output changes; see the cache key below
-const TTL = { buys: 15, engine: 45, volume: 3600, ohlcv: 120, curve: 30 };
+const CACHE_V = 3; // bump when a route's output changes; see the cache key below
+const TTL = { buys: 15, volume: 3600, ohlcv: 120, curve: 30 };
 // Chart timeframes the page can ask for. Anything else is a 400, not a Birdeye call.
 const OHLCV_TF = {
   "1H": 30 * 24 * 3600, // last 30 days of hourly candles
@@ -148,131 +132,6 @@ async function getCurve(env) {
   return { updatedAt: new Date().toISOString(), complete, pct, quote: Number(realQuote) / 10 ** DECIMALS };
 }
 
-// ----------------------------------------------------------------- engine ---
-const ownerMintBal = (list, owner, mint) => {
-  const e = (list || []).find((b) => b.owner === owner && b.mint === mint);
-  return e ? Number(e.uiTokenAmount.uiAmount || 0) : 0;
-};
-const ownerBal = (list, owner) => ownerMintBal(list, owner, MINT);
-
-function solDelta(tx, who) {
-  const keys = tx.transaction.message.accountKeys.map((k) => (typeof k === "string" ? k : k.pubkey));
-  const i = keys.indexOf(who);
-  if (i < 0 || !tx.meta) return 0;
-  return (tx.meta.postBalances[i] - tx.meta.preBalances[i]) / 1e9;
-}
-
-// What the dev paid in tokens, if anything. Net per mint across the transaction,
-// because a SOL route passes PUMP through the wallet and nets to ~0. Same rule as
-// spentTokens() in scripts/scan.mjs.
-function spentTokens(pre, post) {
-  const pumpD = ownerMintBal(post, DEV, PUMP) - ownerMintBal(pre, DEV, PUMP);
-  const usdcD = ownerMintBal(post, DEV, USDC) - ownerMintBal(pre, DEV, USDC);
-  const out = {};
-  if (pumpD < -PUMP_FLOOR) out.pump = Math.round(-pumpD);
-  if (usdcD < -USDC_FLOOR) out.usdc = +(-usdcD).toFixed(2);
-  return Object.keys(out).length ? out : null;
-}
-
-// The boost vault funds buys from a wrapped-SOL account, so its native lamport
-// balance barely moves and solDelta() reads ~0 — the spend only shows as a drop in
-// its WSOL balance. Count both so either funding path is caught.
-function boostSpend(tx, pre, post) {
-  return -(ownerMintBal(post, BOOST, WSOL) - ownerMintBal(pre, BOOST, WSOL) + solDelta(tx, BOOST));
-}
-
-function burnAmount(tx) {
-  let burned = 0;
-  const walk = (instrs) =>
-    (instrs || []).forEach((ix) => {
-      const p = ix.parsed;
-      if (p && (p.type === "burn" || p.type === "burnChecked") && p.info && p.info.mint === MINT) {
-        burned += p.info.tokenAmount
-          ? Number(p.info.tokenAmount.uiAmount)
-          : Number(p.info.amount) / 10 ** DECIMALS;
-      }
-    });
-  walk(tx.transaction.message.instructions);
-  (tx.meta?.innerInstructions || []).forEach((ii) => walk(ii.instructions));
-  return burned;
-}
-
-// Recent classified engine events at or after `since`. Classification is a port of
-// scripts/scan.mjs — it has to agree with it exactly, because the browser merges
-// what comes back on top of the totals that script already published.
-//
-// `since` is the newest event in data/stats.json. The boundary second is re-read,
-// same as scan.mjs: two engine transactions can share it, and stopping on equality
-// dropped the unsaved one until the next stats run. The page dedupes type+sig
-// before adding, so returning the already-saved sibling does not double-count.
-async function getEngine(env, since) {
-  const sigs = new Map();
-  for (const acct of [DEV_ATA, BOOST]) {
-    // A failed page used to become []. The other account's events would still be
-    // returned, and the browser would treat that partial list as the whole delta.
-    let before;
-    for (let page = 0; page < 4; page++) {
-      const opts = { limit: 25, ...(before ? { before } : {}) };
-      const batch = await rpc(env, "getSignaturesForAddress", [acct, opts]);
-      if (!batch || !batch.length) break;
-      let hitOld = false;
-      for (const s of batch) {
-        if (s.err || !s.blockTime) continue;
-        // `<`, not `<=`. See the comment on getEngine. scan.mjs uses the same test.
-        if (since && s.blockTime < since) { hitOld = true; break; }
-        sigs.set(s.signature, true);
-      }
-      if (hitOld || batch.length < 25) break;
-      before = batch[batch.length - 1].signature;
-    }
-  }
-
-  const pending = [...sigs.keys()];
-  // A browser-facing endpoint must never fan out unboundedly, even if `since`
-  // arrives as 0. Past this cap, fail the request so the page keeps its baseline
-  // instead of painting a silently shortened delta.
-  if (pending.length > 40) throw new Error(`engine window truncated: ${pending.length} signatures`);
-
-  const events = [];
-  for (const sig of pending) {
-    const tx = await rpc(env, "getTransaction", [
-      sig,
-      { maxSupportedTransactionVersion: 0, encoding: "jsonParsed" },
-    ]);
-    if (!tx) throw new Error(`getTransaction returned nothing for ${sig}`);
-    if (tx.meta?.err) continue;
-
-    const time = tx.blockTime;
-    const pre = tx.meta?.preTokenBalances;
-    const post = tx.meta?.postTokenBalances;
-    const devDelta = ownerBal(post, DEV) - ownerBal(pre, DEV);
-    const burned = burnAmount(tx);
-    const solD = solDelta(tx, DEV);
-    const tokenSpend = spentTokens(pre, post);
-    const boostSol = boostSpend(tx, pre, post);
-
-    if (burned > 0.0001) events.push({ type: "burn", time, bull: Math.round(burned), sig });
-
-    // Token spends are tested first. A PUMP- or USDC-funded buy still moves ~0.0013
-    // SOL of fees and rent, which would otherwise pass the SOL test as a fake SOL buy.
-    const isBuy = devDelta > 0.0001;
-    if (isBuy && tokenSpend) {
-      events.push({ type: "buyback", time, bull: Math.round(devDelta), ...tokenSpend, sig });
-    } else if (isBuy && solD < -SOL_FEE_FLOOR) {
-      events.push({ type: "buyback", time, bull: Math.round(devDelta), sol: +(-solD).toFixed(4), sig });
-    } else if (burned > 0.0001 && boostSol > SOL_FEE_FLOOR) {
-      // A boost buy never lands in any balance — bought and burned atomically, so
-      // the burned amount IS the amount bought back. This deliberately emits a
-      // second event on a signature that already produced a burn above, which is
-      // why the feed dedupes on type+sig rather than sig alone.
-      events.push({ type: "buyback", time, bull: Math.round(burned), sol: +boostSol.toFixed(4), sig });
-    }
-  }
-
-  events.sort((a, b) => (b.time || 0) - (a.time || 0));
-  return { updatedAt: new Date().toISOString(), since, events };
-}
-
 // ------------------------------------------------------------------ router ---
 // Lifetime traded volume, summed across the full daily OHLCV history.
 //
@@ -360,7 +219,7 @@ export default {
     const route = url.pathname.replace(/\/+$/, "").split("/").pop();
     if (!TTL[route]) return new Response("not found", { status: 404, headers: cors(origin) });
     // /volume and /ohlcv front Birdeye. Everything else fronts Helius. Gate per
-    // route, so a missing Birdeye secret cannot take down buys, engine, or curve.
+    // route, so a missing Birdeye secret cannot take down buys or curve.
     const needs = route === "volume" || route === "ohlcv" ? "BIRDEYE_KEY" : "HELIUS_KEY";
     if (!env[needs]) {
       return new Response(`worker not configured: ${needs}`, { status: 503, headers: cors(origin) });
@@ -397,7 +256,6 @@ export default {
     try {
       const body =
         route === "buys" ? await getBuys(env)
-        : route === "engine" ? await getEngine(env, since)
         : route === "volume" ? await getVolume(env)
         : route === "ohlcv" ? await getOhlcv(env, tf)
         : await getCurve(env);
