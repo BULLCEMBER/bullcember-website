@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-10-04T10:21:23.876Z",
-  "total": 43,
+  "updatedAt": "2026-10-04T12:04:29.651Z",
+  "total": 44,
   "tiers": {
-    "calf": 8,
-    "bull": 18,
-    "stampede": 16,
+    "calf": 9,
+    "bull": 19,
+    "stampede": 15,
     "alpha": 1
   },
   "holders": [
@@ -27,10 +27,6 @@
     [
       "6wv4HcaBoNqEbNzni5CTqWy9C6sfhn7oDoRb5ndViBMa",
       32744660834887
-    ],
-    [
-      "8znd3ascuSJ7XY7urvLQJBEAKS6y8vYG7RsjMGz3qxsA",
-      30752055338661
     ],
     [
       "GVLQpBnjL4UUoJ8k6Sfd6ZSJZ5SumSfrHh2nHn9AoNEg",
@@ -78,7 +74,15 @@
     ],
     [
       "7mQQXMvkYBwbJxFxxrsQXPGUyPfUEg2cPFLs3uSmf59q",
-      8249757962558
+      8649765993313
+    ],
+    [
+      "8znd3ascuSJ7XY7urvLQJBEAKS6y8vYG7RsjMGz3qxsA",
+      7189775368352
+    ],
+    [
+      "6D5ovnQeR5NHFYg2n1Jrcp1KTztvvnSEzWwbAU1JDD4G",
+      7047309800495
     ],
     [
       "FmNmMDobSX2s8x9C6HwUN5AtbPvfUmFuqZnq8F56FKBK",
@@ -105,16 +109,12 @@
       4480436136078
     ],
     [
-      "J3WaRyvzUMZLwRHAXJsdcJvVrFGmsePmKMS8wZzks1nd",
-      3949037922552
-    ],
-    [
       "GdsJptrfVTvpmqtTQJpuHgBhuRxkyzfR9CVPRXzPGsz3",
       3903264645184
     ],
     [
-      "9qTAJvjQ8xpMaBQ59gsjkMjucTmRZffqojWeijL18v13",
-      3840680204371
+      "J3WaRyvzUMZLwRHAXJsdcJvVrFGmsePmKMS8wZzks1nd",
+      3262050502797
     ],
     [
       "BHAgiUmkJSdjnFJXYsNwoMj1GfsX6jxCJFTW1Bqrvy8G",
@@ -146,7 +146,7 @@
     ],
     [
       "9JEcc7P9qoHXxauKQgiSGLzkXfDbRdJPb7eGizuaddVj",
-      1038139883349
+      1110324230995
     ],
     [
       "8Cdue5NBmCP37HuyzTuEiJQZ6VU5eXS2B8ZTZ4eAVUL2",
@@ -155,6 +155,10 @@
     [
       "BkcKcBJKzK9R5rpAGQNKHsC216hdMTU9mvJF6YEY7GRe",
       667436970004
+    ],
+    [
+      "DTyvh5TJvUnnxQHrfi7uuyMMjUoHpEUJCmYjPdVvJ9mV",
+      598574745427
     ],
     [
       "B9bXwXboSto2SveFmDU43PFWPrRRsngFgv1FucFcsQje",
@@ -170,7 +174,7 @@
     ],
     [
       "8psNvWTrdNTiVRNzAgsou9kETXNJm2SXZyaKuJraVRtf",
-      109184623170
+      115024016237
     ],
     [
       "7rsK8aquMhAkeh2sPJpr4JqK7LqwstmJMainAZAFtC4Z",
