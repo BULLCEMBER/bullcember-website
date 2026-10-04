@@ -2737,3 +2737,11 @@ body { text-transform: lowercase; }
   text-transform: none;
 }
 
+
+/* Creator-fee uses (Tokenomics). */
+.fee-lead { color: var(--muted); font-size: var(--t-sm); line-height: var(--lh-body); margin: var(--s-2) 0 var(--s-3); }
+.fee-uses { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s-3); }
+.fee-uses li { border: 1px solid var(--line); border-radius: var(--r-md); padding: var(--s-3); display: flex; flex-direction: column; gap: 4px; }
+.fee-uses strong { color: var(--bone); }
+.fee-uses span { color: var(--muted); font-size: var(--t-sm); line-height: 1.4; }
+@media (max-width: 760px) { .fee-uses { grid-template-columns: 1fr 1fr; } }
