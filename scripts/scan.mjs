@@ -16,9 +16,6 @@ const PUMP_FLOOR = 1; // ignore PUMP dust when tagging buybacks
 // The dev has also bought back straight out of USDC (37Y8iyDR..., 155 USDC).
 const USDC = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
 const USDC_FLOOR = 0.01;
-// The launch transaction's dev buy is the dev's opening bag, not a buyback.
-// Must match BUYBACK_AFTER in worker/src/index.js.
-const BUYBACK_AFTER = 1791061415;
 const DEV = "BXrU6jcjtZnar27jfWCXXhr9EqQGcFvyfnpC9cRjYLmC"; // pump.fun creator / fee wallet
 // pump.fun "boost" vault. On graduation it takes a slice of the migration SOL and spends
 // it buying BULLCEMBER on PumpSwap, burning each buy inside the same transaction. The
@@ -174,7 +171,7 @@ export async function scan(sinceTime = 0) {
     // buyback: BULLCEMBER came in AND PUMP, USDC or SOL went out (a real purchase, not a
     // plain transfer). Token spends are tested first: a PUMP- or USDC-funded buy still
     // moves ~0.0013 SOL of fees and rent, which would otherwise log a fake SOL spend.
-    const isBuy = devDelta > 0.0001 && time > BUYBACK_AFTER;
+    const isBuy = devDelta > 0.0001;
     if (isBuy && tokenSpend) {
       out.buyback.bull += devDelta; out.buyback.count += 1;
       out.buyback.pump += tokenSpend.pump || 0; out.buyback.usdc += tokenSpend.usdc || 0;

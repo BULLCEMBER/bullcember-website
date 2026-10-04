@@ -32,9 +32,6 @@ const DEV = "BXrU6jcjtZnar27jfWCXXhr9EqQGcFvyfnpC9cRjYLmC";
 // address is derived from (owner, mint, program) so signatures stay indexed
 // against it either way. Must stay in agreement with DEV_ATA_ADDR in scripts/scan.mjs.
 const DEV_ATA = "9eFXRtXE5FoPFmUMPWkjf7kS6WrUihNGyVBXsUhHLbcS";
-// The launch transaction's dev buy is the dev's own opening bag, not a buyback.
-// Buybacks count strictly after this second. Same value as scan.mjs.
-const BUYBACK_AFTER = 1791061415;
 const BOOST = "BGVtkQcLUWtsm6FeZQrk12yXyDDYj9PhvmytYDKcDv5v";
 
 const DECIMALS = 6;
@@ -60,6 +57,7 @@ const ALLOWED_ORIGINS = [
 // lifetime cumulative figure that the page only ever refreshes once a day, so an
 // hour at the edge is generous — and it caps Birdeye at 24 calls a day for the
 // entire internet, which is the whole point of putting it behind here.
+const CACHE_V = 2; // bump when a route's output changes; see the cache key below
 const TTL = { buys: 15, engine: 45, volume: 3600, ohlcv: 120, curve: 30 };
 // Chart timeframes the page can ask for. Anything else is a 400, not a Birdeye call.
 const OHLCV_TF = {
@@ -257,7 +255,7 @@ async function getEngine(env, since) {
 
     // Token spends are tested first. A PUMP- or USDC-funded buy still moves ~0.0013
     // SOL of fees and rent, which would otherwise pass the SOL test as a fake SOL buy.
-    const isBuy = devDelta > 0.0001 && time > BUYBACK_AFTER;
+    const isBuy = devDelta > 0.0001;
     if (isBuy && tokenSpend) {
       events.push({ type: "buyback", time, bull: Math.round(devDelta), ...tokenSpend, sig });
     } else if (isBuy && solD < -SOL_FEE_FLOOR) {
@@ -309,10 +307,23 @@ async function birdeyeCandles(env, type, from) {
   return items;
 }
 
+//
+// Hourly, not daily. Each candle is valued at its close, and a daily close on a
+// day that ran up and dumped prices the whole day's volume at the bottom: on
+// launch day 1D candles summed to $4.8K while ~$19.8K had actually traded.
+// Hourly candles came to $17.7K. 1000 candles a page x 8 pages covers ~11 months.
 async function getVolume(env) {
-  const items = await birdeyeCandles(env, "1D", LAUNCH_TS);
+  const items = await birdeyeCandles(env, "1H", LAUNCH_TS);
   let total = 0;
   for (const it of items) total += (Number(it.v) || 0) * (Number(it.c) || 0);
+  // Lifetime volume can never be less than the last 24h. DexScreener reports
+  // that in USD directly and needs no key, so it floors any Birdeye undercount.
+  try {
+    const r = await fetch(`https://api.dexscreener.com/token-pairs/v1/solana/${MINT}`);
+    const pairs = r.ok ? await r.json() : [];
+    const h24 = (Array.isArray(pairs) ? pairs : []).reduce((s, p) => s + (Number(p.volume?.h24) || 0), 0);
+    total = Math.max(total, h24);
+  } catch { /* the Birdeye figure stands on its own */ }
   if (!(total > 0)) throw new Error("birdeye returned no volume");
   return { updatedAt: new Date().toISOString(), totalUsd: total };
 }
@@ -368,8 +379,10 @@ export default {
     // Cache on a normalized key so one visitor's cache-buster query can't force a
     // miss for everyone else — that would defeat the whole point of the edge cache.
     // /ohlcv must keep the timeframe in the key, or 1H and 1D would share a body.
+    // CACHE_V is in the key so a deploy that changes what a route computes does
+    // not keep serving the previous version's body for up to a full TTL.
     const key = new Request(
-      route === "ohlcv" ? `${url.origin}/ohlcv?tf=${tf}` : `${url.origin}/${route}?since=${since}`,
+      route === "ohlcv" ? `${url.origin}/ohlcv?tf=${tf}&v=${CACHE_V}` : `${url.origin}/${route}?since=${since}&v=${CACHE_V}`,
       { method: "GET" },
     );
     const cache = caches.default;

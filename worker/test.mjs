@@ -14,7 +14,7 @@ const DEV_ATA = "9eFXRtXE5FoPFmUMPWkjf7kS6WrUihNGyVBXsUhHLbcS";
 const BOOST = "BGVtkQcLUWtsm6FeZQrk12yXyDDYj9PhvmytYDKcDv5v";
 const WSOL = "So11111111111111111111111111111111111111112";
 
-const T = 1791100000; // after launch, so BUYBACK_AFTER does not filter fixtures
+const T = 1791100000;
 let upstreamCalls = 0;
 
 // --- a pump.fun boost tx: buys and burns atomically under one signature --------
