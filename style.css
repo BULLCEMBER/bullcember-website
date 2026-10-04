@@ -2568,6 +2568,7 @@ html { overflow-x: clip; }
   line-height: var(--lh-snug);
 }
 .hot-num { color: var(--accent-ink); font-weight: 700; }
+.hot-ca { color: var(--signal-ink); font-weight: 700; word-break: break-all; }
 .hot-cta {
   flex: none;
   font-family: var(--f-mono);
@@ -2676,6 +2677,9 @@ html { overflow-x: clip; }
     padding: var(--s-4) var(--s-5);
   }
   .hot-inner:hover { transform: translate(-2px, -2px); }
+  /* Full row, or the stamp and CTA squeeze the body into a one-word column —
+     the relaunch banner carries a 44-character address, so it showed at once. */
+  .hot-body { flex-basis: 100%; }
   .hot-head { font-size: var(--t-base); }
   .elive.rw, .elive.dev { transform: none; }
   .elive.rw .elive-v, .elive.dev .elive-v { text-shadow: 3px 3px 0 #000; }
@@ -2913,6 +2917,7 @@ body { text-transform: lowercase; }
    explorer, would be checking a corrupted string. That is a money mistake, so
    these opt out explicitly, and any new address element must be added here. */
 .toko-ca-text,             /* the contract address */
+.hot-ca,                   /* new + retired CA in the relaunch banner */
 .rw-addr-v,                /* fee distributor */
 .herd-addr,                /* leaderboard wallets */
 .buy-addr,                 /* truncated buyer wallet in the live feed */

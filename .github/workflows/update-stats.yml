@@ -4,7 +4,9 @@ name: Update site data
 #   data/stats.json  - engine buyback & burn baseline
 #   data/herd.json   - holder census + leaderboard
 #   data/buys.json   - Live Buys feed
-#   data/rewards.json - holder payout tracker (creator fees -> holders)
+#   data/rewards.json - NOT refreshed since the 2026-10-03 relaunch: the new mint
+#                       does not route creator fees to holders (pump.fun
+#                       is_holder_reward=false), so the tracker is switched off.
 # Without this they go stale and every visitor sees old numbers. Each script keeps
 # the previous file when a scan fails, so a rate-limited run publishes nothing
 # rather than blanking a section.
@@ -47,7 +49,9 @@ jobs:
           set -o pipefail
           node scripts/update-stats.mjs 2>&1 | tee engine.log
           node scripts/update-herd.mjs
-          node scripts/update-rewards.mjs 2>&1 | tee rewards.log
+          # Holder rewards are off for the relaunched mint. To turn the tracker back on,
+          # point DISTRIBUTOR/PAIR in scripts/update-rewards.mjs at the new coin first:
+          # node scripts/update-rewards.mjs 2>&1 | tee rewards.log
 
       # always(), because each script keeps its previous file on failure and writes
       # independently — so whatever DID refresh should still ship even if a later

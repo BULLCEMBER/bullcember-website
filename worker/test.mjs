@@ -2,15 +2,20 @@
 // clamping, caching and chain-classification logic can be checked without a key.
 import worker from "./src/index.js";
 
-const MINT = "DTRmPLZPfQRRRVwyZFuSxUhvnj9RHgDqFjQXx6vUpump";
-const POOL = "3LnLWicgYKDipE4nDUNS9BuLeXJZTB8jYqbGVcyhVHnr";
+const MINT = "EUpN7RE7YLXmtF4FDuE4j7hqDhoogGqnbnKCcq3Upump";
+// Pre-graduation the bonding curve is where buys come from. The future pool is
+// read too, and returns nothing until it exists.
+const POOL = "CrFq4zNsEAEZqdmJWy9aWarZDSb1FLx64RbfUW7mVbvJ";
+const FUTURE_POOL = "598LgNU99ZQmPCNkfdF93eEmSkvtshgPPjnQ2ebatuWZ";
+const PUMP = "pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn";
+const USDC = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
 const DEV = "BXrU6jcjtZnar27jfWCXXhr9EqQGcFvyfnpC9cRjYLmC";
-const DEV_ATA = "4dTEzL1XdsWuzwFwXyzsxNKBUCqH8Nsac9CRGSfpgVGw";
+const DEV_ATA = "9eFXRtXE5FoPFmUMPWkjf7kS6WrUihNGyVBXsUhHLbcS";
 const BOOST = "BGVtkQcLUWtsm6FeZQrk12yXyDDYj9PhvmytYDKcDv5v";
 const DIST = "7D2dJwtSH4dmM19MzJk1ms9kH5gmpbRbGaCXURmVdhQc";
 const WSOL = "So11111111111111111111111111111111111111112";
 
-const T = 1789900000;
+const T = 1791100000; // after the relaunch, so BUYBACK_AFTER does not filter fixtures
 let upstreamCalls = 0;
 
 // --- a pump.fun boost tx: buys and burns atomically under one signature --------
@@ -26,6 +31,41 @@ const boostTx = {
     innerInstructions: [],
     preTokenBalances:  [{ owner: BOOST, mint: WSOL, uiTokenAmount: { uiAmount: 1.0 } }],
     postTokenBalances: [{ owner: BOOST, mint: WSOL, uiTokenAmount: { uiAmount: 0.75 } }],
+  },
+};
+
+// --- a buyback paid in PUMP, the way this launch actually buys back ------------
+// Shape of 4RfCsuXZ2S… (2026-10-04): PUMP out, BULLCEMBER in, and ~0.0013 SOL of
+// fees/rent that must NOT turn it into a "SOL buy".
+const pumpTx = {
+  blockTime: T + 250,
+  transaction: { message: { accountKeys: [{ pubkey: DEV }, { pubkey: POOL }], instructions: [] } },
+  meta: {
+    err: null,
+    preBalances: [1e9, 0], postBalances: [1e9 - 1346200, 0],
+    innerInstructions: [],
+    preTokenBalances:  [{ owner: DEV, mint: MINT, uiTokenAmount: { uiAmount: 0 } },
+                        { owner: DEV, mint: PUMP, uiTokenAmount: { uiAmount: 12500 } }],
+    postTokenBalances: [{ owner: DEV, mint: MINT, uiTokenAmount: { uiAmount: 5327189 } },
+                        { owner: DEV, mint: PUMP, uiTokenAmount: { uiAmount: 132 } }],
+  },
+};
+
+// --- a buyback paid in USDC, routed through PUMP (37Y8iyDR..., 2026-10-03) -------
+// PUMP passes through the wallet and nets to ~0; USDC is what was actually spent.
+const usdcTx = {
+  blockTime: T + 260,
+  transaction: { message: { accountKeys: [{ pubkey: DEV }, { pubkey: POOL }], instructions: [] } },
+  meta: {
+    err: null,
+    preBalances: [1e9, 0], postBalances: [1e9 - 1410000, 0],
+    innerInstructions: [],
+    preTokenBalances:  [{ owner: DEV, mint: MINT, uiTokenAmount: { uiAmount: 0 } },
+                        { owner: DEV, mint: PUMP, uiTokenAmount: { uiAmount: 100 } },
+                        { owner: DEV, mint: USDC, uiTokenAmount: { uiAmount: 200 } }],
+    postTokenBalances: [{ owner: DEV, mint: MINT, uiTokenAmount: { uiAmount: 12633970 } },
+                        { owner: DEV, mint: PUMP, uiTokenAmount: { uiAmount: 100.0001 } },
+                        { owner: DEV, mint: USDC, uiTokenAmount: { uiAmount: 45 } }],
   },
 };
 
@@ -64,15 +104,26 @@ globalThis.fetch = async (url, opts) => {
     if (method === "getSignaturesForAddress") {
       const acct = params[0];
       const sigs = acct === DEV_ATA
-        ? [{ signature: "DEVSIG", blockTime: T + 200, err: null },
+        ? [{ signature: "USDCSIG", blockTime: T + 260, err: null },
+           { signature: "PUMPSIG", blockTime: T + 250, err: null },
+           { signature: "DEVSIG", blockTime: T + 200, err: null },
            { signature: "SAMESEC", blockTime: T, err: null },         // equal to `since`
            { signature: "OLDSIG", blockTime: T - 5000, err: null },   // below `since`
            { signature: "FAILSIG", blockTime: T + 300, err: "boom" }] // failed tx
         : [{ signature: "BOOSTSIG", blockTime: T + 100, err: null }];
       return new Response(JSON.stringify({ jsonrpc: "2.0", result: sigs }));
     }
+    if (method === "getAccountInfo") {
+      // Real curve bytes read 2026-10-04: real_token 282964750147271, real_quote 619736737946.
+      const b = new Uint8Array(151);
+      const dv = new DataView(b.buffer);
+      dv.setBigUint64(24, 282964750147271n, true);
+      dv.setBigUint64(32, 619736737946n, true);
+      const b64 = btoa(String.fromCharCode(...b));
+      return new Response(JSON.stringify({ jsonrpc: "2.0", result: { value: { data: [b64, "base64"] } } }));
+    }
     const sig = params[0];
-    const tx = sig === "BOOSTSIG" ? boostTx : sig === "DEVSIG" ? devTx : sig === "SAMESEC" ? sameSecTx : null;
+    const tx = sig === "BOOSTSIG" ? boostTx : sig === "DEVSIG" ? devTx : sig === "SAMESEC" ? sameSecTx : sig === "PUMPSIG" ? pumpTx : sig === "USDCSIG" ? usdcTx : null;
     return new Response(JSON.stringify({ jsonrpc: "2.0", result: tx }));
   }
   if (u.includes(`/addresses/${POOL}/`)) {
@@ -83,6 +134,7 @@ globalThis.fetch = async (url, opts) => {
         tokenTransfers: [{ mint: MINT, fromUserAccount: "sellerB", toUserAccount: POOL, tokenAmount: 999 }] },
     ]));
   }
+  if (u.includes(`/addresses/${FUTURE_POOL}/`)) return new Response("[]");
   if (u.includes(`/addresses/${DIST}/`)) {
     return new Response(JSON.stringify([
       // newest first, as the enhanced API returns
@@ -175,11 +227,23 @@ ok("engine: boost spend read off WSOL drop",
 ok("engine: dev buyback = tokens in, SOL out",
    byType("buyback").find(e => e.sig === "DEVSIG").bull === 272065 &&
    byType("buyback").find(e => e.sig === "DEVSIG").sol === 0.1);
+const pb = byType("buyback").find(e => e.sig === "PUMPSIG");
+ok("engine: PUMP-funded buyback logged with its PUMP spend, not SOL",
+   pb && pb.bull === 5327189 && pb.pump === 12368 && pb.sol === undefined, JSON.stringify(pb));
+const ub = byType("buyback").find(e => e.sig === "USDCSIG");
+ok("engine: USDC-funded buyback logged as USDC; PUMP passing through ignored",
+   ub && ub.usdc === 155 && ub.pump === undefined && ub.sol === undefined, JSON.stringify(ub));
 ok("engine: boundary second is re-read",
    byType("buyback").some(e => e.sig === "SAMESEC" && e.bull === 111 && e.time === T),
    JSON.stringify(eng.events.map(e => e.sig)));
 ok("engine: failed + pre-`since` sigs skipped", !JSON.stringify(eng.events).includes("OLDSIG") && !JSON.stringify(eng.events).includes("FAILSIG"));
 ok("engine: newest first", eng.events[0].time >= eng.events[eng.events.length - 1].time);
+
+// ---- curve -------------------------------------------------------------------
+store.clear();
+const curve = await (await call("/curve")).json();
+ok("curve: progress from real_token reserve", curve.pct === 64.32 && curve.complete === false, JSON.stringify(curve));
+ok("curve: PUMP in the curve, 6dp", Math.abs(curve.quote - 619736.737946) < 1e-6);
 
 // ---- rewards -----------------------------------------------------------------
 store.clear();

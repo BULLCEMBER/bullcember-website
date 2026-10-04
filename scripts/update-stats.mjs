@@ -12,12 +12,12 @@ const DATA = join(__dirname, "..", "data");
 const STATS = join(DATA, "stats.json");
 const EVENTS = join(DATA, "events.json");
 
-const MINT = "DTRmPLZPfQRRRVwyZFuSxUhvnj9RHgDqFjQXx6vUpump";
+const MINT = "EUpN7RE7YLXmtF4FDuE4j7hqDhoogGqnbnKCcq3Upump"; // relaunched 2026-10-03
 const INITIAL_SUPPLY = 1_000_000_000;
 const RPC = process.env.RPC_URL || "https://api.mainnet-beta.solana.com";
-// Count dev-wallet burns from launch (pump.fun, Jun 21 2026 UTC). Excludes any
-// older/unrelated burns — the mint didn't exist before this, so this is all-time.
-const BURN_SINCE = 1782070621; // pump.fun created_timestamp for this mint
+// Count dev-wallet burns from launch (pump.fun, 2026-10-03 21:03:35 UTC). The mint
+// didn't exist before this, so this is all-time.
+const BURN_SINCE = 1791061415; // pump.fun created_timestamp for this mint
 
 async function readJson(p, fallback) {
   try { return JSON.parse(await readFile(p, "utf8")); } catch { return fallback; }
@@ -93,6 +93,8 @@ async function main() {
     buyback: {
       bull: Math.round(buybackBull),
       sol: Number(sum("buyback", "sol").toFixed(4)),
+      pump: Math.round(sum("buyback", "pump")),
+      usdc: Number(sum("buyback", "usdc").toFixed(2)),
       usd: Number((buybackBull * price).toFixed(2)),
       count: count("buyback"),
     },

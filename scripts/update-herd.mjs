@@ -1,5 +1,5 @@
 // Builds data/herd.json (holder census + leaderboard) and data/buys.json
-// (recent buys off the PumpSwap pool) for the BULLCEMBER site.
+// (recent buys off the bonding curve / PumpSwap pool) for the BULLCEMBER site.
 //
 // WHY THIS EXISTS: both datasets used to be fetched by every visitor's browser
 // using a Helius key hardcoded in index.html. Credit burn therefore scaled with
@@ -19,9 +19,15 @@ const DATA = join(__dirname, "..", "data");
 const HERD = join(DATA, "herd.json");
 const BUYS = join(DATA, "buys.json");
 
-const MINT = "DTRmPLZPfQRRRVwyZFuSxUhvnj9RHgDqFjQXx6vUpump";
-const POOL = "3LnLWicgYKDipE4nDUNS9BuLeXJZTB8jYqbGVcyhVHnr";
-const BONDING_CURVE = "DExz6gLccnrgCQRphPhCqT3TUZPEY33RerUhoAwvvbhg";
+// Relaunched 2026-10-03. The first mint (DTRmPLZ...) and its pool are retired.
+const MINT = "EUpN7RE7YLXmtF4FDuE4j7hqDhoogGqnbnKCcq3Upump";
+// The PumpSwap pool pump.fun reports for this mint. It does not exist until the
+// curve graduates, so reading it before then just returns nothing.
+const POOL = "598LgNU99ZQmPCNkfdF93eEmSkvtshgPPjnQ2ebatuWZ";
+const BONDING_CURVE = "CrFq4zNsEAEZqdmJWy9aWarZDSb1FLx64RbfUW7mVbvJ";
+// Pre-graduation buys come off the curve, after it off the pool. Read both so
+// the feed survives graduation without an edit.
+const VENUES = [BONDING_CURVE, POOL];
 const TOKEN_2022 = "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb";
 const DECIMALS = 1e6;
 
@@ -150,29 +156,39 @@ const WANT_BUYS = 12;
 // Fast path: one call, but Helius-only and it costs credits.
 async function buysViaEnhancedApi() {
   if (!HELIUS_KEY) throw new Error("no Helius key");
-  const r = await fetch(
-    `https://api.helius.xyz/v0/addresses/${POOL}/transactions?api-key=${HELIUS_KEY}&limit=40`
-  );
-  if (!r.ok) throw new Error("enhanced tx API " + r.status);
-  const txns = await r.json();
-  if (!Array.isArray(txns)) throw new Error("unexpected payload");
+  const txns = [];
+  for (const venue of VENUES) {
+    const r = await fetch(
+      `https://api.helius.xyz/v0/addresses/${venue}/transactions?api-key=${HELIUS_KEY}&limit=40`
+    );
+    if (!r.ok) throw new Error("enhanced tx API " + r.status);
+    const page = await r.json();
+    if (!Array.isArray(page)) throw new Error("unexpected payload");
+    txns.push(...page);
+  }
 
   const buys = [];
+  const seen = new Set();
   for (const tx of txns) {
-    // A buy is the pool sending BULLCEMBER out to someone.
-    const tt = (tx.tokenTransfers || []).find((x) => x.mint === MINT && x.fromUserAccount === POOL);
+    if (seen.has(tx.signature)) continue;
+    // A buy is the curve or pool sending BULLCEMBER out to someone.
+    const tt = (tx.tokenTransfers || []).find((x) => x.mint === MINT && VENUES.includes(x.fromUserAccount));
     if (!tt || !tt.tokenAmount) continue;
+    seen.add(tx.signature);
     buys.push({ sig: tx.signature, buyer: tt.toUserAccount, tokens: tt.tokenAmount, ts: tx.timestamp });
-    if (buys.length >= WANT_BUYS) break;
   }
-  return buys;
+  buys.sort((a, b) => (b.ts || 0) - (a.ts || 0));
+  return buys.slice(0, WANT_BUYS);
 }
 
 // Provider-independent path: read the pool's signatures and diff the token
 // balances ourselves. More calls, but they are plain RPC and free, and a cron
 // run every 15 minutes can afford them where a browser could not.
 async function buysViaRpc() {
-  const sigs = await rpc("getSignaturesForAddress", [POOL, { limit: 40 }]);
+  // Whichever venue is live. The curve PDA closes at graduation.
+  const curveSigs = await rpc("getSignaturesForAddress", [BONDING_CURVE, { limit: 40 }]).catch(() => []);
+  const poolSigs = await rpc("getSignaturesForAddress", [POOL, { limit: 40 }]).catch(() => []);
+  const sigs = [...(curveSigs || []), ...(poolSigs || [])].sort((a, b) => (b.blockTime || 0) - (a.blockTime || 0));
   const buys = [];
   for (const s of sigs || []) {
     if (s.err || buys.length >= WANT_BUYS) continue;
@@ -196,10 +212,10 @@ async function buysViaRpc() {
 
     // The pool must have LOST tokens (someone bought off it), and the buyer is
     // whoever gained the most. Pool gaining means it was a sell.
-    if ((delta.get(POOL) || 0) >= 0) continue;
+    if (!VENUES.some((v) => (delta.get(v) || 0) < 0)) continue;
     let buyer = null, gained = 0;
     for (const [owner, d] of delta) {
-      if (owner === POOL || d <= 0) continue;
+      if (VENUES.includes(owner) || d <= 0) continue;
       if (d > gained) { gained = d; buyer = owner; }
     }
     if (!buyer || !gained) continue;

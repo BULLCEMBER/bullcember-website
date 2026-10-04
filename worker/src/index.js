@@ -16,20 +16,34 @@
 // best-effort top-up, so if this Worker is down, unreachable, or never deployed,
 // the site renders exactly as it did before.
 
-const MINT = "DTRmPLZPfQRRRVwyZFuSxUhvnj9RHgDqFjQXx6vUpump";
-const POOL = "3LnLWicgYKDipE4nDUNS9BuLeXJZTB8jYqbGVcyhVHnr";
+// Relaunched 2026-10-03. The first mint (DTRmPLZ…) and its PumpSwap pool are retired.
+const MINT = "EUpN7RE7YLXmtF4FDuE4j7hqDhoogGqnbnKCcq3Upump";
+// pump.fun bonding curve PDA. Pre-graduation every trade goes through it.
+const CURVE = "CrFq4zNsEAEZqdmJWy9aWarZDSb1FLx64RbfUW7mVbvJ";
+// The PumpSwap pool pump.fun reports for this mint. It does not exist until the
+// curve graduates; reading it before then just returns no transactions.
+const POOL = "598LgNU99ZQmPCNkfdF93eEmSkvtshgPPjnQ2ebatuWZ";
+// This launch is quoted in PUMP, not SOL: the curve takes PUMP in and creator
+// fees are paid out in PUMP. A buyback therefore spends PUMP, not lamports.
+const PUMP = "pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn";
+// The dev has also bought back straight out of USDC (37Y8iyDR..., 155 USDC).
+const USDC = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
 const DEV = "BXrU6jcjtZnar27jfWCXXhr9EqQGcFvyfnpC9cRjYLmC";
-// Constant ATA address. The account gets created and closed repeatedly (the dev
-// burned out and closed it on 2026-08-01), but the address is derived from
-// (owner, mint, program) so signatures stay indexed against it either way.
-// Must stay in agreement with DEV_ATA_ADDR in index.html and scripts/scan.mjs.
-const DEV_ATA = "4dTEzL1XdsWuzwFwXyzsxNKBUCqH8Nsac9CRGSfpgVGw";
+// Constant ATA address. The account can be created and closed repeatedly, but the
+// address is derived from (owner, mint, program) so signatures stay indexed
+// against it either way. Must stay in agreement with DEV_ATA_ADDR in scripts/scan.mjs.
+const DEV_ATA = "9eFXRtXE5FoPFmUMPWkjf7kS6WrUihNGyVBXsUhHLbcS";
+// The launch transaction's dev buy is the dev's own opening bag, not a buyback.
+// Buybacks count strictly after this second. Same value as scan.mjs.
+const BUYBACK_AFTER = 1791061415;
 const BOOST = "BGVtkQcLUWtsm6FeZQrk12yXyDDYj9PhvmytYDKcDv5v";
 const DISTRIBUTOR = "7D2dJwtSH4dmM19MzJk1ms9kH5gmpbRbGaCXURmVdhQc";
 
 const DECIMALS = 6;
 const WSOL = "So11111111111111111111111111111111111111112";
 const SOL_FEE_FLOOR = 0.0005;
+const PUMP_FLOOR = 1; // ignore PUMP dust when tagging a buyback
+const USDC_FLOOR = 0.01;
 const ROUND_GAP = 600;
 const WANT_BUYS = 12;
 
@@ -49,14 +63,14 @@ const ALLOWED_ORIGINS = [
 // lifetime cumulative figure that the page only ever refreshes once a day, so an
 // hour at the edge is generous — and it caps Birdeye at 24 calls a day for the
 // entire internet, which is the whole point of putting it behind here.
-const TTL = { buys: 15, engine: 45, rewards: 45, volume: 3600, ohlcv: 120 };
+const TTL = { buys: 15, engine: 45, rewards: 45, volume: 3600, ohlcv: 120, curve: 30 };
 // Chart timeframes the page can ask for. Anything else is a 400, not a Birdeye call.
 const OHLCV_TF = {
   "1H": 30 * 24 * 3600, // last 30 days of hourly candles
   "4H": null,           // from launch
   "1D": null,
 };
-const LAUNCH_TS = 1782000000; // a little before the June 21 2026 launch
+const LAUNCH_TS = 1791061000; // a little before the 2026-10-03 relaunch
 
 const cors = (origin) => ({
   "access-control-allow-origin": ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0],
@@ -100,19 +114,43 @@ async function enhanced(env, address, limit = 40) {
 }
 
 // ------------------------------------------------------------------- buys ---
-// A buy is the pool sending BULLCEMBER out to someone. Same rule as
-// buysViaEnhancedApi() in scripts/update-herd.mjs, so the shape the browser gets
-// here is interchangeable with data/buys.json.
+// A buy is the curve (or, after graduation, the pool) sending BULLCEMBER out to
+// someone. Same rule as buysViaEnhancedApi() in scripts/update-herd.mjs, so the
+// shape the browser gets here is interchangeable with data/buys.json.
+// Both venues are read so the feed keeps working across graduation with no edit.
 async function getBuys(env) {
-  const txns = await enhanced(env, POOL, 40);
+  const venues = [CURVE, POOL];
+  const pages = await Promise.all(venues.map((v) => enhanced(env, v, 40)));
   const buys = [];
-  for (const tx of txns) {
-    const tt = (tx.tokenTransfers || []).find((x) => x.mint === MINT && x.fromUserAccount === POOL);
+  const seen = new Set();
+  for (const tx of pages.flat()) {
+    if (seen.has(tx.signature)) continue;
+    const tt = (tx.tokenTransfers || []).find((x) => x.mint === MINT && venues.includes(x.fromUserAccount));
     if (!tt || !tt.tokenAmount) continue;
+    seen.add(tx.signature);
     buys.push({ sig: tx.signature, buyer: tt.toUserAccount, tokens: tt.tokenAmount, ts: tx.timestamp });
-    if (buys.length >= WANT_BUYS) break;
   }
-  return { updatedAt: new Date().toISOString(), buys };
+  buys.sort((a, b) => (b.ts || 0) - (a.ts || 0));
+  return { updatedAt: new Date().toISOString(), buys: buys.slice(0, WANT_BUYS) };
+}
+
+// ------------------------------------------------------------------ curve ---
+// Bonding-curve progress. The browser may not read chain itself (see the header),
+// so it asks here. Layout: 8-byte discriminator, then u64 virtual_token,
+// virtual_quote, real_token, real_quote, total_supply, then a `complete` bool.
+const INIT_REAL_TOKEN = 793_100_000_000_000n; // real token reserve at launch (793.1M * 1e6)
+async function getCurve(env) {
+  const info = await rpc(env, "getAccountInfo", [CURVE, { encoding: "base64" }]);
+  // The PDA is closed at graduation, so a missing account means it bonded.
+  if (!info?.value) return { updatedAt: new Date().toISOString(), complete: true, pct: 100, quote: 0 };
+  const b = Uint8Array.from(atob(info.value.data[0]), (c) => c.charCodeAt(0));
+  const dv = new DataView(b.buffer);
+  const realToken = dv.getBigUint64(24, true);
+  const realQuote = dv.getBigUint64(32, true);
+  const complete = b[48] === 1;
+  const sold = INIT_REAL_TOKEN - realToken;
+  const pct = complete ? 100 : Math.max(0, Math.min(100, Number((sold * 10000n) / INIT_REAL_TOKEN) / 100));
+  return { updatedAt: new Date().toISOString(), complete, pct, quote: Number(realQuote) / 10 ** DECIMALS };
 }
 
 // ----------------------------------------------------------------- engine ---
@@ -127,6 +165,18 @@ function solDelta(tx, who) {
   const i = keys.indexOf(who);
   if (i < 0 || !tx.meta) return 0;
   return (tx.meta.postBalances[i] - tx.meta.preBalances[i]) / 1e9;
+}
+
+// What the dev paid in tokens, if anything. Net per mint across the transaction,
+// because a SOL route passes PUMP through the wallet and nets to ~0. Same rule as
+// spentTokens() in scripts/scan.mjs.
+function spentTokens(pre, post) {
+  const pumpD = ownerMintBal(post, DEV, PUMP) - ownerMintBal(pre, DEV, PUMP);
+  const usdcD = ownerMintBal(post, DEV, USDC) - ownerMintBal(pre, DEV, USDC);
+  const out = {};
+  if (pumpD < -PUMP_FLOOR) out.pump = Math.round(-pumpD);
+  if (usdcD < -USDC_FLOOR) out.usdc = +(-usdcD).toFixed(2);
+  return Object.keys(out).length ? out : null;
 }
 
 // The boost vault funds buys from a wrapped-SOL account, so its native lamport
@@ -203,11 +253,17 @@ async function getEngine(env, since) {
     const devDelta = ownerBal(post, DEV) - ownerBal(pre, DEV);
     const burned = burnAmount(tx);
     const solD = solDelta(tx, DEV);
+    const tokenSpend = spentTokens(pre, post);
     const boostSol = boostSpend(tx, pre, post);
 
     if (burned > 0.0001) events.push({ type: "burn", time, bull: Math.round(burned), sig });
 
-    if (devDelta > 0.0001 && solD < -SOL_FEE_FLOOR) {
+    // Token spends are tested first. A PUMP- or USDC-funded buy still moves ~0.0013
+    // SOL of fees and rent, which would otherwise pass the SOL test as a fake SOL buy.
+    const isBuy = devDelta > 0.0001 && time > BUYBACK_AFTER;
+    if (isBuy && tokenSpend) {
+      events.push({ type: "buyback", time, bull: Math.round(devDelta), ...tokenSpend, sig });
+    } else if (isBuy && solD < -SOL_FEE_FLOOR) {
       events.push({ type: "buyback", time, bull: Math.round(devDelta), sol: +(-solD).toFixed(4), sig });
     } else if (burned > 0.0001 && boostSol > SOL_FEE_FLOOR) {
       // A boost buy never lands in any balance — bought and burned atomically, so
@@ -397,6 +453,7 @@ export default {
         : route === "engine" ? await getEngine(env, since)
         : route === "volume" ? await getVolume(env)
         : route === "ohlcv" ? await getOhlcv(env, tf)
+        : route === "curve" ? await getCurve(env)
         : await getRewards(env, since);
 
       const res = json(body, origin, TTL[route]);

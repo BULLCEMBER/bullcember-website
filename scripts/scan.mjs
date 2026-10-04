@@ -1,14 +1,25 @@
 // Authoritative BULLCEMBER engine scanner — public RPC, no API key required.
 // Classifies every BULLCEMBER movement on the dev (creator) token account.
 //
-//   buyback = dev received BULLCEMBER AND spent SOL (a real buy off the market)
+//   buyback = dev received BULLCEMBER AND spent PUMP, USDC or SOL (a real buy off the market)
 //   burn    = burn / burnChecked instruction on the mint
 //
 // No supply is ever sent to anyone — the creator fees only buy back and burn.
 // Total burned for the headline tile is itemized from the burn events we attribute.
 
 const RPC = process.env.RPC_URL || "https://api.mainnet-beta.solana.com";
-const MINT = "DTRmPLZPfQRRRVwyZFuSxUhvnj9RHgDqFjQXx6vUpump";
+// Relaunched 2026-10-03. The first mint (DTRmPLZ...) is retired.
+const MINT = "EUpN7RE7YLXmtF4FDuE4j7hqDhoogGqnbnKCcq3Upump";
+// This launch is quoted in PUMP: creator fees are paid in PUMP and the dev buys
+// back with PUMP, so a buyback shows as PUMP out rather than lamports out.
+const PUMP = "pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn";
+const PUMP_FLOOR = 1; // ignore PUMP dust when tagging buybacks
+// The dev has also bought back straight out of USDC (37Y8iyDR..., 155 USDC).
+const USDC = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
+const USDC_FLOOR = 0.01;
+// The launch transaction's dev buy is the dev's opening bag, not a buyback.
+// Must match BUYBACK_AFTER in worker/src/index.js.
+const BUYBACK_AFTER = 1791061415;
 const DEV = "BXrU6jcjtZnar27jfWCXXhr9EqQGcFvyfnpC9cRjYLmC"; // pump.fun creator / fee wallet
 // pump.fun "boost" vault. On graduation it takes a slice of the migration SOL and spends
 // it buying BULLCEMBER on PumpSwap, burning each buy inside the same transaction. The
@@ -39,12 +50,11 @@ async function rpc(method, params, tries = 8) {
 // so it is CONSTANT. The account at that address can be created and closed
 // repeatedly, but the address never changes and signatures stay indexed against it.
 //
-// On 2026-08-01 the dev burned its remaining balance and closed the account in one
-// transaction. getTokenAccountsByOwner then returned zero accounts, this function
-// returned null, and the caller's `if (devAcct)` guard silently scanned nothing —
-// so the scan reported "no new events" while a 1.7M burn sat unrecorded.
-// Must stay in agreement with DEV_ATA_ADDR in index.html.
-const DEV_ATA_ADDR = "4dTEzL1XdsWuzwFwXyzsxNKBUCqH8Nsac9CRGSfpgVGw";
+// On 2026-08-01 (first mint) the dev burned its remaining balance and closed the
+// account in one transaction. getTokenAccountsByOwner then returned zero accounts,
+// and the scan silently reported "no new events" while a 1.7M burn sat unrecorded.
+// Must stay in agreement with DEV_ATA in worker/src/index.js.
+const DEV_ATA_ADDR = "9eFXRtXE5FoPFmUMPWkjf7kS6WrUihNGyVBXsUhHLbcS";
 
 async function tokenAccount(owner) {
   // {mint} filter resolves the account whether it's legacy SPL or Token-2022.
@@ -89,6 +99,17 @@ function boostSpend(tx, pre, post) {
   const wsol = ownerMintBal(post, BOOST, WSOL) - ownerMintBal(pre, BOOST, WSOL);
   return -(wsol + solDelta(tx, BOOST));
 }
+// What the dev paid in tokens, if anything. Net per mint across the transaction,
+// because a SOL route passes PUMP through the wallet and nets to ~0.
+// Must match spentTokens() in worker/src/index.js.
+function spentTokens(pre, post) {
+  const pumpD = ownerMintBal(post, DEV, PUMP) - ownerMintBal(pre, DEV, PUMP);
+  const usdcD = ownerMintBal(post, DEV, USDC) - ownerMintBal(pre, DEV, USDC);
+  const out = {};
+  if (pumpD < -PUMP_FLOOR) out.pump = Math.round(-pumpD);
+  if (usdcD < -USDC_FLOOR) out.usdc = Number((-usdcD).toFixed(2));
+  return Object.keys(out).length ? out : null;
+}
 function burnAmount(tx) {
   let burned = 0;
   const scan = (instrs) => (instrs || []).forEach((ix) => {
@@ -132,7 +153,7 @@ export async function scan(sinceTime = 0) {
   rows.sort((a, b) => (a.tx.blockTime || 0) - (b.tx.blockTime || 0)); // oldest -> newest
 
   const out = {
-    buyback: { bull: 0, sol: 0, count: 0 },
+    buyback: { bull: 0, sol: 0, pump: 0, usdc: 0, count: 0 },
     burn: { bull: 0, count: 0 },
     feed: [],
     newestSig: null,
@@ -145,14 +166,22 @@ export async function scan(sinceTime = 0) {
     const devDelta = ownerBal(post, DEV) - ownerBal(pre, DEV);
     const burned = burnAmount(tx);
     const solD = solDelta(tx, DEV);
+    const tokenSpend = spentTokens(pre, post);
     const boostSol = boostSpend(tx, pre, post);
 
     if (burned > 0.0001) {
       out.burn.bull += burned; out.burn.count += 1;
       out.feed.push({ type: "burn", time, bull: Math.round(burned), sig });
     }
-    // buyback: BULLCEMBER came in AND SOL went out (a real purchase, not a plain transfer/allocation)
-    if (devDelta > 0.0001 && solD < -SOL_FEE_FLOOR) {
+    // buyback: BULLCEMBER came in AND PUMP, USDC or SOL went out (a real purchase, not a
+    // plain transfer). Token spends are tested first: a PUMP- or USDC-funded buy still
+    // moves ~0.0013 SOL of fees and rent, which would otherwise log a fake SOL spend.
+    const isBuy = devDelta > 0.0001 && time > BUYBACK_AFTER;
+    if (isBuy && tokenSpend) {
+      out.buyback.bull += devDelta; out.buyback.count += 1;
+      out.buyback.pump += tokenSpend.pump || 0; out.buyback.usdc += tokenSpend.usdc || 0;
+      out.feed.push({ type: "buyback", time, bull: Math.round(devDelta), ...tokenSpend, sig });
+    } else if (isBuy && solD < -SOL_FEE_FLOOR) {
       out.buyback.bull += devDelta; out.buyback.count += 1; out.buyback.sol += -solD;
       out.feed.push({ type: "buyback", time, bull: Math.round(devDelta), sol: Number((-solD).toFixed(4)), sig });
     } else if (burned > 0.0001 && boostSol > SOL_FEE_FLOOR) {
@@ -168,6 +197,8 @@ export async function scan(sinceTime = 0) {
   out.feed.sort((a, b) => (b.time || 0) - (a.time || 0));
   out.buyback.bull = Math.round(out.buyback.bull);
   out.buyback.sol = Number(out.buyback.sol.toFixed(4));
+  out.buyback.pump = Math.round(out.buyback.pump);
+  out.buyback.usdc = Number(out.buyback.usdc.toFixed(2));
   out.burn.bull = Math.round(out.burn.bull);
   return out;
 }
