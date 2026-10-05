@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-10-05T07:42:53.688Z",
-  "total": 48,
+  "updatedAt": "2026-10-05T16:24:36.559Z",
+  "total": 47,
   "tiers": {
-    "calf": 17,
-    "bull": 14,
-    "stampede": 16,
+    "calf": 16,
+    "bull": 15,
+    "stampede": 15,
     "alpha": 1
   },
   "holders": [
@@ -29,8 +29,8 @@
       32744660834887
     ],
     [
-      "GVLQpBnjL4UUoJ8k6Sfd6ZSJZ5SumSfrHh2nHn9AoNEg",
-      24959366870645
+      "BvpujiYFk8XaGvZTdYJDeLEzLAQDWLs33ax9TRukCVG4",
+      29094469101638
     ],
     [
       "7v2YQLGteDLa3JQkBm2HxzuDx8XB3g7pewPSg1PNHtfk",
@@ -45,10 +45,6 @@
       20000000000000
     ],
     [
-      "ASr6Hy8zvwwdeiNxNf7CgRH3JHXwYFGGx2C95DMNpRBo",
-      19412936033469
-    ],
-    [
       "8znd3ascuSJ7XY7urvLQJBEAKS6y8vYG7RsjMGz3qxsA",
       18921327850189
     ],
@@ -57,8 +53,8 @@
       18679024462300
     ],
     [
-      "HELPMEVB4s3zAzZVZgKwGugRRc5waeS8X2eSQikDQAFK",
-      16363210600409
+      "GVLQpBnjL4UUoJ8k6Sfd6ZSJZ5SumSfrHh2nHn9AoNEg",
+      14936848464238
     ],
     [
       "6J1cEH7yCrAUCKmwKz5WsRP7mXxgbtUU5C2hAQoEuZT6",
@@ -93,6 +89,10 @@
       4561717053680
     ],
     [
+      "DWeiyEgY1uiFX11xwZ2uHCas6QqnMWWca49ZqNimxG1h",
+      4148489177758
+    ],
+    [
       "J3WaRyvzUMZLwRHAXJsdcJvVrFGmsePmKMS8wZzks1nd",
       3262050502797
     ],
@@ -101,16 +101,16 @@
       3182657627294
     ],
     [
+      "3hvSYRdnPNvAPFKKTkBpc2exAgJo72urjJMVxY55FUHv",
+      2811106641582
+    ],
+    [
       "FFXKTkc95KqmVSWSe5rZE2idCCVLxummG61SEv9827DJ",
       2642103130161
     ],
     [
       "J2d5pMyFdmCEPAqxzSqGRykUA2ysSU1amsitm1kLqWSa",
       2594979911151
-    ],
-    [
-      "BegbyYyW23tqNSceFe7c68Wz4obfZmzGxaaB9kZ49LcB",
-      2086032020004
     ],
     [
       "C9XbmPwNVWNZu2zWHpixa8R6XQQVnZ5vU8jf6fV3NEDc",
@@ -151,10 +151,6 @@
     [
       "Hpc4VHLsypHoDuJr6kD7rbcYJ556Xzj5XxiiFwRruzrm",
       313011722022
-    ],
-    [
-      "7mQQXMvkYBwbJxFxxrsQXPGUyPfUEg2cPFLs3uSmf59q",
-      300009993313
     ],
     [
       "Fytc3bKmkaR65HEtgQ6LpBR3xH22E2bvQTXHVG5yXc7Y",
