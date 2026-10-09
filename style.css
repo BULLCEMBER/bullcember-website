@@ -206,7 +206,7 @@ a { text-decoration: none; color: inherit; }
   transition: background var(--dur-1) var(--ease);
 }
 
-.btn-nav:hover { background: #2BF5A5; }
+.btn-nav:hover { background: var(--signal-core); }
 
 .nav-toggle {
   display: none;
@@ -406,7 +406,7 @@ a { text-decoration: none; color: inherit; }
   transition: background var(--dur-1) var(--ease);
 }
 
-.btn-primary:hover { background: #2BF5A5; }
+.btn-primary:hover { background: var(--signal-core); }
 
 .btn-secondary {
   padding: var(--s-4) var(--s-8);
@@ -1282,7 +1282,7 @@ section { padding: var(--section-y) 0; }
   transition: background var(--dur-1) var(--ease);
 }
 
-.rank-btn:hover { background: #2BF5A5; }
+.rank-btn:hover { background: var(--signal-core); }
 
 .rank-result {
   max-width: 560px;
@@ -2073,7 +2073,7 @@ body::after {
   border-radius: 0;
   border: 2px solid var(--line-strong);
   border-top: 3px solid var(--signal);
-  background: rgba(14,16,18,0.92);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
   transform: rotate(-0.5deg);
   box-shadow: 6px 6px 0 rgba(0,0,0,0.6);
   overflow: visible;
@@ -2153,7 +2153,7 @@ body::after {
   padding: var(--s-6) var(--s-3);
   border: 2px solid var(--line-strong);
   border-top: 3px solid var(--accent);
-  background: rgba(14,16,18,0.9);
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
   box-shadow: 5px 5px 0 rgba(0,0,0,0.65);
 }
 .countdown-unit:nth-child(1) { transform: rotate(-1.6deg); }
@@ -2224,7 +2224,7 @@ body::after {
 .herd-milestone, .feed, .rank-check {
   border-radius: 0;
   border: 2px solid var(--line-strong);
-  background: rgba(14, 16, 18, 0.9);
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
   box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.6);
   transition: transform var(--dur-1) var(--ease),
               box-shadow var(--dur-1) var(--ease),
@@ -2355,7 +2355,7 @@ body::after {
 .rank-input {
   border-radius: 0;
   border: 2px solid var(--line-strong);
-  background: rgba(8, 7, 10, 0.9);
+  background: color-mix(in srgb, var(--bg) 90%, transparent);
   color: var(--bone);
   font-family: var(--f-mono);
 }
@@ -2376,7 +2376,7 @@ body::after {
 .toko-ca-text { color: var(--fg-dim); }
 .toko-timeline-arrow { color: var(--signal-ink); }
 
-.grad-bar { border-radius: 0; border: 1px solid var(--line-strong); background: rgba(8,7,10,0.9); }
+.grad-bar { border-radius: 0; border: 1px solid var(--line-strong); background: color-mix(in srgb, var(--bg) 90%, transparent); }
 .grad-fill { border-radius: 0; background: var(--signal); }
 .grad-pct {
   font-family: var(--f-slab);
@@ -2921,3 +2921,140 @@ body { text-transform: lowercase; }
   text-transform: none;
 }
 
+
+/* ============================================================================
+   BULL LAYER — palette from the confirmed logo  (adopted 2026-10-10)
+   Replaces the neon green direction. Every value is sampled from the supplied
+   artwork, not picked:
+     gradient   #CCFDD8 mint -> #AFDBE7 sky -> #96BBFF periwinkle  (the art's field)
+     #532B95 purple · #2653A0 royal blue · #5BAEC6 teal              (the bull's body)
+     #FAF8CC cream                                                   (its outline)
+     #B44426 rust                                                    (nose and eyes)
+   The page sits on a deep indigo pulled from the bull's darkest purple, so the
+   logo composites onto it without a plate, and the pastel gradient becomes the
+   brand colour — on fills, rules and the wordmark — exactly as it frames the
+   bull in the art.
+
+   The tube is switched off. The glow tokens are zeroed rather than deleted so
+   every rule that composes them (`var(--glow-sm), inset …`) stays valid; this
+   art is flat, inked colour and a halo around it reads as a leftover.
+   ========================================================================= */
+:root {
+  --bull-mint:    #CCFDD8;
+  --bull-sky:     #AFDBE7;
+  --bull-peri:    #96BBFF;
+  --bull-purple:  #532B95;
+  --bull-blue:    #2653A0;
+  --bull-teal:    #5BAEC6;
+  --bull-cream:   #FAF8CC;
+  --bull-rust:    #B44426;
+  --grad:         linear-gradient(90deg, var(--bull-mint) 0%, var(--bull-sky) 50%, var(--bull-peri) 100%);
+
+  --bg:           #0E0B22;
+  --bg-2:         #120E2B;
+  --surface:      #17123A;
+  --surface-2:    #1E1849;
+  --line:         #2A2353;   /* neutral indigo — never mint, see --up */
+  --line-strong:  #3C3372;
+
+  --fg:           #EEF0FF;   /* 16.9:1 on --bg */
+  --fg-dim:       #BEC4EA;   /* 10.9:1 */
+  --muted:        #9097C6;   /*  6.4:1 */
+  --bone:         var(--bull-cream);
+
+  /* mint is the brand: lightest end of the gradient, 17.6:1 on --bg, so it
+     holds at any size and takes dark ink when it is a fill */
+  --signal:       var(--bull-mint);
+  --signal-rgb:   204, 253, 216;
+  --signal-ink:   var(--bull-mint);
+  --signal-core:  var(--bull-cream);
+  --signal-dim:   var(--bull-teal);
+  --signal-wash:  rgba(var(--signal-rgb), 0.07);
+  --on-signal:    #120E2B;
+
+  --accent:       var(--bull-peri);   /* 9.4:1 */
+  --accent-ink:   #AFC9FF;
+  --on-accent:    #120E2B;
+
+  /* the art's rust is 3.4:1 on indigo — fine for fills, too dark for numbers,
+     so the type uses it lifted. Still the nose colour, just lit. */
+  --burn:         #F0693F;   /* 6.0:1 */
+  --up:           #7FE8A6;
+  --down:         #FF5C6C;
+
+  --glow-sm:      0 0 0 transparent;
+  --glow-lg:      0 0 0 transparent;
+  --glow-accent:  0 0 0 transparent;
+  --focus-ring:   0 0 0 2px var(--bg), 0 0 0 4px var(--bull-peri);
+}
+
+/* ---- the wordmark: the art's gradient, inked with the bull's purple ------
+   text-shadow cannot sit under clipped-gradient text (it shows through the
+   transparent glyph), so the offset is a drop-shadow filter instead. */
+.hero-title {
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: none;
+  filter: drop-shadow(5px 5px 0 var(--bull-purple));
+}
+@media (max-width: 768px) {
+  .hero-title { text-shadow: none; filter: drop-shadow(3px 3px 0 var(--bull-purple)); }
+}
+.highlight {
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: none;
+}
+
+/* ---- big numbers: cream, the outline colour, flat ----------------------- */
+.countdown-num, .herd-num, .elive.buy .elive-v { color: var(--bull-cream); text-shadow: none; }
+.elive.burn .elive-v { color: var(--burn); text-shadow: none; }
+.elive.rw .elive-v   { color: var(--accent-ink); text-shadow: none; }
+
+/* ---- filled CTA: the gradient itself ------------------------------------ */
+.btn-primary, .btn-nav, .rank-btn {
+  background: var(--grad);
+  border-color: transparent;
+  color: var(--on-signal);
+}
+.btn-primary:hover, .btn-nav:hover, .rank-btn:hover {
+  background: var(--bull-cream);
+  border-color: var(--bull-cream);
+  color: var(--on-signal);
+}
+
+/* ---- stamps and rules pick up the periwinkle end ------------------------ */
+.hero-tag, .section-tag, .final-cta-tag { color: var(--bull-mint); border-color: var(--bull-teal); box-shadow: none; }
+.ticker-scroll { border-top-color: var(--bull-teal); border-bottom-color: var(--bull-teal); }
+.live-dot, .buy-dot { box-shadow: none; }
+.hero-glow {
+  background: radial-gradient(circle, rgba(150, 187, 255, 0.10) 0%, rgba(204, 253, 216, 0.04) 40%, transparent 68%);
+}
+
+/* ---- the hero bull ------------------------------------------------------
+   The hero had no mark at all; the logo is the brand now, so it sits beside
+   the wordmark at desktop width and steps out of the way on phones, where the
+   nav already carries it. */
+.hero { position: relative; }
+.hero-mark {
+  position: absolute;
+  right: max(var(--gutter), calc((100vw - var(--maxw)) / 2 - 40px));
+  top: 50%;
+  transform: translateY(-66%);
+  width: clamp(260px, 25vw, 380px);
+  height: auto;
+  pointer-events: none;
+  z-index: 0;
+  filter: drop-shadow(0 24px 48px rgba(0, 0, 0, 0.45));
+}
+.hero-content { position: relative; z-index: 1; }
+@media (max-width: 1100px) {
+  .hero-mark { opacity: 0.22; width: 320px; transform: translateY(-62%); }
+}
+@media (max-width: 768px) {
+  .hero-mark { display: none; }
+}

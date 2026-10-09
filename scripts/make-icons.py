@@ -2,90 +2,95 @@
 """
 Build every icon and logo asset the site serves, from the one confirmed logo.
 
-    python scripts/make-icons.py
+    python scripts/make-icons.py          # needs Pillow, numpy, scipy
 
-Input  : graphics/logo-source.png   (512x512, the confirmed neon bull, gitignored)
+Input  : graphics/logo-source.png   (640x640, the confirmed bull on its
+                                      mint -> periwinkle gradient, as supplied)
 Outputs: logo.png  favicon.ico  favicon-16x16.png  favicon-32x32.png
          apple-touch-icon.png  icon-192.png  icon-512.png
 
-Two decisions are baked in here, both measured rather than guessed.
+Adopted 2026-10-10, replacing the neon outline bull (kept, unused, in
+graphics/retired-neon/).
 
-1. THE SITE LOGO IS A STRAIGHT-ALPHA CUTOUT, NOT THE SOURCE PNG.
-   The source is opaque RGB on a #0E0E0D field, so dropping it onto the page
-   would show a black square with a visible seam against --bg (#080A07). The
-   cutout takes alpha from the brightest channel -- for neon art the channel
-   maximum tracks emitted light far better than luminance, which would crush
-   the saturated green -- and then UNPREMULTIPLIES the colour. Skipping the
-   unpremultiply is the usual mistake: it looks right on a black page and goes
-   muddy everywhere else, because the glow falloff stays multiplied by an alpha
-   the compositor is about to apply a second time.
+1. THE SITE LOGO IS A STRAIGHT-ALPHA CUTOUT, NOT THE SOURCE.
+   The source is opaque RGB on a soft horizontal gradient. The gradient is
+   modelled (quadratic in x, linear in y) from a 24px border ring -- residual
+   there is under 3/255, so the model is effectively exact -- and a pixel is
+   background when it sits within GRAD_TOL of that model AND is connected to
+   the edge. Connectivity matters: the bull's cream outline is close enough to
+   the mint end of the gradient that a pure colour key would eat into it.
+   Edge pixels get a soft alpha from their distance to the model, then the
+   gradient is subtracted back out of their colour (decontamination), so the
+   rim does not carry a mint fringe onto the indigo page.
 
-2. SMALL ICONS USE A HEAD CROP. THE SITE ITSELF NEVER DOES.
-   Rendered and inspected at real size: the full body holds together down to
-   about 48px, where the horns are still legible. At 32px it is marginal and at
-   16px it collapses into an anonymous blob -- the horns, which are the entire
-   identity, are the first thing the downscale eats. So favicons crop to the
-   head, which still reads at 16px. This is a legibility adaptation for browser
-   chrome only; everywhere on the page the logo is used exactly as supplied.
-
-   The crop is HEAD_BOX below, derived from a row-by-row scan of the silhouette:
-   horns span x135-375 across y18-100, the muzzle narrows to x182-323 by y140,
-   and the arms start flaring past y160. Cutting at y200 keeps the whole horn
-   spread and stops before the arms widen the shape.
-
-Favicons keep the dark tile rather than going transparent. A bare neon outline
-on a light browser tab strip is nearly invisible; a self-contained dark tile
-reads on light and dark chrome alike.
+2. THE ICONS KEEP THE GRADIENT TILE.
+   Browser chrome is light or dark depending on the user; the bull on its own
+   gradient reads on both, and it is how the artwork was supplied. They are
+   square crops of the source itself, so the tile is the artist's gradient,
+   not a re-creation of it.
 """
 import os
+import numpy as np
 from PIL import Image
+from scipy import ndimage as ndi
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(ROOT, "graphics", "logo-source.png")
 
-# the near-black the art was rendered on; anything at or below this is background
-FLOOR = 15.0
-TILE = (14, 14, 13)
-HEAD_BOX = (110, 0, 400, 200)
+GRAD_TOL = 22.0
+# square crops of the 640px source, both centred on the bull (bbox x64-577,
+# y95-543): ICON_BOX leaves breathing room, FAVICON_BOX is as tight as the
+# horns allow so the face is as large as possible at 16px
+ICON_BOX = (40, 39, 600, 599)
+FAVICON_BOX = (56, 55, 584, 583)
 
 
 def cutout(src):
-    """Opaque neon-on-black -> straight-alpha RGBA."""
-    w, h = src.size
-    sc = 255.0 / (255.0 - FLOOR)
-    out = []
-    for r, g, b in src.getdata():
-        r = max(0.0, (r - FLOOR) * sc)
-        g = max(0.0, (g - FLOOR) * sc)
-        b = max(0.0, (b - FLOOR) * sc)
-        a = max(r, g, b)
-        if a <= 0:
-            out.append((0, 0, 0, 0))
-            continue
-        k = 255.0 / a
-        out.append((min(255, int(r * k + 0.5)),
-                    min(255, int(g * k + 0.5)),
-                    min(255, int(b * k + 0.5)),
-                    min(255, int(a + 0.5))))
-    im = Image.new("RGBA", (w, h))
-    im.putdata(out)
-    return im
+    im = np.asarray(src).astype(np.float64)
+    h, w, _ = im.shape
+    yy, xx = np.mgrid[0:h, 0:w]
+    X, Y = xx / w, yy / h
+    ring = np.zeros((h, w), bool)
+    ring[:24] = ring[-24:] = True
+    ring[:, :24] = ring[:, -24:] = True
+    A = np.stack([np.ones_like(X), X, X ** 2, Y, X * Y], -1)
+    coef = np.linalg.lstsq(A[ring], im[ring], rcond=None)[0]
+    bg = A @ coef
+    diff = np.sqrt(((im - bg) ** 2).sum(-1))
 
+    lab, _ = ndi.label(diff < GRAD_TOL)
+    edge = np.unique(np.concatenate([lab[0], lab[-1], lab[:, 0], lab[:, -1]]))
+    fg = ~np.isin(lab, edge[edge > 0])
+    fg = ndi.binary_opening(fg, iterations=1)
+    lab2, n2 = ndi.label(fg)
+    sizes = ndi.sum(fg, lab2, range(1, n2 + 1))
+    fg = np.isin(lab2, 1 + np.flatnonzero(sizes >= 200))
 
-def square(img, box=None):
-    """Crop then pad to a centred square on the tile colour."""
-    c = img.crop(box) if box else img
-    w, h = c.size
-    side = max(w, h)
-    t = Image.new("RGB", (side, side), TILE)
-    t.paste(c, ((side - w) // 2, (side - h) // 2))
-    return t
+    band = ndi.binary_dilation(fg, iterations=2) & ~ndi.binary_erosion(fg, iterations=2)
+    t0, t1 = GRAD_TOL * 0.5, GRAD_TOL * 2.6
+    alpha = fg.astype(np.float64)
+    alpha[band] = np.clip((diff - t0) / (t1 - t0), 0, 1)[band]
+    alpha = ndi.gaussian_filter(alpha, 0.6)
+    alpha[ndi.binary_erosion(fg, iterations=3)] = 1.0
+
+    a = np.clip(alpha, 1e-3, 1)[..., None]
+    col = np.clip(bg + (im - bg) / a, 0, 255)
+    col = np.where(alpha[..., None] > 0.98, im, col)
+    rgba = np.dstack([col, alpha * 255]).round().astype(np.uint8)
+    out = Image.fromarray(rgba, "RGBA")
+    # square, centred on the artwork, then 512 -- the size the page declares
+    l, t, r, b = out.getbbox()
+    side = max(r - l, b - t) + 16
+    cx, cy = (l + r) // 2, (t + b) // 2
+    sq = Image.new("RGBA", (side, side), (0, 0, 0, 0))
+    sq.paste(out.crop((l, t, r, b)), ((side - (r - l)) // 2, (side - (b - t)) // 2))
+    return sq.resize((512, 512), Image.LANCZOS)
 
 
 def main():
     src = Image.open(SRC).convert("RGB")
-    if src.size != (512, 512):
-        raise SystemExit(f"expected a 512x512 source, got {src.size}")
+    if src.size != (640, 640):
+        raise SystemExit(f"expected a 640x640 source, got {src.size}")
 
     written = []
 
@@ -94,19 +99,19 @@ def main():
         img.save(p, **kw)
         written.append((name, img.size, os.path.getsize(p)))
 
-    save(cutout(src), "logo.png")
+    save(cutout(src), "logo.png", optimize=True)
 
-    head = square(src, HEAD_BOX)
-    save(head.resize((16, 16), Image.LANCZOS), "favicon-16x16.png")
-    save(head.resize((32, 32), Image.LANCZOS), "favicon-32x32.png")
+    fav = src.crop(FAVICON_BOX)
+    save(fav.resize((16, 16), Image.LANCZOS), "favicon-16x16.png")
+    save(fav.resize((32, 32), Image.LANCZOS), "favicon-32x32.png")
     # one .ico carrying all three chrome sizes, so the OS never has to rescale
-    save(head.resize((48, 48), Image.LANCZOS), "favicon.ico",
+    save(fav.resize((48, 48), Image.LANCZOS), "favicon.ico",
          sizes=[(16, 16), (32, 32), (48, 48)])
 
-    body = square(src)
-    save(body.resize((180, 180), Image.LANCZOS), "apple-touch-icon.png")
-    save(body.resize((192, 192), Image.LANCZOS), "icon-192.png")
-    save(body.resize((512, 512), Image.LANCZOS), "icon-512.png")
+    icon = src.crop(ICON_BOX)
+    save(icon.resize((180, 180), Image.LANCZOS), "apple-touch-icon.png", optimize=True)
+    save(icon.resize((192, 192), Image.LANCZOS), "icon-192.png", optimize=True)
+    save(icon.resize((512, 512), Image.LANCZOS), "icon-512.png", optimize=True)
 
     for name, size, nbytes in written:
         print(f"ok   {name:24s} {size[0]}x{size[1]:<5} {nbytes:>8,} bytes")
