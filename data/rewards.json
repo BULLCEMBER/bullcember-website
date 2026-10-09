@@ -1,0 +1,173 @@
+{
+  "updatedAt": "2026-10-04T06:23:59.590Z",
+  "distributor": "7D2dJwtSH4dmM19MzJk1ms9kH5gmpbRbGaCXURmVdhQc",
+  "dev": "BXrU6jcjtZnar27jfWCXXhr9EqQGcFvyfnpC9cRjYLmC",
+  "devSol": 0,
+  "totalSol": 1.648863,
+  "totalUsd": 198.24,
+  "collectedSol": 1.656493,
+  "overheadSol": 0.000634,
+  "pendingSol": 0.006997,
+  "rounds": 9,
+  "wallets": 115,
+  "lastRound": 1791013346,
+  "biggestSol": 0.232989,
+  "top": [
+    [
+      "7v2YQLGteDLa3JQkBm2HxzuDx8XB3g7pewPSg1PNHtfk",
+      0.081711
+    ],
+    [
+      "4fbX9B8QkCymGe1ihb5Qcf4uQsBCAe2Hk884qT8FZ2rF",
+      0.081164
+    ],
+    [
+      "3dWaunQc21VmoHnPBpc5UBL2BoT5DdsKp7UnU9W1KQBi",
+      0.076842
+    ],
+    [
+      "BvpujiYFk8XaGvZTdYJDeLEzLAQDWLs33ax9TRukCVG4",
+      0.071762
+    ],
+    [
+      "EYXDyx8yihoRNW8L9GmWZ3Gds1PfmRtkNCnvGvdoE3xa",
+      0.06983
+    ],
+    [
+      "De3Jt9TUQSEvJm2Eh9crRjSC3qEzrUnCMUap64dgwDrW",
+      0.065722
+    ],
+    [
+      "Ftza73zx8AzdVhFGoCnodoyrvEEyjZTMw3C9ysUtstv6",
+      0.064026
+    ],
+    [
+      "583S1Jk6SpnSehRHNEeNcEmJettgTSgfwunftecJXHjD",
+      0.059173
+    ],
+    [
+      "8oQCeJPR8mwbSVrMWddbQfBxVMkgFdC2LeYdMLR6ZHmL",
+      0.052976
+    ],
+    [
+      "8DgovYJwx8cq14vvFNuZbsD6B4QzH9SqPc2R1iAMTa9o",
+      0.050256
+    ],
+    [
+      "2zeHdhPzvfKxR3fPXTzhEjJapmATrnAoor5XYKehJqTk",
+      0.048108
+    ],
+    [
+      "7B6fnUh5Bw59qDdSRqmZTPDmTNz75Zyg5YFNWbDTYVrh",
+      0.045085
+    ],
+    [
+      "D8sj8c8AmKqNApgujCaLRuCpwN41bR92N6toGrpVZZEC",
+      0.043127
+    ],
+    [
+      "3hvSYRdnPNvAPFKKTkBpc2exAgJo72urjJMVxY55FUHv",
+      0.039863
+    ],
+    [
+      "9JoExVJx751pqS5ef9sACuAwTsZB5MQEjZMacyGsqsHs",
+      0.037201
+    ],
+    [
+      "994P1acnvtGuBd8BhzDUCnJAhpmfeeZX8pWGWp2rbdQS",
+      0.037114
+    ],
+    [
+      "2zovipoX6TSZbbrn7yNYcUZiQ5DQLbUrtt7QUk1FkHEQ",
+      0.0303
+    ],
+    [
+      "ASr6Hy8zvwwdeiNxNf7CgRH3JHXwYFGGx2C95DMNpRBo",
+      0.028533
+    ],
+    [
+      "DQUeoVMwKdP4ZbUUtRe5nTTvAPzwmziq5TSYErkHUF1e",
+      0.0275
+    ],
+    [
+      "4XS1eQoNawaRBKhbRMdnsJAtyURCmY3B7K3fHjoMQfNH",
+      0.027162
+    ],
+    [
+      "GTfJj1sHhw5fWvMxFxcdUBrF9KizQrwHCjW7yaNeT5Vm",
+      0.026728
+    ],
+    [
+      "G8b5aQwVymgDzuTR2BnPzMcKNCt3tkirvBdqXwxfeyo9",
+      0.02627
+    ],
+    [
+      "A8egciG8UsoHovCnJTAdYGefMW3MM79AbF1sdi8eU3vf",
+      0.024421
+    ],
+    [
+      "5U1JamvHTrWDkcL3Yw7TNoBMbReswth6RbGJYsCFYbw6",
+      0.024201
+    ],
+    [
+      "5ce1a8rjD4kWVgsLiKAVF1JrhGcTen9nsLurgiZQvAqN",
+      0.024032
+    ]
+  ],
+  "feed": [
+    {
+      "time": 1791013346,
+      "sol": 0.163156,
+      "wallets": 72,
+      "sig": "2ujUVhEvM1SJpG9AwvnV5UuRW7wYUKwy6YWKWDJyA9yHrDDYopU8Cm8pY3WRJX4xCaBmwUxYAG61HSSPzDcGnZF9"
+    },
+    {
+      "time": 1790791672,
+      "sol": 0.162402,
+      "wallets": 72,
+      "sig": "5yjvhFyDG5hXbg7Anvgtqx6HDjt9yNQYBJCoWLS6PuhmRY3JumCfw5Nv3tsZVJCWKW4C4PZ2XRbw2KYueBykTPUJ"
+    },
+    {
+      "time": 1790510986,
+      "sol": 0.162427,
+      "wallets": 80,
+      "sig": "4LWtchwV3yHS663kei7MGsS5vMhYzdcQnC4M1SifP8anBc7DdthjDbGRVAqjBGoQCPaV8uT1Potq9btfw6z4P9iW"
+    },
+    {
+      "time": 1790323401,
+      "sol": 0.167484,
+      "wallets": 84,
+      "sig": "3n6X3xq7VnYQbuHKusQn52JW4gPEYMgAyMmaSLoqnnPcZA1DaeDNHjtMxsYTdHZLQxnQyx12xjoBHsPQCbLiU7j6"
+    },
+    {
+      "time": 1790154921,
+      "sol": 0.165245,
+      "wallets": 86,
+      "sig": "5sdWCXkkW3Ady1K6CgFBjGUPtehPoeiJckAEAki3gT6pHmfVmTveVDjyJRusRGPtsj9ekxnL47xESC9dTe9tXdbk"
+    },
+    {
+      "time": 1789896256,
+      "sol": 0.232989,
+      "wallets": 80,
+      "sig": "34mq4b3qMWy7o5gxW7eGeAb6etQ6BzE3jNwdo3EqYZCURWENHUWNiQWQ4hZ75L3YupXQgF1r2bnbsVZYcbGrjx2D"
+    },
+    {
+      "time": 1789755894,
+      "sol": 0.194815,
+      "wallets": 82,
+      "sig": "4dGPCraRsurTR19FbtNgoCdGpRxFRCQZKEBNv3SNtMGHMc4njP46BcPgbh1Fv7bKUFneEn8YyanLqPi6A9xpyRcq"
+    },
+    {
+      "time": 1789740286,
+      "sol": 0.189763,
+      "wallets": 82,
+      "sig": "5Ly4nR7xEKj1rtuV4da5WsXvXhyv9WE1CUfrQbxK1TgYMQHugEA8AyxwxgUCV4izKXkxRf9fekVHgPyMcZSonrYP"
+    },
+    {
+      "time": 1789624210,
+      "sol": 0.210581,
+      "wallets": 83,
+      "sig": "22iSiqzwBCpneHfKFUQcdniZyKafCyJgTdvVKx8osPEYqfqWFuceNkHvaVwEsUH3SfuWJGh93w4NXQkMe2cExqhw"
+    }
+  ]
+}

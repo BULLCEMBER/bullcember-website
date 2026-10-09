@@ -16,14 +16,21 @@
 // best-effort top-up, so if this Worker is down, unreachable, or never deployed,
 // the site renders exactly as it did before.
 
-const MINT = "EUpN7RE7YLXmtF4FDuE4j7hqDhoogGqnbnKCcq3Upump";
-// pump.fun bonding curve PDA. Pre-graduation every trade goes through it.
-const CURVE = "CrFq4zNsEAEZqdmJWy9aWarZDSb1FLx64RbfUW7mVbvJ";
-// The PumpSwap pool pump.fun reports for this mint. It does not exist until the
-// curve graduates; reading it before then just returns no transactions.
-const POOL = "598LgNU99ZQmPCNkfdF93eEmSkvtshgPPjnQ2ebatuWZ";
+const MINT = "DTRmPLZPfQRRRVwyZFuSxUhvnj9RHgDqFjQXx6vUpump";
+const POOL = "3LnLWicgYKDipE4nDUNS9BuLeXJZTB8jYqbGVcyhVHnr";
+const DEV = "BXrU6jcjtZnar27jfWCXXhr9EqQGcFvyfnpC9cRjYLmC";
+// Constant ATA address. The account gets created and closed repeatedly (the dev
+// burned out and closed it on 2026-08-01), but the address is derived from
+// (owner, mint, program) so signatures stay indexed against it either way.
+// Must stay in agreement with DEV_ATA_ADDR in index.html and scripts/scan.mjs.
+const DEV_ATA = "4dTEzL1XdsWuzwFwXyzsxNKBUCqH8Nsac9CRGSfpgVGw";
+const BOOST = "BGVtkQcLUWtsm6FeZQrk12yXyDDYj9PhvmytYDKcDv5v";
+const DISTRIBUTOR = "7D2dJwtSH4dmM19MzJk1ms9kH5gmpbRbGaCXURmVdhQc";
 
 const DECIMALS = 6;
+const WSOL = "So11111111111111111111111111111111111111112";
+const SOL_FEE_FLOOR = 0.0005;
+const ROUND_GAP = 600;
 const WANT_BUYS = 12;
 
 // 4321 is the port in .claude/launch.json, so the local preview can exercise the
@@ -37,19 +44,19 @@ const ALLOWED_ORIGINS = [
   "http://127.0.0.1:4321",
 ];
 
-// Per-route edge TTL. Buys move constantly. Total volume is a
+// Per-route edge TTL. Buys move constantly; the engine and payout rounds move a few
+// times a week, so they can sit longer and cost almost nothing. Total volume is a
 // lifetime cumulative figure that the page only ever refreshes once a day, so an
 // hour at the edge is generous — and it caps Birdeye at 24 calls a day for the
 // entire internet, which is the whole point of putting it behind here.
-const CACHE_V = 3; // bump when a route's output changes; see the cache key below
-const TTL = { buys: 15, volume: 3600, ohlcv: 120, curve: 30 };
+const TTL = { buys: 15, engine: 45, rewards: 45, volume: 3600, ohlcv: 120 };
 // Chart timeframes the page can ask for. Anything else is a 400, not a Birdeye call.
 const OHLCV_TF = {
   "1H": 30 * 24 * 3600, // last 30 days of hourly candles
   "4H": null,           // from launch
   "1D": null,
 };
-const LAUNCH_TS = 1791061000; // a little before the 2026-10-03 launch
+const LAUNCH_TS = 1782000000; // a little before the June 21 2026 launch
 
 const cors = (origin) => ({
   "access-control-allow-origin": ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0],
@@ -93,43 +100,189 @@ async function enhanced(env, address, limit = 40) {
 }
 
 // ------------------------------------------------------------------- buys ---
-// A buy is the curve (or, after graduation, the pool) sending BULLCEMBER out to
-// someone. Same rule as buysViaEnhancedApi() in scripts/update-herd.mjs, so the
-// shape the browser gets here is interchangeable with data/buys.json.
-// Both venues are read so the feed keeps working across graduation with no edit.
+// A buy is the pool sending BULLCEMBER out to someone. Same rule as
+// buysViaEnhancedApi() in scripts/update-herd.mjs, so the shape the browser gets
+// here is interchangeable with data/buys.json.
 async function getBuys(env) {
-  const venues = [CURVE, POOL];
-  const pages = await Promise.all(venues.map((v) => enhanced(env, v, 40)));
+  const txns = await enhanced(env, POOL, 40);
   const buys = [];
-  const seen = new Set();
-  for (const tx of pages.flat()) {
-    if (seen.has(tx.signature)) continue;
-    const tt = (tx.tokenTransfers || []).find((x) => x.mint === MINT && venues.includes(x.fromUserAccount));
+  for (const tx of txns) {
+    const tt = (tx.tokenTransfers || []).find((x) => x.mint === MINT && x.fromUserAccount === POOL);
     if (!tt || !tt.tokenAmount) continue;
-    seen.add(tx.signature);
     buys.push({ sig: tx.signature, buyer: tt.toUserAccount, tokens: tt.tokenAmount, ts: tx.timestamp });
+    if (buys.length >= WANT_BUYS) break;
   }
-  buys.sort((a, b) => (b.ts || 0) - (a.ts || 0));
-  return { updatedAt: new Date().toISOString(), buys: buys.slice(0, WANT_BUYS) };
+  return { updatedAt: new Date().toISOString(), buys };
 }
 
-// ------------------------------------------------------------------ curve ---
-// Bonding-curve progress. The browser may not read chain itself (see the header),
-// so it asks here. Layout: 8-byte discriminator, then u64 virtual_token,
-// virtual_quote, real_token, real_quote, total_supply, then a `complete` bool.
-const INIT_REAL_TOKEN = 793_100_000_000_000n; // real token reserve at launch (793.1M * 1e6)
-async function getCurve(env) {
-  const info = await rpc(env, "getAccountInfo", [CURVE, { encoding: "base64" }]);
-  // The PDA is closed at graduation, so a missing account means it bonded.
-  if (!info?.value) return { updatedAt: new Date().toISOString(), complete: true, pct: 100, quote: 0 };
-  const b = Uint8Array.from(atob(info.value.data[0]), (c) => c.charCodeAt(0));
-  const dv = new DataView(b.buffer);
-  const realToken = dv.getBigUint64(24, true);
-  const realQuote = dv.getBigUint64(32, true);
-  const complete = b[48] === 1;
-  const sold = INIT_REAL_TOKEN - realToken;
-  const pct = complete ? 100 : Math.max(0, Math.min(100, Number((sold * 10000n) / INIT_REAL_TOKEN) / 100));
-  return { updatedAt: new Date().toISOString(), complete, pct, quote: Number(realQuote) / 10 ** DECIMALS };
+// ----------------------------------------------------------------- engine ---
+const ownerMintBal = (list, owner, mint) => {
+  const e = (list || []).find((b) => b.owner === owner && b.mint === mint);
+  return e ? Number(e.uiTokenAmount.uiAmount || 0) : 0;
+};
+const ownerBal = (list, owner) => ownerMintBal(list, owner, MINT);
+
+function solDelta(tx, who) {
+  const keys = tx.transaction.message.accountKeys.map((k) => (typeof k === "string" ? k : k.pubkey));
+  const i = keys.indexOf(who);
+  if (i < 0 || !tx.meta) return 0;
+  return (tx.meta.postBalances[i] - tx.meta.preBalances[i]) / 1e9;
+}
+
+// The boost vault funds buys from a wrapped-SOL account, so its native lamport
+// balance barely moves and solDelta() reads ~0 — the spend only shows as a drop in
+// its WSOL balance. Count both so either funding path is caught.
+function boostSpend(tx, pre, post) {
+  return -(ownerMintBal(post, BOOST, WSOL) - ownerMintBal(pre, BOOST, WSOL) + solDelta(tx, BOOST));
+}
+
+function burnAmount(tx) {
+  let burned = 0;
+  const walk = (instrs) =>
+    (instrs || []).forEach((ix) => {
+      const p = ix.parsed;
+      if (p && (p.type === "burn" || p.type === "burnChecked") && p.info && p.info.mint === MINT) {
+        burned += p.info.tokenAmount
+          ? Number(p.info.tokenAmount.uiAmount)
+          : Number(p.info.amount) / 10 ** DECIMALS;
+      }
+    });
+  walk(tx.transaction.message.instructions);
+  (tx.meta?.innerInstructions || []).forEach((ii) => walk(ii.instructions));
+  return burned;
+}
+
+// Recent classified engine events at or after `since`. Classification is a port of
+// scripts/scan.mjs — it has to agree with it exactly, because the browser merges
+// what comes back on top of the totals that script already published.
+//
+// `since` is the newest event in data/stats.json. The boundary second is re-read,
+// same as scan.mjs: two engine transactions can share it, and stopping on equality
+// dropped the unsaved one until the next stats run. The page dedupes type+sig
+// before adding, so returning the already-saved sibling does not double-count.
+async function getEngine(env, since) {
+  const sigs = new Map();
+  for (const acct of [DEV_ATA, BOOST]) {
+    // A failed page used to become []. The other account's events would still be
+    // returned, and the browser would treat that partial list as the whole delta.
+    let before;
+    for (let page = 0; page < 4; page++) {
+      const opts = { limit: 25, ...(before ? { before } : {}) };
+      const batch = await rpc(env, "getSignaturesForAddress", [acct, opts]);
+      if (!batch || !batch.length) break;
+      let hitOld = false;
+      for (const s of batch) {
+        if (s.err || !s.blockTime) continue;
+        // `<`, not `<=`. See the comment on getEngine. scan.mjs uses the same test.
+        if (since && s.blockTime < since) { hitOld = true; break; }
+        sigs.set(s.signature, true);
+      }
+      if (hitOld || batch.length < 25) break;
+      before = batch[batch.length - 1].signature;
+    }
+  }
+
+  const pending = [...sigs.keys()];
+  // A browser-facing endpoint must never fan out unboundedly, even if `since`
+  // arrives as 0. Past this cap, fail the request so the page keeps its baseline
+  // instead of painting a silently shortened delta.
+  if (pending.length > 40) throw new Error(`engine window truncated: ${pending.length} signatures`);
+
+  const events = [];
+  for (const sig of pending) {
+    const tx = await rpc(env, "getTransaction", [
+      sig,
+      { maxSupportedTransactionVersion: 0, encoding: "jsonParsed" },
+    ]);
+    if (!tx) throw new Error(`getTransaction returned nothing for ${sig}`);
+    if (tx.meta?.err) continue;
+
+    const time = tx.blockTime;
+    const pre = tx.meta?.preTokenBalances;
+    const post = tx.meta?.postTokenBalances;
+    const devDelta = ownerBal(post, DEV) - ownerBal(pre, DEV);
+    const burned = burnAmount(tx);
+    const solD = solDelta(tx, DEV);
+    const boostSol = boostSpend(tx, pre, post);
+
+    if (burned > 0.0001) events.push({ type: "burn", time, bull: Math.round(burned), sig });
+
+    if (devDelta > 0.0001 && solD < -SOL_FEE_FLOOR) {
+      events.push({ type: "buyback", time, bull: Math.round(devDelta), sol: +(-solD).toFixed(4), sig });
+    } else if (burned > 0.0001 && boostSol > SOL_FEE_FLOOR) {
+      // A boost buy never lands in any balance — bought and burned atomically, so
+      // the burned amount IS the amount bought back. This deliberately emits a
+      // second event on a signature that already produced a burn above, which is
+      // why the feed dedupes on type+sig rather than sig alone.
+      events.push({ type: "buyback", time, bull: Math.round(burned), sol: +boostSol.toFixed(4), sig });
+    }
+  }
+
+  events.sort((a, b) => (b.time || 0) - (a.time || 0));
+  return { updatedAt: new Date().toISOString(), since, events };
+}
+
+// ---------------------------------------------------------------- rewards ---
+// Payout rounds newer than `since`, bucketed the same way scripts/update-rewards.mjs
+// buckets them. Returns only the delta; the browser adds it to the cumulative totals
+// in data/rewards.json rather than trying to recompute all-time state here.
+async function getRewards(env, since) {
+  const txns = await enhanced(env, DISTRIBUTOR, 60);
+
+  const rounds = [];
+  let collected = 0;
+  let overhead = 0;
+
+  // Oldest first so rounds bucket in chronological order.
+  for (const tx of txns.slice().reverse()) {
+    if (!tx.timestamp || tx.timestamp <= since) continue;
+    const native = tx.nativeTransfers || [];
+    const outs = native.filter((n) => n.fromUserAccount === DISTRIBUTOR);
+
+    for (const n of native.filter((n) => n.toUserAccount === DISTRIBUTOR)) collected += n.amount;
+    if (outs.length === 0) continue;
+
+    // pump.fun's flat per-round fee ships alone in its own transaction; holder
+    // payouts always arrive as a fan-out batch. Splitting on batch size keeps the
+    // headline "paid to holders" figure honest without hardcoding an address.
+    if (outs.length === 1) {
+      // ...but that fee lands a few seconds AFTER the round it pays for, while
+      // `since` is the round's own timestamp. So the trailing fee of the round the
+      // caller already has sits just past the cutoff and would be handed back as a
+      // delta the baseline has already counted — double-billing the overhead and
+      // under-reporting pending by the same amount.
+      //
+      // Transactions are walked oldest-first, so a fee arriving before any new round
+      // has been bucketed must belong to the round at `since`. Once a new round IS
+      // open, the fee pays for THAT round and has to count — which is why this tests
+      // rounds.length rather than the timestamp alone.
+      if (rounds.length === 0 && since && tx.timestamp - since <= ROUND_GAP) continue;
+      overhead += outs[0].amount;
+      continue;
+    }
+
+    const last = rounds[rounds.length - 1];
+    const bucket =
+      last && tx.timestamp - last.time <= ROUND_GAP
+        ? last
+        : (rounds.push({ time: tx.timestamp, lamports: 0, payees: [], sig: tx.signature }),
+           rounds[rounds.length - 1]);
+
+    const seen = new Set(bucket.payees);
+    for (const n of outs) { bucket.lamports += n.amount; seen.add(n.toUserAccount); }
+    bucket.time = Math.max(bucket.time, tx.timestamp);
+    bucket.payees = [...seen];
+  }
+
+  return {
+    updatedAt: new Date().toISOString(),
+    since,
+    rounds: rounds
+      .map((r) => ({ time: r.time, sol: +(r.lamports / 1e9).toFixed(6), wallets: r.payees.length, sig: r.sig }))
+      .sort((a, b) => b.time - a.time),
+    collectedSol: +(collected / 1e9).toFixed(6),
+    overheadSol: +(overhead / 1e9).toFixed(6),
+  };
 }
 
 // ------------------------------------------------------------------ router ---
@@ -166,23 +319,10 @@ async function birdeyeCandles(env, type, from) {
   return items;
 }
 
-//
-// Hourly, not daily. Each candle is valued at its close, and a daily close on a
-// day that ran up and dumped prices the whole day's volume at the bottom: on
-// launch day 1D candles summed to $4.8K while ~$19.8K had actually traded.
-// Hourly candles came to $17.7K. 1000 candles a page x 8 pages covers ~11 months.
 async function getVolume(env) {
-  const items = await birdeyeCandles(env, "1H", LAUNCH_TS);
+  const items = await birdeyeCandles(env, "1D", LAUNCH_TS);
   let total = 0;
   for (const it of items) total += (Number(it.v) || 0) * (Number(it.c) || 0);
-  // Lifetime volume can never be less than the last 24h. DexScreener reports
-  // that in USD directly and needs no key, so it floors any Birdeye undercount.
-  try {
-    const r = await fetch(`https://api.dexscreener.com/token-pairs/v1/solana/${MINT}`);
-    const pairs = r.ok ? await r.json() : [];
-    const h24 = (Array.isArray(pairs) ? pairs : []).reduce((s, p) => s + (Number(p.volume?.h24) || 0), 0);
-    total = Math.max(total, h24);
-  } catch { /* the Birdeye figure stands on its own */ }
   if (!(total > 0)) throw new Error("birdeye returned no volume");
   return { updatedAt: new Date().toISOString(), totalUsd: total };
 }
@@ -219,7 +359,7 @@ export default {
     const route = url.pathname.replace(/\/+$/, "").split("/").pop();
     if (!TTL[route]) return new Response("not found", { status: 404, headers: cors(origin) });
     // /volume and /ohlcv front Birdeye. Everything else fronts Helius. Gate per
-    // route, so a missing Birdeye secret cannot take down buys or curve.
+    // route, so a missing Birdeye secret cannot take down buys, engine, or rewards.
     const needs = route === "volume" || route === "ohlcv" ? "BIRDEYE_KEY" : "HELIUS_KEY";
     if (!env[needs]) {
       return new Response(`worker not configured: ${needs}`, { status: 503, headers: cors(origin) });
@@ -238,10 +378,8 @@ export default {
     // Cache on a normalized key so one visitor's cache-buster query can't force a
     // miss for everyone else — that would defeat the whole point of the edge cache.
     // /ohlcv must keep the timeframe in the key, or 1H and 1D would share a body.
-    // CACHE_V is in the key so a deploy that changes what a route computes does
-    // not keep serving the previous version's body for up to a full TTL.
     const key = new Request(
-      route === "ohlcv" ? `${url.origin}/ohlcv?tf=${tf}&v=${CACHE_V}` : `${url.origin}/${route}?since=${since}&v=${CACHE_V}`,
+      route === "ohlcv" ? `${url.origin}/ohlcv?tf=${tf}` : `${url.origin}/${route}?since=${since}`,
       { method: "GET" },
     );
     const cache = caches.default;
@@ -256,9 +394,10 @@ export default {
     try {
       const body =
         route === "buys" ? await getBuys(env)
+        : route === "engine" ? await getEngine(env, since)
         : route === "volume" ? await getVolume(env)
         : route === "ohlcv" ? await getOhlcv(env, tf)
-        : await getCurve(env);
+        : await getRewards(env, since);
 
       const res = json(body, origin, TTL[route]);
       // Store a copy without the per-origin CORS header, so the cached body is

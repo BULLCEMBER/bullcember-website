@@ -1605,6 +1605,258 @@ section { padding: var(--section-y) 0; }
   .final-cta-title { font-size: 1.6rem; }
 }
 
+/* ===== THE BULLCEMBER ENGINE ===== */
+.engine { background: var(--bg-2); }
+.engine .section-title { margin-bottom: var(--s-4); }
+.engine-lead {
+  max-width: 62ch;
+  margin-bottom: var(--s-10);
+  color: var(--muted);
+  line-height: var(--lh-body);
+  font-size: var(--t-md);
+}
+.engine-lead strong { color: var(--fg); font-weight: 600; }
+.engine-gap {
+  max-width: 62ch;
+  margin: var(--s-4) 0 0;
+  color: var(--muted);
+  line-height: var(--lh-body);
+  font-size: var(--t-sm);
+}
+
+/* live on-chain tiles */
+.engine-live {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s-3);
+  margin-bottom: var(--s-3);
+}
+/* Flat surface with a colour rail on the leading edge. The old tiles were
+   gradient-filled with a glowing top bar and centred text — decoration
+   competing with the only two numbers that matter on this page. */
+.elive {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: var(--s-6);
+  box-shadow: var(--e-inset);
+}
+.elive::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 2px;
+  background: var(--signal);
+}
+.elive.burn::before { background: var(--burn); }
+
+.elive-ico { font-size: var(--t-lg); margin-bottom: var(--s-3); opacity: 0.9; }
+.elive-k {
+  font-family: var(--f-mono);
+  font-size: var(--t-2xs);
+  font-weight: 500;
+  letter-spacing: var(--ls-label);
+  text-transform: lowercase;
+  color: var(--muted);
+  margin-bottom: var(--s-3);
+}
+.elive-v {
+  font-family: var(--f-mono);
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--fg);
+}
+.elive.burn .elive-v { color: var(--burn); }
+.elive.buy  .elive-v { color: var(--signal-ink); }
+.elive-sub {
+  margin-top: var(--s-3);
+  font-family: var(--f-mono);
+  font-size: var(--t-2xs);
+  font-weight: 500;
+  color: var(--muted);
+}
+.elive-v.pending { opacity: 0.4; }
+
+/* updated line + refresh */
+.engine-updated {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  flex-wrap: wrap;
+  color: var(--muted);
+  font-family: var(--f-mono);
+  font-weight: 500;
+  font-size: var(--t-2xs);
+  letter-spacing: 0.06em;
+  margin-bottom: var(--s-8);
+}
+.live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--r-full);
+  background: var(--up);
+  box-shadow: 0 0 0 0 var(--signal);
+  animation: enginePulse 2s infinite;
+  flex: none;
+}
+/* Live check failed or came back partial — stop implying a healthy live feed.
+   This must NOT resolve to the signal colour: a warning that looks identical
+   to the healthy state is worse than no warning at all. */
+.engine-updated.stale { color: var(--warn); }
+.engine-updated.stale .live-dot {
+  background: var(--warn);
+  box-shadow: none;
+  animation: none;
+}
+@keyframes enginePulse {
+  0%   { box-shadow: 0 0 0 0 rgba(var(--signal-rgb), 0.5); }
+  70%  { box-shadow: 0 0 0 7px rgba(var(--signal-rgb), 0); }
+  100% { box-shadow: 0 0 0 0 rgba(var(--signal-rgb), 0); }
+}
+.refresh-btn {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-family: var(--f-mono);
+  font-weight: 500;
+  font-size: var(--t-2xs);
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
+  padding: var(--s-1) var(--s-3);
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: color var(--dur-1) var(--ease), border-color var(--dur-1) var(--ease);
+}
+.refresh-btn:hover { color: var(--signal-ink); border-color: var(--signal); }
+.refresh-btn:disabled { opacity: 0.5; cursor: default; }
+
+/* activity feed */
+.feed {
+  max-width: 720px;
+  margin-bottom: var(--s-12);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  box-shadow: var(--e-inset);
+  overflow: hidden;
+}
+.feed-head {
+  font-family: var(--f-mono);
+  font-weight: 500;
+  font-size: var(--t-2xs);
+  letter-spacing: var(--ls-label);
+  text-transform: lowercase;
+  color: var(--muted);
+  padding: var(--s-3) var(--s-5);
+  border-bottom: 1px solid var(--line);
+}
+.feed-tabs {
+  display: flex;
+  gap: var(--s-1);
+  padding: var(--s-3) var(--s-5);
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--line);
+}
+.ftab {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-family: var(--f-mono);
+  font-weight: 500;
+  font-size: var(--t-2xs);
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
+  padding: var(--s-1) var(--s-3);
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: color var(--dur-1) var(--ease), border-color var(--dur-1) var(--ease),
+              background var(--dur-1) var(--ease);
+}
+.ftab:hover { color: var(--fg); border-color: var(--line-strong); }
+.ftab.active { background: var(--signal-wash); border-color: var(--signal); color: var(--signal-ink); }
+.feed-list { max-height: 380px; overflow-y: auto; }
+.feed-row {
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+  padding: var(--s-3) var(--s-5);
+  border-top: 1px solid var(--line);
+  text-decoration: none;
+  color: var(--fg);
+  transition: background var(--dur-1) var(--ease);
+}
+.feed-row:first-child { border-top: none; }
+.feed-row:hover { background: var(--surface-2); }
+.feed-ic {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--r-sm);
+  display: grid;
+  place-items: center;
+  font-size: var(--t-base);
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+}
+.feed-main { flex: 1; min-width: 0; }
+.feed-t {
+  font-family: var(--f-mono);
+  font-weight: 600;
+  font-size: var(--t-sm);
+  letter-spacing: 0.04em;
+  color: var(--fg);
+}
+.feed-sub { font-family: var(--f-mono); font-size: var(--t-2xs); color: var(--muted); }
+.feed-amt {
+  font-family: var(--f-mono);
+  font-weight: 700;
+  text-align: right;
+  white-space: nowrap;
+  font-size: var(--t-sm);
+}
+/* buyback and burn must never share a colour — under the old aliases both
+   resolved to the same value, making the two event types indistinguishable */
+.feed-row.buyback .feed-amt { color: var(--signal-ink); }
+.feed-row.burn    .feed-amt { color: var(--burn); }
+.feed-empty {
+  padding: var(--s-6) var(--s-5);
+  color: var(--muted);
+  font-family: var(--f-mono);
+  font-size: var(--t-sm);
+}
+
+/* explainer cards */
+.engine-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s-3);
+  max-width: 720px;
+}
+.engine-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: var(--s-6);
+}
+.engine-card-ico { font-size: var(--t-lg); margin-bottom: var(--s-3); opacity: 0.9; }
+.engine-card h3 {
+  font-family: var(--f-display);
+  font-size: var(--t-base);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+  margin-bottom: var(--s-2);
+}
+.engine-card p { color: var(--muted); line-height: var(--lh-body); font-size: var(--t-sm); }
+
+@media (max-width: 640px) {
+  .engine-live { grid-template-columns: 1fr; }
+  .engine-cards { grid-template-columns: 1fr; }
+}
 
 /* ===== FULL-WIDTH BRAND BANNER ===== */
 
@@ -2262,6 +2514,180 @@ body::after {
 html { overflow-x: clip; }
 
 /* ============================================================================
+   REWARDS LAYER — the fee switch (hot topic banner + holder payout tracker)
+   Leans on the existing .elive / .feed / .herd-board furniture so the tracker
+   reads as the same instrument panel as the Bullpen; only the pieces with no
+   existing equivalent are defined here.
+   ========================================================================= */
+
+/* ---- HOT TOPIC ---------------------------------------------------------- */
+/* Sits between hero and countdown. Green (--accent), not purple, so it reads as
+   a separate announcement rather than more hero furniture. */
+.hot-topic { padding: var(--s-6) 0 0; }
+.hot-inner {
+  display: flex;
+  align-items: center;
+  gap: var(--s-5);
+  padding: var(--s-5) var(--s-6);
+  background: var(--surface);
+  border: 2px solid var(--accent);
+  box-shadow: 4px 4px 0 #000;
+  transform: rotate(-0.35deg);
+  transition: transform var(--dur-1) var(--ease), box-shadow var(--dur-1) var(--ease);
+}
+.hot-inner:hover { transform: rotate(-0.35deg) translate(-2px, -2px); box-shadow: 6px 6px 0 #000; }
+.hot-stamp {
+  flex: none;
+  align-self: flex-start;
+  font-family: var(--f-mono);
+  font-size: var(--t-2xs);
+  font-weight: 700;
+  letter-spacing: var(--ls-label);
+  text-transform: lowercase;
+  color: var(--on-accent);
+  background: var(--accent);
+  padding: var(--s-1) var(--s-2);
+  transform: rotate(-3deg);
+}
+.hot-body { flex: 1; min-width: 0; }
+.hot-head {
+  display: block;
+  font-family: var(--f-display);
+  font-size: var(--t-md);
+  font-weight: 700;
+  letter-spacing: var(--ls-display);
+  color: var(--bone);
+  line-height: var(--lh-snug);
+}
+.hot-sub {
+  display: block;
+  margin-top: var(--s-1);
+  font-family: var(--f-mono);
+  font-size: var(--t-xs);
+  color: var(--fg-dim);
+  line-height: var(--lh-snug);
+}
+.hot-num { color: var(--accent-ink); font-weight: 700; }
+.hot-cta {
+  flex: none;
+  font-family: var(--f-mono);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: lowercase;
+  color: var(--accent-ink);
+  white-space: nowrap;
+}
+
+/* ---- SECTION ------------------------------------------------------------ */
+/* Engine and Partners are both --bg-2; --bg here keeps the band alternating. */
+.rewards { background: var(--bg); }
+.rewards code {
+  font-family: var(--f-mono);
+  font-size: 0.92em;
+  color: var(--accent-ink);
+  background: var(--surface-2);
+  padding: 1px var(--s-1);
+  border-radius: var(--r-xs);
+}
+
+/* ---- TILES -------------------------------------------------------------- */
+/* Four tiles instead of the engine's two: 4-up on desktop, 2x2 on tablet. */
+.rw-tiles { grid-template-columns: repeat(4, 1fr); }
+/* Four tiles occupy the width the engine gives two, and these numbers are long
+   (0.5952, not 69.4M), so the inherited display size overflows and clips the
+   last glyph. Size is stepped per column count, not per viewport alone. */
+.rw-tiles .elive-v { font-size: clamp(2rem, 4.4vw, 3.9rem); }
+.elive.rw  { border-top: 4px solid var(--accent); transform: rotate(-0.4deg); }
+.elive.dev { border-top: 4px solid var(--line-strong); transform: rotate(0.5deg); }
+.elive.rw .elive-v  { color: var(--accent-ink); text-shadow: 4px 4px 0 #000; }
+/* The zero is the point of the tile, so it gets the same weight as a real
+   number rather than being dimmed into looking like missing data. */
+.elive.dev .elive-v { color: var(--muted); text-shadow: 4px 4px 0 #000; }
+
+/* ---- DISTRIBUTOR ADDRESS ------------------------------------------------ */
+.rw-addr {
+  margin: var(--s-6) 0;
+  padding: var(--s-5) var(--s-6);
+  background: var(--surface);
+  border: 2px solid var(--line-strong);
+  box-shadow: 3px 3px 0 #000;
+}
+.rw-addr-row { display: flex; align-items: center; gap: var(--s-4); flex-wrap: wrap; }
+.rw-addr-k {
+  font-family: var(--f-mono);
+  font-size: var(--t-2xs);
+  font-weight: 600;
+  letter-spacing: var(--ls-label);
+  text-transform: lowercase;
+  color: var(--muted);
+}
+.rw-addr-v {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--f-mono);
+  font-size: var(--t-sm);
+  color: var(--accent-ink);
+  word-break: break-all;
+  transition: color var(--dur-1) var(--ease);
+}
+.rw-addr-v:hover { color: var(--bone); }
+.rw-copy {
+  flex: none;
+  font-family: var(--f-mono);
+  font-size: var(--t-2xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: lowercase;
+  color: var(--fg-dim);
+  background: var(--bg-2);
+  border: 1px solid var(--line-strong);
+  padding: var(--s-2) var(--s-3);
+  cursor: pointer;
+  transition: color var(--dur-1) var(--ease), border-color var(--dur-1) var(--ease);
+}
+.rw-copy:hover { color: var(--accent-ink); border-color: var(--accent); }
+.rw-addr-note {
+  margin-top: var(--s-3);
+  font-family: var(--f-mono);
+  font-size: var(--t-2xs);
+  line-height: var(--lh-snug);
+  color: var(--muted);
+}
+.rw-pending { color: var(--fg-dim); }
+
+/* ---- PAYOUT FEED + BOARD ------------------------------------------------ */
+/* Payouts are SOL going out to holders — green, so it can never be mistaken
+   for the purple buyback rows or the red burn rows in the Bullpen feed. */
+.feed-row.reward .feed-amt { color: var(--accent-ink); }
+.rw-board-wrap { max-width: 720px; margin-top: var(--s-10); }
+.rw-board-wrap .herd-row:first-child { box-shadow: inset 2px 0 0 var(--accent); }
+.rw-cards { margin-top: var(--s-10); }
+
+@media (max-width: 900px) {
+  .rw-tiles { grid-template-columns: 1fr 1fr; }
+  .rw-tiles .elive-v { font-size: clamp(2rem, 7vw, 3.4rem); }
+}
+@media (max-width: 768px) {
+  .hot-inner {
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    transform: none;
+    padding: var(--s-4) var(--s-5);
+  }
+  .hot-inner:hover { transform: translate(-2px, -2px); }
+  .hot-head { font-size: var(--t-base); }
+  .elive.rw, .elive.dev { transform: none; }
+  .elive.rw .elive-v, .elive.dev .elive-v { text-shadow: 3px 3px 0 #000; }
+  .rw-addr-v { font-size: var(--t-2xs); }
+}
+@media (max-width: 480px) {
+  .rw-tiles { grid-template-columns: 1fr; }
+  /* back to one column, so the number has the full card again */
+  .rw-tiles .elive-v { font-size: clamp(2.4rem, 12.5vw, 3.6rem); }
+}
+
+/* ============================================================================
    NEON LAYER — the tube effect
    The palette above supplies the colour; this supplies the light. Sits last so
    it beats the hard-offset shadows the trench layer put on display type,
@@ -2320,9 +2746,18 @@ html { overflow-x: clip; }
   text-shadow: 0 0 6px rgba(255, 59, 31, 0.26),
                0 0 20px rgba(255, 59, 31, 0.10);
 }
+.elive.rw .elive-v {
+  color: var(--accent);
+  text-shadow: var(--glow-accent);
+}
+/* dev tile is deliberately unlit: it reports zero and should not draw the eye */
+.elive.dev .elive-v { color: var(--muted); text-shadow: none; }
 @media (max-width: 768px) {
   .elive.burn .elive-v,
-  .elive.buy  .elive-v { text-shadow: inherit; }
+  .elive.buy  .elive-v,
+  .elive.rw   .elive-v,
+  .elive.dev  .elive-v { text-shadow: inherit; }
+  .elive.dev  .elive-v { text-shadow: none; }
 }
 
 /* ---- stamped eyebrows: the border becomes the tube ----------------------
@@ -2471,13 +2906,14 @@ body { text-transform: lowercase; }
 
 /* CASE-SENSITIVE — DO NOT LOWER-CASE THESE.
    Solana addresses and transaction signatures are base58, which IS
-   case-sensitive: EUpN7RE... and eupn7re... are different strings and only one
+   case-sensitive: DTRmPLZ... and dtrmplz... are different strings and only one
    of them is the real mint. A copy button is unaffected (it reads textContent,
    not the rendered transform) so the clipboard stays correct either way — but
    anyone reading an address off the screen, or eyeballing it against a block
    explorer, would be checking a corrupted string. That is a money mistake, so
    these opt out explicitly, and any new address element must be added here. */
 .toko-ca-text,             /* the contract address */
+.rw-addr-v,                /* fee distributor */
 .herd-addr,                /* leaderboard wallets */
 .buy-addr,                 /* truncated buyer wallet in the live feed */
 .rank-input,               /* wallet the visitor pastes in */
@@ -2485,11 +2921,3 @@ body { text-transform: lowercase; }
   text-transform: none;
 }
 
-
-/* Creator-fee uses (Tokenomics). */
-.fee-lead { color: var(--muted); font-size: var(--t-sm); line-height: var(--lh-body); margin: var(--s-2) 0 var(--s-3); }
-.fee-uses { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s-3); }
-.fee-uses li { border: 1px solid var(--line); border-radius: var(--r-md); padding: var(--s-3); display: flex; flex-direction: column; gap: 4px; }
-.fee-uses strong { color: var(--bone); }
-.fee-uses span { color: var(--muted); font-size: var(--t-sm); line-height: 1.4; }
-@media (max-width: 760px) { .fee-uses { grid-template-columns: 1fr 1fr; } }

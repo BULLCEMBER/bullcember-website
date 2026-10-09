@@ -1,15 +1,23 @@
-// Builds data/stats.json: the mint's chain supply and the DexScreener price.
-// Public-RPC only, no API key. Keeps the previous values when a read fails.
+// Builds data/stats.json (+ data/events.json) for the live BULLCEMBER Engine.
+// Public-RPC only, no API key. Incremental: only new txns are scanned each run.
+// Tracks buybacks + burns only — no supply is ever sent to anyone.
 
 import { writeFile, readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
+import { scan } from "./scan.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const STATS = join(__dirname, "..", "data", "stats.json");
+const DATA = join(__dirname, "..", "data");
+const STATS = join(DATA, "stats.json");
+const EVENTS = join(DATA, "events.json");
 
-const MINT = "EUpN7RE7YLXmtF4FDuE4j7hqDhoogGqnbnKCcq3Upump";
+const MINT = "DTRmPLZPfQRRRVwyZFuSxUhvnj9RHgDqFjQXx6vUpump";
+const INITIAL_SUPPLY = 1_000_000_000;
 const RPC = process.env.RPC_URL || "https://api.mainnet-beta.solana.com";
+// Count dev-wallet burns from launch (pump.fun, Jun 21 2026 UTC). Excludes any
+// older/unrelated burns — the mint didn't exist before this, so this is all-time.
+const BURN_SINCE = 1782070621; // pump.fun created_timestamp for this mint
 
 async function readJson(p, fallback) {
   try { return JSON.parse(await readFile(p, "utf8")); } catch { return fallback; }
@@ -24,20 +32,81 @@ async function getPrice() {
   try {
     const r = await fetch(`https://api.dexscreener.com/latest/dex/tokens/${MINT}`);
     const j = await r.json();
-    return Number(j.pairs?.[0]?.priceUsd) || null;
-  } catch { return null; }
+    return Number(j.pairs?.[0]?.priceUsd) || 0;
+  } catch { return 0; }
 }
 
 async function main() {
-  const prev = await readJson(STATS, {});
+  const prevEvents = await readJson(EVENTS, []);
+  const sinceTime = prevEvents.reduce((m, e) => Math.max(m, e.time || 0), 0);
+
+  // Only scan transactions newer than what we already have.
+  // On failure, keep the previous event log. Merging a partial scan is what lets
+  // the cursor walk past a transaction that never got fetched. The workflow greps
+  // for this exact phrase and turns the job red without blocking herd or rewards.
+  let scanFailed = false;
+  const fresh = await scan(sinceTime).catch((e) => {
+    console.error("engine scan failed:", e.message);
+    scanFailed = true;
+    return null;
+  });
+
+  // Merge, dedupe, keep newest first. The key is type+sig, not sig: a pump.fun boost
+  // transaction buys and burns in one instruction set, so a single signature legitimately
+  // carries both a buyback and a burn. Keying on sig alone silently drops one of them.
+  const bySig = new Map();
+  const key = (e) => e.type + ":" + e.sig;
+  for (const e of prevEvents) bySig.set(key(e), e);
+  if (fresh) for (const e of fresh.feed) bySig.set(key(e), e);
+  const events = [...bySig.values()].sort((a, b) => (b.time || 0) - (a.time || 0));
+
+  // Totals derived from the full event log (never double-counted).
+  const sum = (t, f) => events.filter((e) => e.type === t).reduce((s, e) => s + (e[f] || 0), 0);
+  const count = (t) => events.filter((e) => e.type === t).length;
+
   const [supply, price] = await Promise.all([getSupply().catch(() => null), getPrice()]);
+  const prevStats = await readJson(STATS, {});
+  const curSupply = supply ?? prevStats.supply ?? null;
+
+  // Burned = dev-wallet burns since the campaign cutoff.
+  const devBurns = events.filter((e) => e.type === "burn" && (e.time || 0) >= BURN_SINCE);
+  const burnedTotal = devBurns.reduce((s, e) => s + (e.bull || 0), 0);
+
+  const buybackBull = sum("buyback", "bull");
+
+  // Feed always includes every burn, plus the newest buybacks.
+  const burnsE = events.filter((e) => e.type === "burn");
+  const buyE = events.filter((e) => e.type === "buyback").slice(0, 60);
+  const feed = [...burnsE, ...buyE].sort((a, b) => (b.time || 0) - (a.time || 0));
+
   const stats = {
     updatedAt: process.env.BUILD_TIME || new Date().toISOString(),
-    price: price ?? prev.price ?? 0,
-    supply: supply ?? prev.supply ?? null,
+    price,
+    supply: curSupply,
+    burnedSince: BURN_SINCE,
+    burned: {
+      amount: Math.round(burnedTotal),
+      pct: Number(((burnedTotal / INITIAL_SUPPLY) * 100).toFixed(3)),
+      usd: Number((burnedTotal * price).toFixed(2)),
+      count: devBurns.length,
+    },
+    buyback: {
+      bull: Math.round(buybackBull),
+      sol: Number(sum("buyback", "sol").toFixed(4)),
+      usd: Number((buybackBull * price).toFixed(2)),
+      count: count("buyback"),
+    },
+    feed,
   };
+
+  await writeFile(EVENTS, JSON.stringify(events) + "\n");
   await writeFile(STATS, JSON.stringify(stats, null, 2) + "\n");
-  console.log(`supply:${stats.supply} price:${stats.price}`);
+  console.log(`events:${events.length} buyback:${stats.buyback.bull}(${stats.buyback.count}) ` +
+    `burned:${stats.burned.amount}(${stats.burned.count})`);
+  if (scanFailed) {
+    // Supply and price above are still published. Events were not advanced.
+    console.error("engine scan failed: event log left unchanged");
+  }
 }
 
 main().catch((e) => { console.error(e); process.exit(1); });

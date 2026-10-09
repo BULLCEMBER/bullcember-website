@@ -26,13 +26,23 @@ This Worker keeps the live reads but removes both failure modes:
 | route | returns | edge TTL |
 |---|---|---|
 | `GET /buys` | 12 most recent buys off the PumpSwap pool | 15s |
-| `GET /curve` | bonding-curve progress and PUMP in the curve | 30s |
+| `GET /engine?since=<unix>` | classified buyback/burn events at or after `since`. The boundary second is re-read; the page dedupes type+sig | 45s |
+| `GET /rewards?since=<unix>` | payout rounds newer than `since`, plus collected/overhead | 45s |
 | `GET /volume` | `{ totalUsd }`, lifetime traded volume summed from daily candles | 1h |
 | `GET /ohlcv?tf=1H\|4H\|1D` | chart candles. The browser never holds the Birdeye key | 120s |
 
+`since` is the newest timestamp the caller already has from its baseline JSON, so in
+steady state these return an empty delta and cost almost nothing. It is clamped
+server-side — a bogus value cannot widen the upstream fan-out.
+
+`/engine` classification is a direct port of `scripts/scan.mjs`. **If you change the
+rules in one, change them in the other**, or the live delta will disagree with the
+published totals it gets added to.
+
 `/volume` is the odd one out: it fronts **Birdeye**, not Helius, and needs its own
 `BIRDEYE_KEY` secret. The key gate is per route, so a missing Birdeye secret takes
-out `/volume` and `/ohlcv` (503) and leaves buys and curve working.
+out `/volume` and `/ohlcv` (503) and leaves buys, engine, and rewards working.
+`/volume` ignores `since`.
 
 Why it exists: the page used to sum that history in the browser, paging Birdeye
 several times per load with the key hardcoded in `index.html`. That is the same
