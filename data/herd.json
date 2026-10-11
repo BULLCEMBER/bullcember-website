@@ -1,16 +1,20 @@
 {
-  "updatedAt": "2026-10-11T20:37:02.356Z",
-  "total": 102,
+  "updatedAt": "2026-10-11T23:56:23.533Z",
+  "total": 99,
   "tiers": {
-    "calf": 64,
-    "bull": 19,
-    "stampede": 19,
+    "calf": 65,
+    "bull": 18,
+    "stampede": 16,
     "alpha": 0
   },
   "holders": [
     [
       "8nkKvAxL5CUqfuFuW7ADcsKvoxbL3S67zfPRVi89sUkP",
       42976602381460
+    ],
+    [
+      "8etFbQmx1g2NMAnaEfM554k1Su2DquMZDa9xd6fAT4Sn",
+      38324280597599
     ],
     [
       "38BdPh352WVJnnnfUsoTWgc1wPoxQzHxy2YdBHuNCnoC",
@@ -21,6 +25,10 @@
       35909935700362
     ],
     [
+      "7xFqrjfx178VzsgS593xCVsy6E9Fc5xQMiiSjPT2YRn4",
+      31646184048545
+    ],
+    [
       "Ch7zuu3zvPsM3s2wikMoRqVEPGcYshaYZ53oVFiLrjRj",
       31037418881944
     ],
@@ -29,24 +37,12 @@
       30847404630542
     ],
     [
-      "7xFqrjfx178VzsgS593xCVsy6E9Fc5xQMiiSjPT2YRn4",
-      28855159589027
-    ],
-    [
-      "8etFbQmx1g2NMAnaEfM554k1Su2DquMZDa9xd6fAT4Sn",
-      27988191255724
-    ],
-    [
       "8DgovYJwx8cq14vvFNuZbsD6B4QzH9SqPc2R1iAMTa9o",
       24822066642851
     ],
     [
       "52CasWeADLAkDARemvcggYvX55rRLWNCK7imb1jUX4Zc",
       19186149760685
-    ],
-    [
-      "88S8oAVgBHx8MXBwV3iue6Hc86Zf23m9ApArkdfeDuTE",
-      18289850128917
     ],
     [
       "D8sj8c8AmKqNApgujCaLRuCpwN41bR92N6toGrpVZZEC",
@@ -65,16 +61,8 @@
       15098414215805
     ],
     [
-      "J3o5diYXQgZqzbvM4uiBooNVoNsWtWKDB5AbfEBK4zhv",
-      13703921164613
-    ],
-    [
       "GTfJj1sHhw5fWvMxFxcdUBrF9KizQrwHCjW7yaNeT5Vm",
       11189007370967
-    ],
-    [
-      "G28ik2MYh875reoEDQZpsCyG4ChgHUA63d9PAd27TfJN",
-      10847056702536
     ],
     [
       "ACcdmqVnmTUCgKf9ARVeguooMeCJURE5KvDHtJ6vGfuE",
@@ -87,10 +75,6 @@
     [
       "588xE2Gx8hcojVVTCumf78w8Piqv3Akq965udrrdD9yX",
       9761439508017
-    ],
-    [
-      "GNwTmXkU4DPjTiFRMYXchnTDD3ZvEhPF2Ez9GKukTFVp",
-      7025543081098
     ],
     [
       "FFXKTkc95KqmVSWSe5rZE2idCCVLxummG61SEv9827DJ",
@@ -275,6 +259,10 @@
     [
       "7iWnBRRhBCiNXXPhqiGzvvBkKrvFSWqqmxRyu9VyYBxE",
       40761085004
+    ],
+    [
+      "Agbrbho2Wey3tPiTy6Ryk2rBmMsSNPEDdr1BGnhf5sCR",
+      39442549698
     ],
     [
       "6CigR5rPFF1tk4rT3pMNDK2EpFTHEm61wiaKCzXwhMM1",
