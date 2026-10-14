@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-14T15:58:16.782Z",
+  "updatedAt": "2026-10-14T20:07:55.615Z",
   "total": 98,
   "tiers": {
     "calf": 64,
@@ -8,6 +8,10 @@
     "alpha": 0
   },
   "holders": [
+    [
+      "Ch7zuu3zvPsM3s2wikMoRqVEPGcYshaYZ53oVFiLrjRj",
+      44893055029293
+    ],
     [
       "8nkKvAxL5CUqfuFuW7ADcsKvoxbL3S67zfPRVi89sUkP",
       42976602381460
@@ -19,10 +23,6 @@
     [
       "7z1CwpygmWBaKm98fXuU56LEBkFocSMXLcAo5mCAED1m",
       35909935700362
-    ],
-    [
-      "Ch7zuu3zvPsM3s2wikMoRqVEPGcYshaYZ53oVFiLrjRj",
-      31037418881944
     ],
     [
       "GGAc5GsqYbdBGkEQyxfWQLRmYgkG2qUH2WgTRNrgiTHm",
