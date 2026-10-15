@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-10-14T23:16:05.756Z",
-  "total": 98,
+  "updatedAt": "2026-10-15T11:42:13.014Z",
+  "total": 97,
   "tiers": {
     "calf": 64,
-    "bull": 18,
-    "stampede": 16,
+    "bull": 19,
+    "stampede": 14,
     "alpha": 0
   },
   "holders": [
@@ -17,10 +17,6 @@
       42976602381460
     ],
     [
-      "38BdPh352WVJnnnfUsoTWgc1wPoxQzHxy2YdBHuNCnoC",
-      37082259313543
-    ],
-    [
       "GGAc5GsqYbdBGkEQyxfWQLRmYgkG2qUH2WgTRNrgiTHm",
       30847404630542
     ],
@@ -29,8 +25,8 @@
       25560399598735
     ],
     [
-      "8DgovYJwx8cq14vvFNuZbsD6B4QzH9SqPc2R1iAMTa9o",
-      24822066642851
+      "EVWJXJjXYSxmDag5qZcepL7fJTtkFpi5vLnjVEbCDHEe",
+      20810119916217
     ],
     [
       "52CasWeADLAkDARemvcggYvX55rRLWNCK7imb1jUX4Zc",
@@ -51,10 +47,6 @@
     [
       "3hvSYRdnPNvAPFKKTkBpc2exAgJo72urjJMVxY55FUHv",
       16394127732048
-    ],
-    [
-      "EVWJXJjXYSxmDag5qZcepL7fJTtkFpi5vLnjVEbCDHEe",
-      16002893749680
     ],
     [
       "HH95bire3T14Gv7LYWx55t9MKrACBK1YMAu8CC3rGFAD",
@@ -103,6 +95,10 @@
     [
       "Ag4RvVGSPQKd7uA8j4oyyFbc6VucdpCA1a2kUr9MBogZ",
       2355665569989
+    ],
+    [
+      "8Eum71stzEztX2tKBZmJsU93saxNfRzQiQh6VSkqRaJW",
+      1807063067175
     ],
     [
       "GPcfAKmVbU15uJk44UD3NZbtpn2UrFsE33cpyK4rcHiR",
@@ -269,6 +265,10 @@
       28102188112
     ],
     [
+      "2rbMgYvzAb3xDk6vXrzKkY3VwsmyDZsJTkvB3JJYsRzA",
+      24430552777
+    ],
+    [
       "Caqt3T4uyiD1aUnwiGtRPzL2S4izePLdQaGH8mC3G41y",
       23726803342
     ],
@@ -295,10 +295,6 @@
     [
       "8pojExh853XoHtaiUYUiz2xY1WrQWGXYd7spdkAFXx8D",
       9790567529
-    ],
-    [
-      "2rbMgYvzAb3xDk6vXrzKkY3VwsmyDZsJTkvB3JJYsRzA",
-      9673812336
     ],
     [
       "5ebh3T7jwNYNnT7TxxtcqH6NZfKnxpg8KEACXkZ2pu65",
