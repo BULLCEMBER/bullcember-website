@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-10-15T11:42:14.396Z",
+  "updatedAt": "2026-10-15T15:45:08.442Z",
   "distributor": "7D2dJwtSH4dmM19MzJk1ms9kH5gmpbRbGaCXURmVdhQc",
   "dev": "BXrU6jcjtZnar27jfWCXXhr9EqQGcFvyfnpC9cRjYLmC",
   "devSol": 0,
-  "totalSol": 2.167691,
-  "totalUsd": 220.95,
-  "collectedSol": 2.169071,
-  "overheadSol": 0.00073,
+  "totalSol": 2.356779,
+  "totalUsd": 239.29,
+  "collectedSol": 2.358175,
+  "overheadSol": 0.000746,
   "pendingSol": 0.00065,
-  "rounds": 12,
-  "wallets": 127,
-  "lastRound": 1791751813,
+  "rounds": 13,
+  "wallets": 128,
+  "lastRound": 1792078794,
   "biggestSol": 0.232989,
   "top": [
     [
@@ -20,6 +20,10 @@
     [
       "8DgovYJwx8cq14vvFNuZbsD6B4QzH9SqPc2R1iAMTa9o",
       0.086794
+    ],
+    [
+      "D8sj8c8AmKqNApgujCaLRuCpwN41bR92N6toGrpVZZEC",
+      0.081771
     ],
     [
       "7v2YQLGteDLa3JQkBm2HxzuDx8XB3g7pewPSg1PNHtfk",
@@ -34,12 +38,12 @@
       0.076842
     ],
     [
-      "BvpujiYFk8XaGvZTdYJDeLEzLAQDWLs33ax9TRukCVG4",
-      0.071762
+      "3hvSYRdnPNvAPFKKTkBpc2exAgJo72urjJMVxY55FUHv",
+      0.074955
     ],
     [
-      "D8sj8c8AmKqNApgujCaLRuCpwN41bR92N6toGrpVZZEC",
-      0.071241
+      "BvpujiYFk8XaGvZTdYJDeLEzLAQDWLs33ax9TRukCVG4",
+      0.071762
     ],
     [
       "8oQCeJPR8mwbSVrMWddbQfBxVMkgFdC2LeYdMLR6ZHmL",
@@ -50,44 +54,52 @@
       0.065722
     ],
     [
-      "3hvSYRdnPNvAPFKKTkBpc2exAgJo72urjJMVxY55FUHv",
-      0.065392
-    ],
-    [
       "Ftza73zx8AzdVhFGoCnodoyrvEEyjZTMw3C9ysUtstv6",
       0.064026
+    ],
+    [
+      "GGAc5GsqYbdBGkEQyxfWQLRmYgkG2qUH2WgTRNrgiTHm",
+      0.063668
+    ],
+    [
+      "8nkKvAxL5CUqfuFuW7ADcsKvoxbL3S67zfPRVi89sUkP",
+      0.063025
     ],
     [
       "583S1Jk6SpnSehRHNEeNcEmJettgTSgfwunftecJXHjD",
       0.059173
     ],
     [
-      "2zeHdhPzvfKxR3fPXTzhEjJapmATrnAoor5XYKehJqTk",
-      0.048108
+      "GTfJj1sHhw5fWvMxFxcdUBrF9KizQrwHCjW7yaNeT5Vm",
+      0.050679
     ],
     [
-      "GGAc5GsqYbdBGkEQyxfWQLRmYgkG2qUH2WgTRNrgiTHm",
-      0.045675
+      "DQUeoVMwKdP4ZbUUtRe5nTTvAPzwmziq5TSYErkHUF1e",
+      0.049518
+    ],
+    [
+      "2zeHdhPzvfKxR3fPXTzhEjJapmATrnAoor5XYKehJqTk",
+      0.048108
     ],
     [
       "7B6fnUh5Bw59qDdSRqmZTPDmTNz75Zyg5YFNWbDTYVrh",
       0.045085
     ],
     [
-      "GTfJj1sHhw5fWvMxFxcdUBrF9KizQrwHCjW7yaNeT5Vm",
-      0.044152
+      "588xE2Gx8hcojVVTCumf78w8Piqv3Akq965udrrdD9yX",
+      0.041217
     ],
     [
-      "DQUeoVMwKdP4ZbUUtRe5nTTvAPzwmziq5TSYErkHUF1e",
-      0.043518
+      "HH95bire3T14Gv7LYWx55t9MKrACBK1YMAu8CC3rGFAD",
+      0.038976
+    ],
+    [
+      "Ch7zuu3zvPsM3s2wikMoRqVEPGcYshaYZ53oVFiLrjRj",
+      0.038819
     ],
     [
       "2o53bTHrK82pQSBbD6iQKmQ9emAAW6eJFRT6LrTMqZS5",
       0.038481
-    ],
-    [
-      "8nkKvAxL5CUqfuFuW7ADcsKvoxbL3S67zfPRVi89sUkP",
-      0.037956
     ],
     [
       "38BdPh352WVJnnnfUsoTWgc1wPoxQzHxy2YdBHuNCnoC",
@@ -100,21 +112,15 @@
     [
       "994P1acnvtGuBd8BhzDUCnJAhpmfeeZX8pWGWp2rbdQS",
       0.037114
-    ],
-    [
-      "588xE2Gx8hcojVVTCumf78w8Piqv3Akq965udrrdD9yX",
-      0.035523
-    ],
-    [
-      "4XS1eQoNawaRBKhbRMdnsJAtyURCmY3B7K3fHjoMQfNH",
-      0.034826
-    ],
-    [
-      "5ce1a8rjD4kWVgsLiKAVF1JrhGcTen9nsLurgiZQvAqN",
-      0.030813
     ]
   ],
   "feed": [
+    {
+      "time": 1792078794,
+      "sol": 0.189088,
+      "wallets": 17,
+      "sig": "5vB8VbhTMJHEMPzrVbp1Y7d916ytcizyD5u3Fn5WFh84fehsdYWmz9bjcr7JX5SF3y87r4CgaskCPGwNNEAMpfay"
+    },
     {
       "time": 1791751813,
       "sol": 0.184911,
