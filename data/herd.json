@@ -1,9 +1,9 @@
 {
-  "updatedAt": "2026-10-20T21:29:43.071Z",
-  "total": 95,
+  "updatedAt": "2026-10-22T15:19:34.731Z",
+  "total": 94,
   "tiers": {
     "calf": 62,
-    "bull": 17,
+    "bull": 16,
     "stampede": 16,
     "alpha": 0
   },
@@ -127,10 +127,6 @@
     [
       "7HJ4SYZJVHiyp2uwqRVCd6K9jCoiGjEdeQf9KxvXEinB",
       1254795550111
-    ],
-    [
-      "BFpMcMCRQibK65PR3V6jyy3RDjgEKdfwHNBGaBA9EzVX",
-      1221524628480
     ],
     [
       "7GPhFTQNKNca88QBUkGrAeE1cgz76rAruVHF47dthhkZ",
