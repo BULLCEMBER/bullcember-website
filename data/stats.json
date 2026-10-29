@@ -1,18 +1,18 @@
 {
-  "updatedAt": "2026-10-29T11:41:24.111Z",
-  "price": 0.000005522,
+  "updatedAt": "2026-10-29T17:34:25.155Z",
+  "price": 0,
   "supply": 930494005.344819,
   "burnedSince": 1782070621,
   "burned": {
     "amount": 69495886,
     "pct": 6.95,
-    "usd": 383.76,
+    "usd": 0,
     "count": 38
   },
   "buyback": {
     "bull": 69517162,
     "sol": 24.6163,
-    "usd": 383.87,
+    "usd": 0,
     "count": 74
   },
   "feed": [
