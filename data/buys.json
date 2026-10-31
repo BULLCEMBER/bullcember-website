@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-31T08:45:16.723Z",
+  "updatedAt": "2026-10-31T14:47:36.626Z",
   "buys": [
     {
       "sig": "38ZaoD7gWK53pqHFSZKmd9CGmmaXsLVVkafNCXTv4axCh1buciqKcVYmMsGpadzHuNdUkSNzTsHK8LbEwYQYcGZW",
@@ -68,9 +68,9 @@
       "ts": 1792961963
     },
     {
-      "sig": "35zyWN4e8ndSoehncLqUDgDAHxDdk99TdZeq9iwBpg4z9x8BJ2i6pvQELhb954iKtGQr4UmAQjBTzfhhJJoFUcxC",
-      "buyer": "EHTdhfa8mjxo9dt3qE66jkbrJN9KvGCN6rJKKwWQfWDF",
-      "tokens": 4331175.471551,
+      "sig": "3A9jVsWLY1Q1uVWox7pnWmXx8YEqpYi9yBxzacdzbqF5dy49NDnnkak6ZmZAr2QpQm8j1kJU7qW69mThBBTiRCeJ",
+      "buyer": "B8WpCcYndJFxryhrDTdUBRV4ThyJWKwDYSeXSqrTRHMS",
+      "tokens": 9327761.943674,
       "ts": 1792956513
     }
   ]
