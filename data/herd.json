@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-11-01T14:21:18.669Z",
+  "updatedAt": "2026-11-02T19:31:56.278Z",
   "total": 91,
   "tiers": {
     "calf": 61,
-    "bull": 15,
-    "stampede": 15,
+    "bull": 16,
+    "stampede": 14,
     "alpha": 0
   },
   "holders": [
@@ -39,10 +39,6 @@
     [
       "FwP5mvMSju3XMXdECdQVypVGFUUCewG4JhmELK2cUF78",
       18193584398976
-    ],
-    [
-      "2YjjyKyokLGsW6eR1Vu7T47sPbTrHysQ7yp4QFabVA7x",
-      17838236886823
     ],
     [
       "3hvSYRdnPNvAPFKKTkBpc2exAgJo72urjJMVxY55FUHv",
@@ -107,6 +103,10 @@
     [
       "AfxiTH8A4XaNWs4pnRsh1KybRzUhcyWbnt1fChzuJDhH",
       1733391266343
+    ],
+    [
+      "5gBgixJ7r4ZzwTP5vAPMHgmBhKsGS1vBCzCDwg9LXLQ2",
+      1719190869334
     ],
     [
       "8Eum71stzEztX2tKBZmJsU93saxNfRzQiQh6VSkqRaJW",
