@@ -1,17 +1,13 @@
 {
-  "updatedAt": "2026-11-12T09:54:00.427Z",
-  "total": 87,
+  "updatedAt": "2026-11-12T18:06:53.930Z",
+  "total": 86,
   "tiers": {
     "calf": 59,
     "bull": 15,
-    "stampede": 13,
+    "stampede": 12,
     "alpha": 0
   },
   "holders": [
-    [
-      "8nkKvAxL5CUqfuFuW7ADcsKvoxbL3S67zfPRVi89sUkP",
-      42976602381460
-    ],
     [
       "BkCA8KxkXM5Ziz8Dne2KnQgkQnjLqaqthMYmXSHdmHcM",
       35709120647832
